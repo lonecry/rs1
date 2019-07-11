@@ -30,15 +30,19 @@
                 console.log('You Just Fucked register');
             },
             pswreset(){
-                console.log( this.data.cell)
+
                 console.log('You Just Fucked pswreset');
             },
             handleClick(){
+                console.log( this.cell)
                 console.log('You Just Fucked me');
                 const url = '../logs/main'
                 if (mpvuePlatform === 'wx') {
-                    mpvue.switchTab({url})
+                    console.log('mpvue switchTab ');
+                    // mpvue.switchTab({url})
+                    mpvue.navigateTo({url})
                 } else {
+                    console.log('mpvue navigateTo ');
                     mpvue.navigateTo({url})
                 }
             }
