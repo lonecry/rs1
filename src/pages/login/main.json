@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "Login",
+    "usingComponents": {
+        "i-row": "../../static/iview/row/index",
+        "i-col": "../../static/iview/col/index",
+        "i-button": "../../static/iview/button/index",
+        "i-icon": "../../static/iview/icon/index",
+        "i-input": "../../static/iview/input/index"
+    }
+}
