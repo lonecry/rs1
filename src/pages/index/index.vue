@@ -1,59 +1,44 @@
 <template>
-    <div @click = "clickHandle">
-        <div class = "userinfo" @click = "bindViewTap">
-            <img class = "userinfo-avatar" v-if = "userInfo.avatarUrl" :src = "userInfo.avatarUrl" background-size = "cover"/>
-            <img class = "userinfo-avatar" src = "/static/images/user.png" background-size = "cover"/>
-            <div class = "userinfo-nickname">
-                <card :text = "userInfo.nickName"></card>
-            </div>
-        </div>
-        <div class = "usermotto">
-            <div class = "user-motto">
-                <card :text = "motto"></card>
-            </div>
-        </div>
-        <i-button type = "success">我是iview</i-button>
-        <form class = "form-container">
-            <input type = "text" class = "form-control" :value = "motto" placeholder = "v-model"/>
-            <input type = "text" class = "form-control" v-model = "motto" placeholder = "v-model"/>
-            <input type = "text" class = "form-control" v-model.lazy = "motto" placeholder = "v-model.lazy"/>
-        </form>
-        <div class = "all">
-            <div class = "left">
-            </div>
-            <div class = "right">
-            </div>
-        </div>
+    <div class = " box">
+        <i-button @click = "toggleLeft" type = "ghost">左边弹出1</i-button>
+        <i-tabs current = "{{ current_scroll }}" scroll bindchange = "handleChangeScroll">
+            <i-tab key = "tab1" title = "选项1"></i-tab>
+            <i-tab key = "tab2" title = "选项2"></i-tab>
+            <i-tab key = "tab3" title = "选项3"></i-tab>
+            <i-tab key = "tab4" title = "选项4"></i-tab>
+            <i-tab key = "tab5" title = "选项5"></i-tab>
+            <i-tab key = "tab6" title = "选项6"></i-tab>
+            <i-tab key = "tab7" title = "选项7"></i-tab>
+            <i-tab key = "tab8" title = "选项8"></i-tab>
+            <i-tab key = "tab9" title = "选项9"></i-tab>
+        </i-tabs>
+        <i-drawer mode = "left" @click = "toggleLeft" :visible = "showleft" class = "i-drawer-mask">
+            <view class = "demo-container">
+                单击遮罩层关闭
+            </view>
+        </i-drawer>
     </div>
 </template>
 <script>
-    import card from '@/components/card'
+    import {$Toast} from '../../../static/iview/base/index'
 
     export default {
         data(){
             return {
-                motto: 'Hello miniprograme',
-                userInfo: {
-                    nickName: 'mpvue',
-                    avatarUrl: 'http://mpvue.com/assets/logo.png'
-                }
+                showleft: false,
+                current_scroll: 'tab1'
             }
         },
-        components: {
-            card
-        },
+        components: {},
         methods: {
-            bindViewTap(){
-                const url = '../logs/main'
-                if (mpvuePlatform === 'wx') {
-                    mpvue.switchTab({url})
-                } else {
-                    mpvue.navigateTo({url})
-                }
+            toggleLeft(){
+                console.log(' draw true')
+                this.showleft = !this.showleft
             },
-            clickHandle(ev){
-                console.log('clickHandle:', ev)
-                // throw {message: 'custom test'}
+            handleChangeScroll({detail}){
+                this.setData({
+                    current_scroll: detail.key
+                });
             }
         },
         created(){
@@ -62,49 +47,23 @@
     }
 </script>
 <style scoped>
-    .userinfo {
-        display        : flex;
-        flex-direction : column;
-        align-items    : center;
+    .miantitle {
+        width      : 100%;
+        display    : block;
+        text-align : center;
+        font-size  : 35rpx;
+        position   : absolute;
+        top        : 22rpx;
+        left       : 0;
+
     }
-    .userinfo-avatar {
-        width         : 128rpx;
-        height        : 128rpx;
-        margin        : 20rpx;
-        border-radius : 50%;
+    .demo-container {
+        width      : 400rpx;
+        height     : 100vh;
+        background : white;
+
     }
-    .userinfo-nickname {
-        color : #aaa;
-    }
-    .usermotto {
-        margin-top : 150px;
-    }
-    .form-control {
-        display       : block;
-        padding       : 0 12px;
-        margin-bottom : 5px;
-        border        : 1px solid #ccc;
-    }
-    .all {
-        width            : 7.5rem;
-        height           : 1rem;
-        background-color : blue;
-    }
-    .all:after {
-        display : block;
-        content : '';
-        clear   : both;
-    }
-    .left {
-        float            : left;
-        width            : 3rem;
-        height           : 1rem;
-        background-color : red;
-    }
-    .right {
-        float            : left;
-        width            : 4.5rem;
-        height           : 1rem;
-        background-color : green;
+    .i-drawer-mask {
+        background : rgba(28, 36, 56, 0.29);
     }
 </style>

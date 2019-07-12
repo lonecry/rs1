@@ -1,7 +1,9 @@
 {
     "pages": [
-        "pages/login/main",
         "pages/index/main",
+        "pages/pswreset/main",
+        "pages/register/main",
+        "pages/login/main",
         "pages/logs/main"
     ],
     "window": {
@@ -10,5 +12,4 @@
         "navigationBarTitleText": "WeChat",
         "navigationBarTextStyle": "black"
     }
-
 }
