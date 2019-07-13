@@ -1,5 +1,6 @@
 {
     "pages": [
+        "pages/indexswiper/main",
         "pages/index/main",
         "pages/pswreset/main",
         "pages/register/main",

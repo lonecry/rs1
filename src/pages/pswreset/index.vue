@@ -162,7 +162,8 @@
         justify-content : center;
         width           : 100%;
         height          : 100vh;
-        /*background      : #acacac;*/
+        background      : #33ac59;
+        overflow: hidden;
     }
     .row {
         width   : 100%;
