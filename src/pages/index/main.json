@@ -7,6 +7,8 @@
         "i-icon": "../../../static/iview/icon/index",
         "i-input": "../../../static/iview/input/index",
         "i-toast": "../../../static/iview/toast/index",
-        "i-drawer": "../../../static/iview/drawer/index"
+        "i-drawer": "../../../static/iview/drawer/index",
+        "i-tab": "../../../static/iview/tab/index",
+        "i-tabs": "../../../static/iview/tabs/index"
     }
 }
