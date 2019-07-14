@@ -114,6 +114,7 @@
                 </scroll-view>
             </swiper-item>
         </swiper>
+        <i-button @click = "goreport" class = "goreport" type = "primary">一键报修</i-button>
         <i-drawer mode = "left" @click = "toggleLeft" :visible = "showleft" class = "i-drawer-mask">
             <div class = "demo-container" @click.stop>
                 <img :src = "userIcon" class = "usericon" @click = "changeIcon" alt = ""/>
@@ -297,9 +298,17 @@
                 // console.log(e.currentTarget.dataset.cardid);
                 // console.log(e.target);
                 console.log("cardid is " + e.mp.currentTarget.dataset.cardid);
+                mpvue.navigateTo({
+                    url: '../detail/main',
+                })
             },
             change(e){
                 this.current_scroll = e.mp.detail.current
+            },
+            goreport(){
+                mpvue.navigateTo({
+                    url: '../report/main',
+                })
             }
         },
         onShow(){
@@ -311,7 +320,7 @@
                     /* console.log(res.windowHeight);*/
                     var w = res.windowWidth
                     var h = res.windowHeight
-                    var calHeight = (h / w * 750 - 100).toFixed(2)
+                    var calHeight = (h / w * 750 - 200).toFixed(2)
                     _this.scrollData.height = calHeight + "rpx"
                     console.log(_this.scrollData.height);
                 },
@@ -481,5 +490,11 @@
         display        : block;
         position       : relative;
         padding-bottom : 30rpx;
+    }
+    .goreport {
+        width    : 100%;
+        position : fixed;
+        left     : 0;
+        bottom   : 0;
     }
 </style>

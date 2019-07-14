@@ -127,6 +127,17 @@
                 _this.imgsUrl[indexOfLoad] = ''
             },
             fileUpload: function (tempFilePath){
+
+                /*const uploadTask = wx.uploadFile({
+                    // .....
+                })
+                uploadTask.onProgressUpdate((res) => {
+                    console.log('上传进度', res.progress)
+                    console.log('已经上传的数据长度', res.totalBytesSent)
+                    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+                })*/
+
+
                 var _this = this
                 let wx = mpvue
                 wx.uploadFile({
@@ -166,7 +177,8 @@
         created(){
         },
         onShow: function (){
-            this.zhantai = this.$root.$mp.query.addr || this.zhantai
+            this.zhantai = mpvue.getStorageSync("addr") || this.zhantai
+
             console.log(this.zhantai);
         },
     }

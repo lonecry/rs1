@@ -69,10 +69,12 @@
                 var addr=e.mp.currentTarget.dataset.loname
                 console.log(addr);
                 this.activelocation = e.mp.currentTarget.dataset.locaid
-                mpvue.navigateTo({
-                    // ./join/main
-                    url: '../report/main?addr=' +addr,
-                })
+                // mpvue.redirectTo({
+                //     // ./join/main
+                //     url: '../report/main?addr=' +addr,
+                // })
+                mpvue.setStorageSync('addr', addr)
+                mpvue.navigateBack()
             }
         },
         created(){
