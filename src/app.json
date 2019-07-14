@@ -1,5 +1,9 @@
 {
     "pages": [
+        "pages/report/main",
+        "pages/locationSearch/main",
+        "pages/changcell2/main",
+        "pages/changcell1/main",
         "pages/indexswiper/main",
         "pages/index/main",
         "pages/pswreset/main",
