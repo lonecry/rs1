@@ -22,7 +22,7 @@
                 <span>+</span>
                 <span class = "tips">上传图片</span>
                 <div v-if = "item.show" class = "imgbox">
-                    <img :src = "item.imgurl" :mode = "'widthFix'" @click.stop = 'preview(item.imgurl)' class = "uploadedimg">
+                    <img :src = "item.imgurl" :mode = "'widthFix'" @click.stop = "preview(index)" class = "uploadedimg">
                 </div>
                 <img v-if = "item.show" :data-upid = "index" src = "/static/images/delete.png" @click.stop = 'deleteImg' class = "delete">
             </div>
@@ -83,12 +83,13 @@
                 // console.log(e.mp.currentTarget.dataset.errkey);
                 this.currnetIndex = e.mp.currentTarget.dataset.errkey
             },
-            preview: function (url){
-                var arr=["http://www.simpleqq.com/index/imgs/tab/tab4.jpg"]
-                // arr.push(url)
+            preview: function (k){
+                var wx = mpvue
+                var urls=[]
+                urls.push(this.imgsUrl[k])
                 wx.previewImage({
-                    current: arr[0], // 当前显示图片的http链接
-                    urls: arr // 需要预览的图片http链接列表
+                    current: urls[0], // 当前显示图片的http链接
+                    urls: urls // 需要预览的图片http链接列表
                 })
             },
             uploadImg(e){
@@ -108,12 +109,14 @@
                     success: function (res){
                         // tempFilePath可以作为img标签的src属性显示图片
                         const tempFilePaths = res.tempFilePaths
-                        _this.imgsUrl[indexOfLoad] = tempFilePaths
+                        // console.log(tempFilePaths);
+                        _this.imgsUrl[indexOfLoad] = tempFilePaths[0]
                         _this.upload[indexOfLoad].imgurl = tempFilePaths
                         _this.upload[indexOfLoad].show = true
                         /**
                          * 上传完成后把文件上传到服务器
                          */
+                        _this.fileUpload(tempFilePaths)
                         // wx.showLoading({
                         //     title: '上传中...',
                         // })
@@ -134,8 +137,21 @@
                 _this.upload[indexOfLoad].imgurl = ''
                 _this.imgsUrl[indexOfLoad] = ''
             },
-            fileUpload: function (tempFilePath){
-
+            fileUpload: function (tempFilePaths){
+                console.log(tempFilePaths);
+                var wx = mpvue
+                var that = this;
+                wx.showLoading({
+                    title: '上传中...',
+                    duration: 2
+                })
+                wx.getFileSystemManager().readFile({
+                    filePath: tempFilePaths[0], //选择图片返回的相对路径
+                    encoding: 'base64', //编码格式
+                    success: res =>{ //成功的回调
+                        console.log(res);
+                    }
+                })
                 /*const uploadTask = wx.uploadFile({
                     // .....
                 })
@@ -144,34 +160,32 @@
                     console.log('已经上传的数据长度', res.totalBytesSent)
                     console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
                 })*/
-
-
-                var _this = this
-                let wx = mpvue
-                wx.uploadFile({
-                    url: "",//url地址， //app.ai_api.File.file
-                    filePath: tempFilePath,  //文件路径  这里是mp3文件
-                    name: 'file',  //随意
-                    header: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': wx.getStorageSync("access_token"),  //如果需要token的话要传
-                    },
-                    formData: {
-                        method: 'POST'   //请求方式
-                    },
-                    success(res){
-                        var data = JSON.parse(res.data)  // 坑2：与wx.request不同的是，upload返回的是字符串格式，需要字符串对象化
-                        if (data.code == 200) {
-                            that.fileTrans(data.data.id); //执行接口函数 语音文件转文字
-                        } else {
-                            console.log('上传失败')
-                            wx.showToast({
-                                title: res.message,
-                                icon: 'none'
-                            })
-                        }
-                    }
-                })
+                /*  var _this = this
+                  let wx = mpvue
+                  wx.uploadFile({
+                      url: "",//url地址， //app.ai_api.File.file
+                      filePath: tempFilePath,  //文件路径  这里是mp3文件
+                      name: 'file',  //随意
+                      header: {
+                          'Content-Type': 'multipart/form-data',
+                          'Authorization': wx.getStorageSync("access_token"),  //如果需要token的话要传
+                      },
+                      formData: {
+                          method: 'POST'   //请求方式
+                      },
+                      success(res){
+                          var data = JSON.parse(res.data)  // 坑2：与wx.request不同的是，upload返回的是字符串格式，需要字符串对象化
+                          if (data.code == 200) {
+                              that.fileTrans(data.data.id); //执行接口函数 语音文件转文字
+                          } else {
+                              console.log('上传失败')
+                              wx.showToast({
+                                  title: res.message,
+                                  icon: 'none'
+                              })
+                          }
+                      }
+                  })*/
             },
             handleClick(){
                 console.log("clicked")
@@ -186,7 +200,6 @@
         },
         onShow: function (){
             this.zhantai = mpvue.getStorageSync("addr") || this.zhantai
-
             console.log(this.zhantai);
         },
     }
@@ -303,6 +316,7 @@
         z-index           : 1;
         transform         : translateY(-50%);
         -webkit-transform : translateY(-50%);
+        background: white;
 
     }
     .delete {
