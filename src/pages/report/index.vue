@@ -22,7 +22,7 @@
                 <span>+</span>
                 <span class = "tips">上传图片</span>
                 <div v-if = "item.show" class = "imgbox">
-                    <img :src = "item.imgurl" :mode = "'widthFix'" class = "uploadedimg">
+                    <img :src = "item.imgurl" :mode = "'widthFix'" @click.stop = 'preview(item.imgurl)' class = "uploadedimg">
                 </div>
                 <img v-if = "item.show" :data-upid = "index" src = "/static/images/delete.png" @click.stop = 'deleteImg' class = "delete">
             </div>
@@ -82,6 +82,14 @@
             selectErr(e){
                 // console.log(e.mp.currentTarget.dataset.errkey);
                 this.currnetIndex = e.mp.currentTarget.dataset.errkey
+            },
+            preview: function (url){
+                var arr=["http://www.simpleqq.com/index/imgs/tab/tab4.jpg"]
+                // arr.push(url)
+                wx.previewImage({
+                    current: arr[0], // 当前显示图片的http链接
+                    urls: arr // 需要预览的图片http链接列表
+                })
             },
             uploadImg(e){
                 var _this = this

@@ -1,8 +1,9 @@
 {
     "pages": [
 
-        "pages/detail/main",
         "pages/indexswiper/main",
+        "pages/detail/main",
+
         "pages/report/main",
         "pages/locationSearch/main",
         "pages/changcell2/main",
@@ -18,5 +19,13 @@
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "WeChat",
         "navigationBarTextStyle": "black"
-    }
+    },
+    "permission": {
+        "scope.userLocation": {
+            "desc": "你的位置信息将用于效果展示"
+        }
+    },
+    "navigateToMiniProgramAppIdList": [
+        "wx32c1592049a80f89"
+    ]
 }
