@@ -312,4 +312,8 @@
         margin-left: 10rpx;
 
     }
+    .crow{
+        width: 100%;
+    }
+
 </style>
