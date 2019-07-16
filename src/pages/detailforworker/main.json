@@ -1,0 +1,14 @@
+{
+    "navigationBarTitleText": "detail for worker",
+    "usingComponents": {
+        "i-row": "/static/iview/row/index",
+        "i-col": "/static/iview/col/index",
+        "i-panel": "/static/iview/panel/index",
+        "i-input": "/static/iview/input/index",
+        "i-button": "/static/iview/button/index",
+        "i-icon": "/static/iview/icon/index",
+        "i-toast": "../../../static/iview/toast/index",
+        "van-datetime-picker": "/static/vant/datetime-picker/index",
+        "van-popup": "/static/vant/popup/index"
+    }
+}

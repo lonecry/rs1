@@ -1,8 +1,9 @@
 {
     "pages": [
+        "pages/detailforworker/main",
+
         "pages/indexswiper/main",
         "pages/detail/main",
-
         "pages/report/main",
         "pages/locationSearch/main",
         "pages/changcell2/main",

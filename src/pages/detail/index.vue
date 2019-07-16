@@ -29,6 +29,12 @@
             <span class="ititle">调度室举报电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
         </div>
+        <div class="ipts" v-if="detail.state==3">
+            <span class="ititle stoptitle">中止原因</span>
+            <view class="stopreason">
+                中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因
+            </view>
+        </div>
         <div class="ipts">
             <span class="ititle" @click='forNav'>forNav</span>
         </div>
@@ -251,7 +257,7 @@
                 })
             },
             judgeToggle: function () {
-                this.judgeShow =  !this.judgeShow
+                this.judgeShow = !this.judgeShow
             },
             judge: function (e) {
                 var sid = e.mp.currentTarget.dataset.sid
@@ -263,7 +269,8 @@
 
                 }
             },
-            submit:()=>{}
+            submit: () => {
+            }
         },
         created() {
         },
@@ -289,14 +296,15 @@
     }
 
     .ipts {
-        width: 740rpx;
-        height: 70rpx;
-        line-height: 70rpx;
-        font-size: 28rpx;
-        display: block;
-        margin: 0 auto;
-        color: #3f4147;
-        border-bottom: 1rpx solid rgba(222, 222, 222, 0.67);
+        width:740rpx;
+        min-height:38px;
+        line-height:70rpx;
+        font-size:28rpx;
+        display:block;
+        margin:0 auto;
+        color:#3f4147;
+        border-bottom:1rpx solid rgba(222, 222, 222, 0.67);
+
     }
 
     .ititle {
@@ -340,10 +348,11 @@
     .detail {
         width: 100%;
         min-height: 600rpx;
-        border: 1rpx solid gray;
+        border: 1rpx solid rgba(128, 128, 128, 0.37);
         margin-top: 10rpx;
         padding: 10rpx;
         box-sizing: border-box;
+        box-shadow: 0 0 10rpx rgba(92, 92, 92, 0.36);
 
     }
 
@@ -473,6 +482,26 @@
 
     .select .nice, .select .bad {
         display: none;
+    }
+
+    .stoptitle {
+        display: block;
+        float: none;
+
+    }
+
+    .stopreason {
+        display:block;
+        width:97%;
+        margin:0 auto;
+        padding:20rpx;
+        box-sizing:border-box;
+        background: rgba(247, 244, 244, 0.59);
+        /*border:1rpx solid gray;*/
+        line-height:34rpx;
+        font-size:27rpx;
+
+
     }
 
     .reasoniptbox {
