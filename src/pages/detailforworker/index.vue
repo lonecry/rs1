@@ -94,7 +94,7 @@
                 </scroll-view>
             </van-popup>
         </view>
-        <view class = "fankui" v-if = "fankuiShow" @click = ""><!--fankuiToggle-->
+        <view class = "fankui" v-if = "fankuiShow" @click = "" @touchmove.stop="maskmove"><!--fankuiToggle-->
             <view class = "fankuicard">
                 <span class = "cardtitle">反馈</span>
                 <span class = "fklytxt">*反馈理由</span>
@@ -113,7 +113,7 @@
                     </view>
                 </view>
                 <span class = "fklytxt">备注</span>
-                <textarea class = "fklyDesc" v-model = "fklyDesc" type = "textarea" maxlength = "200" autofocus placeholder = "  输入备注内容（200字内）"></textarea>
+                <textarea class = "fklyDesc"  @touchmove.stop="maskmove" v-model = "fklyDesc" type = "textarea" maxlength = "200" autofocus placeholder = "  输入备注内容（200字内）"></textarea>
                 <span class = "fklytxt">录音汇报</span>
                 <button @longpress = "start" @touchmove = "handleTouchMove" @touchend = "stop0">开始录音</button>
                 <button @tap = 'play'>播放录音</button>
@@ -394,6 +394,9 @@
                     this.sendLock = false;//上划距离不足，依然可以发送，不上锁
                 }
             },
+            maskmove(){
+
+            }
         },
         created(){
         },
