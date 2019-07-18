@@ -9,6 +9,10 @@
         "i-icon": "/static/iview/icon/index",
         "i-toast": "../../../static/iview/toast/index",
         "van-datetime-picker": "/static/vant/datetime-picker/index",
-        "van-popup": "/static/vant/popup/index"
+        "van-checkbox-group": "/static/vant/checkbox-group/index",
+        "van-checkbox": "/static/vant/checkbox/index",
+        "van-popup": "/static/vant/popup/index",
+        "i-checkbox-group": "/static/iview/checkbox-group/index",
+        "i-checkbox": "/static/iview/checkbox/index"
     }
 }

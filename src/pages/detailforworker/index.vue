@@ -1,97 +1,137 @@
 <template>
-    <div style="padding-bottom:150rpx;">
-        <div class="ipts">
-            <span class="ititle">报修单号</span>
-            <span class="ript">{{detail.origin.danhao}}</span>
+    <div style = "padding-bottom:150rpx;">
+        <div class = "ipts">
+            <span class = "ititle">报修单号</span>
+            <span class = "ript">{{detail.origin.danhao}}</span>
         </div>
-        <div class="ipts">
-            <span class="ititle">状态</span>
+        <div class = "ipts">
+            <span class = "ititle">状态</span>
             <span
-                :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
+                :class = "[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
         </div>
-        <div class="ipts">
-            <span class="ititle">报修人姓名</span>
-            <span class="ript">{{detail.origin.name}}</span>
+        <div class = "ipts">
+            <span class = "ititle">报修人姓名</span>
+            <span class = "ript">{{detail.origin.name}}</span>
         </div>
-        <div class="ipts">
-            <span class="ititle">手机号</span>
-            <span class="ript phone" @click='makeacall' :data-cell="detail.origin.phone">{{detail.origin.phone}}</span>
+        <div class = "ipts">
+            <span class = "ititle">手机号</span>
+            <span class = "ript phone" @click = 'makeacall' :data-cell = "detail.origin.phone">{{detail.origin.phone}}</span>
         </div>
-        <div class="ipts">
-            <span class="ititle">报修类型</span>
-            <span class="ript ">{{detail.origin.type}}</span>
+        <div class = "ipts">
+            <span class = "ititle">报修类型</span>
+            <span class = "ript ">{{detail.origin.type}}</span>
         </div>
-        <div class="ipts">
-            <span class="ititle">报修内容</span>
-            <span class="ript riptcontent">{{detail.origin.content[0]}}</span>
+        <div class = "ipts">
+            <span class = "ititle">报修内容</span>
+            <span class = "ript riptcontent">{{detail.origin.content[0]}}</span>
         </div>
-        <div class="ipts">
-            <span class="ititle imgs ">现场图片:</span>
-            <div style="margin-left:45rpx;width:auto;">
-                <div class="imgbox" v-for="(item,index) in detail.origin.imgsUrl" :key="index">
-                    <img :src="item" :mode="'widthFix'" @click='preview(index)' class="slt" alt="缩略图">
+        <div class = "ipts">
+            <span class = "ititle imgs ">现场图片:</span>
+            <div style = "margin-left:45rpx;width:auto;">
+                <div class = "imgbox" v-for = "(item,index) in detail.origin.imgsUrl" :key = "index">
+                    <img :src = "item" :mode = "'widthFix'" @click = 'preview(index)' class = "slt" alt = "缩略图">
                 </div>
             </div>
         </div>
-        <div class="ipts">
-            <span class="ititle">车站</span>
-            <div class="loca">
-                <i-icon style="position:relative;top:-4rpx;"
-                        type="coordinates_fill" size="26"
-                        color="#2d8cf0"
-                        class="usericon"/>
-                <span class="spans  ">{{detail.origin.station}}</span>
+        <div class = "ipts">
+            <span class = "ititle">车站</span>
+            <div class = "loca">
+                <i-icon style = "position:relative;top:-4rpx;"
+                        type = "coordinates_fill" size = "26"
+                        color = "#2d8cf0"
+                        class = "usericon"/>
+                <span class = "spans  ">{{detail.origin.station}}</span>
             </div>
         </div>
-        <div class="ipts">
-            <span class="ititle" style="float: none;">详细位置描述</span>
-            <span class="address addressworker">{{detail.origin.address }}</span>
+        <div class = "ipts">
+            <span class = "ititle" style = "float: none;">详细位置描述</span>
+            <span class = "address addressworker">{{detail.origin.address }}</span>
         </div>
         <!--   <div class="ipts">
                <span class="ititle">台单号：</span>
                <span class="ript">{{detail.origin.taidanhao}}</span>
            </div>
           -->
-        <i-row :class="'buttons'">
-            <i-col :span="16">
-                <i-button type="primary" @click="jiedan">接 单</i-button>
+        <i-row :class = "'buttons'">
+            <i-col :span = "16">
+                <i-button type = "primary" @click = "jiedan">接 单</i-button>
             </i-col>
-            <i-col :span="8">
-                <i-button type="warning" @click="fankui">反 馈</i-button>
+            <i-col :span = "8">
+                <i-button type = "warning" @click = "fankui">反 馈</i-button>
             </i-col>
         </i-row>
-        <view class="paidan">
-            <view class="paidancard">
-                <span class="cardtitle">派单</span>
-                <span class="cardline">
-                    <span class="linetitel">*维修人员</span>
-                    <span class="linedetail" @click.stop="selectPeople">>请选择</span>
+        <view class = "paidan" v-if = "paidanShow" @click = "paidanToggle">
+            <view class = "paidancard">
+                <span class = "cardtitle">派单</span>
+                <span class = "cardline">
+                    <span class = "linetitel">*维修人员</span>
+                    <span class = "linedetail" @click.stop = "selectPeople">{{peoples}} > </span>
                 </span>
-                <span class="cardline" style="margin-bottom:75rpx;">
-                    <span class="linetitel">*到场时间</span>
-                    <span class="linedetail" @click.stop.click="dateTimePick">>请选择</span>
+                <span class = "cardline" style = "margin-bottom:75rpx;">
+                    <span class = "linetitel">*到场时间</span>
+                    <span class = "linedetail" @click.stop.click = "dateTimePick">{{dateSelected}} > </span>
                 </span>
-
-                <view class="sure">
-                    <i-button type="primary">确认派单</i-button>
+                <view class = "sure">
+                    <i-button type = "primary">确认派单</i-button>
                 </view>
             </view>
-            <van-popup :show="datepickershow" position="bottom">
-
-                <van-datetime-picker :type="'datetime'" :data-value="currentDate" :value="currentDate"
-                                     v-model="currentDate" :min-date="minDate" @confirm="confirm" @cancel="cancel"/>
+            <van-popup :show = "datepickershow" position = "bottom">
+                <van-datetime-picker :type = "'datetime'" :data-value = "currentDate" :value = "peoplecurrent"
+                                     v-model = "currentDate" :min-date = "minDate" @confirm = "confirm" @cancel = "cancel"/>
+            </van-popup>
+            <van-popup :show = "peoplepickershow" position = "bottom">
+                <view class = "check">
+                    <span class = "ckitem ckitem1" @click = "peosltcancel">取消</span>
+                    <span class = "ckitem ckitem2" @click = "peosltsure">确定</span>
+                </view>
+                <scroll-view scroll-y = "true" :style = "{ height: '460rpx'}">
+                    <i-panel>
+                        <i-checkbox-group :current = "peoplecurrent" :data-set = "peoplecurrent" @change = "handleFruitChange">
+                            <i-checkbox v-for = " (item,index) in houxuanren" :position = "'right'" :key = "index" :value = "item.name">
+                            </i-checkbox>
+                        </i-checkbox-group>
+                    </i-panel>
+                </scroll-view>
             </van-popup>
         </view>
-
-        <i-toast id="toast"/>
+        <view class = "fankui" v-if = "fankuiShow" @click = ""><!--fankuiToggle-->
+            <view class = "fankuicard">
+                <span class = "cardtitle">反馈</span>
+                <span class = "fklytxt">*反馈理由</span>
+                <view class = "section">
+                    <view class = "reasons">
+                        <picker @change = "bindPickerChange" :value = "index" :range = "array">
+                            <view class = "picker">
+                                {{array[index]?array[index]+'√':'请选择理由'}}
+                            </view>
+                        </picker>
+                        <picker @change = "bindPickerChange2" :value = "index2" :range = "array2">
+                            <view class = "picker2">
+                                {{array2[index2]?array2[index2]:'请选择理由'}}
+                            </view>
+                        </picker>
+                    </view>
+                </view>
+                <span class = "fklytxt">备注</span>
+                <textarea class = "fklyDesc" v-model = "fklyDesc" type = "textarea" maxlength = "200" autofocus placeholder = "  输入备注内容（200字内）"></textarea>
+                <span class = "fklytxt">录音汇报</span>
+                <button @longpress = "start" @touchmove = "handleTouchMove" @touchend = "stop0">开始录音</button>
+                <button @tap = 'play'>播放录音</button>
+                <button @tap = 'stop'>停止录音</button>
+            </view>
+        </view>
+        <i-toast id = "toast"/>
     </div>
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-
     export default {
-        data() {
+        data(){
             return {
+                index: 0,
+                index2: 0,
+                array: ['修补了', '不能修', '不可归我管', '其他'],
+                array2: ['修补了detail', '不能修detail', '不可归我管detail', '其他detail'],
                 minHour: 10,
                 maxHour: 20,
                 minDate: new Date().getTime(),
@@ -118,24 +158,69 @@
                         address: "杭州南站习广场东侧候车厅小隔间大阳台小浴室的拐角的洞洞里",
                         taidanhao: 'this is off'
                     },
-
                 },
                 selectIndex: '',
                 judgeShow: false,
                 reasonShow: false,
                 badReason: "",
-                datepickershow: false
-
+                paidanShow: false,
+                fankuiShow: true,
+                datepickershow: false,
+                peoplepickershow: false,
+                dateSelected: "请选择",
+                list: ['a', 'b', 'c'],
+                result: ['a', 'b'],
+                houxuanren: [{
+                    id: 1,
+                    name: '香蕉',
+                }, {
+                    id: 2,
+                    name: '苹果'
+                }, {
+                    id: 3,
+                    name: '西瓜'
+                }, {
+                    id: 4,
+                    name: '葡萄1',
+                }, {
+                    id: 5,
+                    name: '葡萄2',
+                }, {
+                    id: 6,
+                    name: '葡萄3',
+                }, {
+                    id: 7,
+                    name: '葡萄4',
+                }, {
+                    id: 8,
+                    name: '葡萄5',
+                }
+                ],
+                peoplecurrent: [],
+                position: 'right',
+                animal: '熊猫',
+                checked: false,
+                disabled: false,
+                fklyDesc: "",
+                sendLock: false,
+                startY: ''
             }
         },
         computed: {
-            judgement: function () {
+            judgement: function (){
                 console.log(this.detail.state);
                 return (this.detail.state == 2 || this.detail.state == 3) ? true : false
+            },
+            peoples: function (){
+                if (this.peoplecurrent.length > 0) {
+                    return this.peoplecurrent
+                } else {
+                    return "请选择 "
+                }
             }
         },
         methods: {
-            makeacall(e) {
+            makeacall(e){
                 let wx = mpvue
                 let number = e.mp.currentTarget.dataset.cell
                 console.log(number)
@@ -143,285 +228,469 @@
                     phoneNumber: number //仅为示例，并非真实的电话号码
                 })
             },
-
-            preview: function (key) {
+            preview: function (key){
                 wx.previewImage({
                     current: this.detail.origin.imgsUrl[key], // 当前显示图片的http链接
                     urls: this.detail.origin.imgsUrl  // 需要预览的图片http链接列表
                 })
             },
-            jiedan: () => {
+            jiedan(){
+                this.paidanShow = true
                 console.log("jiedan");
             },
-            fankui: () => {
+            fankui(){
                 console.log("fankui");
+                this.fankuiShow = true
             },
-            selectPeople: function () {
+            selectPeople: function (){
                 console.log("选择人员")
-                this.datepickershow = true
+                this.peoplepickershow = true
             },
-            dateTimePick: function () {
+            dateTimePick: function (){
                 console.log("dateTimePick")
                 this.datepickershow = true
             },
-            confirm: function (e) {
-
-                console.log(e);
-                var timestamp=e.mp.currentTarget.dataset.value
-                // console.log(this.formatDate(timestamp))
+            confirm(e){
+                console.log(e.mp.detail);
+                this.currentDate = e.mp.detail
+                var timeSelected = this.formatDate(e.mp.detail)
+                this.dateSelected = timeSelected
+                console.log(timeSelected)
                 this.datepickershow = !this.datepickershow
             },
-            cancel: function () {
+            cancel: function (){
                 console.log("pickerclose");
                 this.datepickershow = !this.datepickershow
-
             },
-            formatDate: function (now) {
-                now=now/1000
-                var year = now.getFullYear();
-                var month = now.getMonth() + 1;
-                var date = now.getDate();
-                var hour = now.getHours();
-                var minute = now.getMinutes();
-                var second = now.getSeconds();
-                return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
-            }
-
+            formatDate: function (timestamp){
+                var date = new Date(timestamp);
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+                var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ' ';
+                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
+                return Y + M + D + h + m;
+            },
+            formatter(type, value){
+                if (type === 'year') {
+                    return `${value}年`;
+                } else if (type === 'month') {
+                    return `${value}月`;
+                }
+                return value;
+            },
+            onChange(e){
+                console.log(e);
+            },
+            handleFruitChange: function (e){
+                var detailvalue = e.mp.detail.value
+                const index = this.peoplecurrent.indexOf(detailvalue);
+                index === -1 ? this.peoplecurrent.push(detailvalue) : this.peoplecurrent.splice(index, 1);
+                this.peoplecurrent = this.peoplecurrent
+                console.log(e.mp.currentTarget.dataset.set);
+                console.log(this.peoplecurrent);
+            },
+            peosltcancel(){
+                this.peoplepickershow = !this.peoplepickershow
+            },
+            peosltsure(){
+                this.peoplepickershow = !this.peoplepickershow
+            },
+            paidanToggle(){
+                this.paidanShow = !this.paidanShow
+            },
+            fankuiToggle(){
+                this.fankuiShow = !this.fankuiShow
+            },
+            bindPickerChange(e){
+                console.log('picker发送选择改变，携带值为', e.mp.detail.value)
+                this.index = e.mp.detail.value
+            }, bindPickerChange2(e){
+                console.log('picker发送选择改变，携带值为', e.mp.detail.value)
+                this.index2 = e.mp.detail.value
+            },
+            play: function (){
+                const innerAudioContext = wx.createInnerAudioContext()
+                //播放声音文件
+                innerAudioContext.autoplay = true
+                innerAudioContext.src = this.tempFilePath,
+                    innerAudioContext.onPlay(() =>{
+                        console.log('开始播放')
+                    })
+                innerAudioContext.onError((res) =>{
+                    console.log(res.errMsg)
+                    console.log(res.errCode)
+                })
+            },
+            start: function (e){
+                console.log(e.y)
+                this.startY = e.y
+                $Toast({
+                    content: '录音中，上滑取消',
+                    image: '/static/images/record.png',
+                    duration: 0,
+                });
+                //开始录音
+                console.log("开始录音")
+                const options = {
+                    duration: 10000,//指定录音的时长，单位 ms
+                    sampleRate: 16000,//采样率
+                    numberOfChannels: 1,//录音通道数
+                    encodeBitRate: 96000,//编码码率
+                    format: 'mp3',//音频格式，有效值 aac/mp3
+                    frameSize: 50,//指定帧大小，单位 KB
+                }
+                const recorderManager = wx.getRecorderManager()
+                //开始录音
+                recorderManager.start(options);
+                recorderManager.onStart(() =>{
+                    console.log('recorder start')
+                });
+                //错误回调
+                recorderManager.onError((res) =>{
+                    console.log(res);
+                })
+            },
+            stop: function (){
+                //结束录音
+                console.log("结束录音")
+                $Toast.hide();
+                const recorderManager = wx.getRecorderManager()
+                recorderManager.stop();
+                recorderManager.onStop((res) =>{
+                    console.log(res);
+                    if (res.duration < 1000)
+                        $Toast({
+                            content: '录音时间太短',
+                            image: '/static/images/back.png',
+                            duration: 3,
+                        });
+                    this.tempFilePath = res.tempFilePath;
+                    console.log('停止录音', res.tempFilePath)
+                    const {tempFilePath} = res
+                })
+            },
+            handleTouchMove(e){
+                console.log(e.touches[e.touches.length - 1].clientY - this.startY);
+                //touchmove时触发一
+                var moveLenght = e.touches[e.touches.length - 1].clientY - this.startY; //移动距离
+                if (Math.abs(moveLenght) > 50) {
+                    $Toast.hide();
+                    $Toast({
+                        content: '松开手指取消',
+                        image: '/static/images/back.png',
+                        duration: 3,
+                    });
+                    this.sendLock = true;//触发了上滑取消发送，上锁
+                    this.stop()
+                } else {
+                    $Toast.hide();
+                    $Toast({
+                        content: '松开手指取消',
+                        image: '/static/images/back.png',
+                        duration: 0,
+                    });
+                    this.sendLock = false;//上划距离不足，依然可以发送，不上锁
+                }
+            },
         },
-        created() {
+        created(){
         },
-        onShow: function () {
+        onShow: function (){
         },
     }
 </script>
 <style>
     .gray {
-        color: gray;
+        color : gray;
     }
-
     .yellow {
-        color: #ff8c2e;
+        color : #ff8c2e;
     }
-
     .green {
-        color: green;
+        color : green;
     }
-
     .red {
-        color: #ed283c;
+        color : #ed283c;
     }
-
     .ipts {
-        width: 740rpx;
-        min-height: 38px;
-        line-height: 70rpx;
-        font-size: 28rpx;
-        display: block;
-        margin: 0 auto;
-        color: #3f4147;
-        border-bottom: 1rpx solid rgba(222, 222, 222, 0.67);
+        width         : 740rpx;
+        min-height    : 38px;
+        line-height   : 70rpx;
+        font-size     : 28rpx;
+        display       : block;
+        margin        : 0 auto;
+        color         : #3f4147;
+        border-bottom : 1rpx solid rgba(222, 222, 222, 0.67);
 
     }
-
     .ititle {
-        display: block;
-        float: left;
-        padding-left: 10rpx;
+        display      : block;
+        float        : left;
+        padding-left : 10rpx;
     }
-
     .loca {
-        float: right;
+        float : right;
     }
-
     .imgs {
-        float: none;
+        float : none;
     }
-
     .ript {
-        display: block;
-        height: 70rpx;
-        line-height: 70rpx;
-        float: right;
-        text-align: right;
-        padding-right: 10rpx;
+        display       : block;
+        height        : 70rpx;
+        line-height   : 70rpx;
+        float         : right;
+        text-align    : right;
+        padding-right : 10rpx;
         /*background: #ededed;*/
-        width: 525rpx;
+        width         : 525rpx;
 
     }
-
     .riptcontent {
-        display: block;
-        height: 56rpx;
-        line-height: 56rpx;
-        float: right;
-        text-align: right;
-        padding-right: 10rpx;
-        width: auto;
-        border: 1rpx solid rgba(63, 65, 71, 0.31);
-        padding: 0 10rpx;
-        border-radius: 10rpx;
-        vertical-align: middle;
-        margin-top: 10rpx;
+        display        : block;
+        height         : 56rpx;
+        line-height    : 56rpx;
+        float          : right;
+        text-align     : right;
+        padding-right  : 10rpx;
+        width          : auto;
+        border         : 1rpx solid rgba(63, 65, 71, 0.31);
+        padding        : 0 10rpx;
+        border-radius  : 10rpx;
+        vertical-align : middle;
+        margin-top     : 10rpx;
 
     }
-
     .phone {
-        color: #2d8cf0;
+        color : #2d8cf0;
     }
-
     .active .gou {
-        display: inline;
+        display : inline;
     }
-
     .detailbox {
-        width: 100%;
-        padding: 20rpx;
-        box-sizing: border-box;
-        -webkit-box-sizing: border-box;
+        width              : 100%;
+        padding            : 20rpx;
+        box-sizing         : border-box;
+        -webkit-box-sizing : border-box;
 
     }
-
     .xqtxt {
-        font-weight: bold;
+        font-weight : bold;
     }
-
     .detail {
-        width: 100%;
-        min-height: 600rpx;
-        border: 1rpx solid rgba(128, 128, 128, 0.37);
-        margin-top: 10rpx;
-        padding: 10rpx;
-        box-sizing: border-box;
-        box-shadow: 0 0 10rpx rgba(92, 92, 92, 0.36);
+        width      : 100%;
+        min-height : 600rpx;
+        border     : 1rpx solid rgba(128, 128, 128, 0.37);
+        margin-top : 10rpx;
+        padding    : 10rpx;
+        box-sizing : border-box;
+        box-shadow : 0 0 10rpx rgba(92, 92, 92, 0.36);
 
     }
-
     .bxlist {
-        width: 100%;
-        display: block;
-        min-height: 50rpx;
-        line-height: 50rpx;
-        font-size: 28rpx;
-        text-align: justify;
-        padding-left: 10rpx;
-        box-sizing: border-box;
+        width        : 100%;
+        display      : block;
+        min-height   : 50rpx;
+        line-height  : 50rpx;
+        font-size    : 28rpx;
+        text-align   : justify;
+        padding-left : 10rpx;
+        box-sizing   : border-box;
     }
-
     .spans, .neirong {
-        display: inline-block;
+        display : inline-block;
     }
-
     .neirong {
-        border: 1rpx solid #b2b8c5;
-        border-radius: 10rpx;
-        margin: 0 10rpx 10rpx 10rpx;
-        box-sizing: border-box;
-        padding: 0 10rpx;
-        font-size: 24rpx;
+        border        : 1rpx solid #b2b8c5;
+        border-radius : 10rpx;
+        margin        : 0 10rpx 10rpx 10rpx;
+        box-sizing    : border-box;
+        padding       : 0 10rpx;
+        font-size     : 24rpx;
 
     }
-
     .inspan {
-        margin-right: 20rpx;
+        margin-right : 20rpx;
     }
-
     .imgbox {
-        display: inline-block;
-        width: 200rpx;
-        height: 200rpx;
-        background: rgba(170, 255, 119, 0.6);
-        margin: 0 20rpx 0 0;
-        position: relative;
-        overflow: hidden;
+        display    : inline-block;
+        width      : 200rpx;
+        height     : 200rpx;
+        background : rgba(170, 255, 119, 0.6);
+        margin     : 0 20rpx 0 0;
+        position   : relative;
+        overflow   : hidden;
     }
-
     .slt {
-        position: absolute;
-        width: 100%;
-        height: auto;
-        display: block;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        -webkit-transform: translateY(-50%);
+        position          : absolute;
+        width             : 100%;
+        height            : auto;
+        display           : block;
+        left              : 0;
+        top               : 50%;
+        transform         : translateY(-50%);
+        -webkit-transform : translateY(-50%);
     }
-
     .judge {
-        margin-bottom: 150rpx;
+        margin-bottom : 150rpx;
     }
-
     .addressworker {
-        display: block;
-        float: none;
-        background: #f7f4f4;
-        width: 91%;
-        margin: 0 auto;
-        margin-bottom: 21rpx;
-        line-height: 40rpx;
-        padding: 10rpx;
-        text-align: justify;
+        display       : block;
+        float         : none;
+        background    : #f7f4f4;
+        width         : 91%;
+        margin        : 0 auto;
+        margin-bottom : 21rpx;
+        line-height   : 40rpx;
+        padding       : 10rpx;
+        text-align    : justify;
 
     }
-
-    .paidan {
-        width: 100vw;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 1000;
-        background: rgba(128, 128, 128, 0.78);
+    .paidan, .fankui {
+        width      : 100vw;
+        height     : 100vh;
+        position   : fixed;
+        left       : 0;
+        top        : 0;
+        z-index    : 1000;
+        background : rgba(128, 128, 128, 0.78);
     }
-
     .paidancard {
-        width: 75%;
-        min-height: 522rpx;
-        background: white;
-        border-radius: 20rpx;
-        -webkit-border-radius: 20rpx;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        -webkit-transform: translate(-50%, -50%);
+        width                 : 75%;
+        min-height            : 522rpx;
+        background            : white;
+        border-radius         : 20rpx;
+        -webkit-border-radius : 20rpx;
+        position              : absolute;
+        left                  : 50%;
+        top                   : 50%;
+        transform             : translate(-50%, -50%);
+        -webkit-transform     : translate(-50%, -50%);
     }
-
+    .fankuicard {
+        width                 : 75%;
+        height                : 800rpx;
+        background            : white;
+        border-radius         : 20rpx;
+        -webkit-border-radius : 20rpx;
+        position              : absolute;
+        left                  : 50%;
+        top                   : 50%;
+        transform             : translate(-50%, -50%);
+        -webkit-transform     : translate(-50%, -50%);
+        padding               : 0 30rpx;
+    }
     .cardtitle {
-        width: 100%;
-        margin: 0 auto;
-        text-align: center;
-        display: block;
-        margin-top: 29rpx;
-        margin-bottom: 37rpx;
+        width         : 100%;
+        margin        : 0 auto;
+        text-align    : center;
+        display       : block;
+        margin-top    : 29rpx;
+        margin-bottom : 37rpx;
 
     }
-
     .cardline {
-        display: block;
-        margin: 0 auto;
-        width: 75%;
-        border-bottom: 1rpx solid rgba(128, 128, 128, 0.5);
-        overflow: hidden;
-        height: 75rpx;
-        line-height: 75rpx;
-        font-size: 24rpx;
-        margin-bottom: 18rpx;
+        display       : block;
+        margin        : 0 auto;
+        width         : 75%;
+        border-bottom : 1rpx solid rgba(128, 128, 128, 0.5);
+        overflow      : hidden;
+        height        : 75rpx;
+        line-height   : 75rpx;
+        font-size     : 24rpx;
+        margin-bottom : 18rpx;
     }
-
     .linetitel {
-        float: left;
+        float : left;
     }
-
     .linedetail {
-        text-align: right;
-        float: right;
-    }
+        text-align : right;
+        float      : right;
+        width      : 310rpx;
+        /*background:red;*/
+        overflow   : hidden;
 
+    }
     .sure {
-        margin-top: 40rpx;
-        width: 84%;
-        margin: 0 auto;
+        margin-top : 40rpx;
+        width      : 84%;
+        margin     : 0 auto;
 
     }
+    .check {
+        width      : 100%;
+        height     : 88rpx;
+        display    : block;
+        background : white;
+        color      : #2d8cf0;
+    }
+    .ckitem {
+        height      : 100%;
+        width       : 50%;
+        display     : block;
+        padding     : 0 20rpx;
+        box-sizing  : border-box;
+        line-height : 88rpx;
 
+    }
+    .ckitem1 {
+        float      : left;
+        text-align : left;
+    }
+    .ckitem2 {
+        float      : right;
+        text-align : right;
+    }
+    .picker {
+        width         : 190rpx;
+        height        : 50rpx;
+        line-height   : 50rpx;
+        text-align    : center;
+        font-size     : 28rpx;
+        border        : 1rpx solid #0064fa;
+        color         : #0064fa;
+        /*margin-left   : 30rpx;*/
+        border-radius : 10rpx;
+        display       : inline-block;
+        float         : left;
+
+    }
+    .picker2 {
+        width         : 325rpx;
+        height        : 50rpx;
+        line-height   : 50rpx;
+        text-align    : center;
+        font-size     : 28rpx;
+        border        : 1rpx solid #a7a7a7;
+        color         : #a7a7a7;
+        margin-left   : 30rpx;
+        border-radius : 10rpx;
+        display       : inline-block;
+        float         : right;
+
+    }
+    .reasons {
+        display : block;
+        width   : 100%;
+        height  : 50rpx;
+    }
+    .fklytxt {
+        margin    : 25rpx 0;
+        display   : block;
+        font-size : 27rpx;
+
+    }
+    .fklyDesc {
+        width                 : 100%;
+        height                : 178rpx;
+        background            : #f6f6f6;
+        border                : 1rpx solid #e1e1e1;
+        border-radius         : 10rpx;
+        -webkit-border-radius : 10rpx;
+        font-size             : 25rpx;
+        line-height           : 35rpx;
+        text-align            : justify;
+
+    }
 </style>

@@ -30,7 +30,21 @@ function getTrueValue(formattedValue) {
 function getMonthEndDay(year, month) {
     return 32 - new Date(year, month - 1, 32).getDate();
 }
-const defaultFormatter = (_, value) => value;
+// const defaultFormatter = (_, value) => value;
+const defaultFormatter = (type, value) =>{
+    if (type === 'year') {
+        return `${value}年`;
+    } else if (type === 'month') {
+        return `${value}月`;
+    } else if (type === 'day') {
+        return `${value}日`;
+    } else if (type === 'hour') {
+        return `${value}时`;
+    } else if (type === 'minute') {
+        return `${value}分`;
+    }
+    return value;
+};
 VantComponent({
     classes: ['active-class', 'toolbar-class', 'column-class'],
     props: Object.assign({}, pickerProps, { formatter: {
@@ -214,6 +228,7 @@ VantComponent({
             this.$emit('cancel');
         },
         onConfirm() {
+            console.log("组件："+this.data.innerValue);
             this.$emit('confirm', this.data.innerValue);
         },
         onChange() {
