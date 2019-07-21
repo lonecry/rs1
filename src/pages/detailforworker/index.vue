@@ -1,5 +1,5 @@
 <template>
-    <div style="padding-bottom:150rpx;position: fixed;left: 0;top: 0;">
+    <div style="padding-bottom:150rpx;">
         <div class="ipts">
             <span class="ititle">报修单号</span>
             <span class="ript">{{detail.origin.danhao}}</span>
@@ -8,6 +8,22 @@
             <span class="ititle">状态</span>
             <span
                 :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
+        </div>
+        <div v-if="detail.state==3" class="ipts">
+            <span class="ititle">反馈理由</span>
+            <span class="ript riptcontent">{{detail.fktype}}</span>
+        </div>
+        <div v-if="detail.state==3" class="ipts">
+            <span class="ititle" style="float: none;">备注</span>
+            <span class="  fkbeizhu">{{detail.fkbeizhu }}</span>
+        </div>
+        <div v-if="detail.state==1" class="ipts">
+            <span class="ititle">维修工</span>
+            <span class="ript">{{detail.weixiugong}}</span>
+        </div>
+        <div v-if="detail.state==1" class="ipts">
+            <span class="ititle">到场时间</span>
+            <span class="ript">{{detail.arrivetime}}</span>
         </div>
         <div class="ipts">
             <span class="ititle">报修人姓名</span>
@@ -52,17 +68,20 @@
                <span class="ript">{{detail.origin.taidanhao}}</span>
            </div>
           -->
-        <i-row :class="'buttons'">
-            <i-col :span="16">
+        <i-row :class="'buttons'" v-if="peopletype=='gz'">
+            <i-col v-if="detail.state=='0'" :span="16">
                 <i-button type="primary" @click="jiedan">接 单</i-button>
+            </i-col>
+            <i-col v-else="detail.state=='1'" :span="16">
+                <i-button type="primary" @click="finish">确认完成</i-button>
             </i-col>
             <i-col :span="8">
                 <i-button type="warning" @click="fankui">反 馈</i-button>
             </i-col>
         </i-row>
-        <view class="paidan" v-if="paidanShow" >
+        <view class="paidan" v-if="paidanShow">
             <view class="paidancard">
-                <img src="/static/images/close.png" class="cardclose" @click="paidanToggle" >
+                <img src="/static/images/close.png" class="cardclose" @click="paidanToggle">
                 <span class="cardtitle">派单</span>
                 <span class="cardline">
                     <span class="linetitel">*维修人员</span>
@@ -97,9 +116,9 @@
                 </scroll-view>
             </van-popup>
         </view>
-        <view class="fankui" v-if="fankuiShow"  @touchmove.stop="">
+        <view class="fankui" v-if="fankuiShow" @touchmove.stop="">
             <view class="fankuicard">
-                <img src="/static/images/close.png" class="cardclose" @click="fankuiToggle" >
+                <img src="/static/images/close.png" class="cardclose" @click="fankuiToggle">
                 <span class="cardtitle">反馈</span>
                 <span class="fklytxt">*反馈理由</span>
                 <view class="section">
@@ -127,7 +146,7 @@
                 <button class="fkbtns" @longpress="start" @touchmove="handleTouchMove" @touchend="stop">{{luyinwenzi}}
                 </button>
                 <button v-if="playVoiceBtnShow" class="fkbtns voiceplay" @tap='play'>
-                    <img src="/static/images/voice.png" class="voice" >
+                    <img src="/static/images/voice.png" class="voice">
                     <span> {{time}}秒</span>
                 </button>
                 <img v-if="playVoiceBtnShow" src="/static/images/shanchu.png" class="deleteVoice"
@@ -136,6 +155,24 @@
                     <i-button type="primary" @click.stop="fankui">确认反馈</i-button>
                 </view>
 
+            </view>
+        </view>
+        <view class="finish" v-if="finishShow">
+            <view class="finishcard">
+                <img src="/static/images/close.png" class="cardclose" @click="finishToggle">
+                <span class="cardtitle">确认维修完成</span>
+                <span class="finishtips">*维修完成，请上传现场反馈图片。</span>
+                <div class="uoloadimgs" :data-upid="index" @click="uploadImg" v-for="(item,index) in upload"
+                     :key="index">
+                    <span>+</span>
+                    <span class="tips">上传图片</span>
+                    <div v-if="item.show" class="imgbox">
+                        <img :src="item.imgurl" :mode="'widthFix'" @click.stop="SelectPreview(index)" class="uploadedimg">
+                    </div>
+                    <img v-if="item.show" :data-upid="index" src="/static/images/delete.png" @click.stop='deleteImg'
+                         class="delete">
+                </div>
+                <i-button type="primary" @click.stop="finishCertain">确认完成</i-button>
             </view>
         </view>
         <i-toast id="toast"/>
@@ -151,20 +188,35 @@
                 index2: 0,
                 array: ['修补了', '不能修', '不可归我管', '其他'],
                 array2: ['修补了detail', '不能修detail', '不可归我管detail', '其他detail'],
+                // 时间选择器
                 minHour: 10,
                 maxHour: 20,
                 minDate: new Date().getTime(),
                 maxDate: new Date(2019, 10, 1).getTime(),
                 currentDate: new Date().getTime(),
+                // 时间选择器
+                //身份选择
+                peopletype: 'gz',// wxg  gz  维修工 和 工区工长
+                //身份选择
+                //确认完成
+                upload: [
+                    {imgurl: '', show: false},
+                    {imgurl: '', show: false},
+                ],
+                imgsUrl: [],
+                //确认完成
                 detail: {
-                    state: 0,
+                    state: 1,
                     banzu: '一工队',
                     gongzhang: '张三',
                     gzcell: '13858585654',
                     weixiugong: '李四',
                     wxgcell: '13865656545',
+                    arrivetime: '2019-7-11 08:00',
                     jubao: '10086',
                     location: '',
+                    fktype: '水表坏',
+                    fkbeizhu: "水表坏需要更换，没办法维修。",
                     origin: {
                         danhao: 'WX1245151424',
                         time: "2019年7月04日 18:44",
@@ -183,7 +235,8 @@
                 reasonShow: false,
                 badReason: "",
                 paidanShow: false,
-                fankuiShow: true,
+                fankuiShow: false,
+                finishShow: false,
                 datepickershow: false,
                 peoplepickershow: false,
                 dateSelected: "请选择",
@@ -217,7 +270,7 @@
                 ],
                 peoplecurrent: [],
                 position: 'right',
-                animal: '熊猫',
+                animal: 'xx',
                 checked: false,
                 disabled: false,
                 fklyDesc: "",
@@ -225,8 +278,8 @@
                 startY: '',
                 luyinwenzi: "长按添加录音",
                 playVoiceBtnShow: false,
-                timeinterval:'',
-                time :0
+                timeinterval: '',
+                time: 0
             }
         },
         computed: {
@@ -264,6 +317,10 @@
             fankui() {
                 console.log("fankui");
                 this.fankuiShow = true
+            },
+            finish() {
+                console.log("finsihed");
+                this.finishShow=true
             },
             selectPeople: function () {
                 console.log("选择人员")
@@ -322,6 +379,9 @@
             },
             paidanToggle() {
                 this.paidanShow = !this.paidanShow
+            },
+            finishToggle() {
+                this.finishShow = !this.finishShow
             },
             fankuiToggle() {
                 this.fankuiShow = !this.fankuiShow
@@ -392,7 +452,7 @@
                             duration: 3,
                         });
                     } else {
-                        this.time=Math.ceil(res.duration/1000)
+                        this.time = Math.ceil(res.duration / 1000)
                         this.tempFilePath = res.tempFilePath;
                         console.log('停止录音', res.tempFilePath)
                         const {tempFilePath} = res;
@@ -425,7 +485,114 @@
             },
             deleteVoice() {
                 this.playVoiceBtnShow = false;
-                this.luyinwenzi= "长按添加录音"
+                this.luyinwenzi = "长按添加录音"
+            },
+            SelectPreview: function (k) {
+                var wx = mpvue
+                var urls = []
+                urls.push(this.imgsUrl[k])
+                wx.previewImage({
+                    current: urls[0], // 当前显示图片的http链接
+                    urls: urls // 需要预览的图片http链接列表
+                })
+            },
+            deleteImg(e) {
+                var _this = this
+                var indexOfLoad = e.mp.currentTarget.dataset.upid
+                _this.upload[indexOfLoad].show = false
+                _this.upload[indexOfLoad].imgurl = ''
+                _this.imgsUrl[indexOfLoad] = ''
+            },
+            uploadImg(e) {
+                var _this = this
+                var indexOfLoad = e.mp.currentTarget.dataset.upid
+                let wx = mpvue
+                console.log("uploadImg")
+                let i = 0;					// 多图上传时使用到的index
+                let that = this;
+                let max = that.maxImg;		//最大选择数
+                let upLength;						//图片数组长度
+                let imgFilePaths;				//图片的本地临时文件路径列表
+                wx.chooseImage({
+                    count: max || 1,           //一次最多可以选择的图片张数
+                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    success: function (res) {
+                        // tempFilePath可以作为img标签的src属性显示图片
+                        const tempFilePaths = res.tempFilePaths
+                        // console.log(tempFilePaths);
+                        _this.imgsUrl[indexOfLoad] = tempFilePaths[0]
+                        _this.upload[indexOfLoad].imgurl = tempFilePaths
+                        _this.upload[indexOfLoad].show = true
+                        /**
+                         * 上传完成后把文件上传到服务器
+                         */
+                        _this.fileUpload(tempFilePaths)
+                        // wx.showLoading({
+                        //     title: '上传中...',
+                        // })
+                        // _this.fileUpload(imgFilePaths, i, upLength);			//上传操作
+                    },
+                    fail: function () {
+                        console.log('fail');
+                    },
+                    complete: function () {
+                        console.log('commplete');
+                    }
+                })
+            },
+            fileUpload: function (tempFilePaths) {
+                console.log(tempFilePaths);
+                var wx = mpvue
+                var that = this;
+                wx.showLoading({
+                    title: '上传中...',
+                    duration: 2
+                })
+                wx.getFileSystemManager().readFile({
+                    filePath: tempFilePaths[0], //选择图片返回的相对路径
+                    encoding: 'base64', //编码格式
+                    success: res => { //成功的回调
+                        console.log(res);
+                    }
+                })
+                /*const uploadTask = wx.uploadFile({
+                    // .....
+                })
+                uploadTask.onProgressUpdate((res) => {
+                    console.log('上传进度', res.progress)
+                    console.log('已经上传的数据长度', res.totalBytesSent)
+                    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+                })*/
+                /*  var _this = this
+                  let wx = mpvue
+                  wx.uploadFile({
+                      url: "",//url地址， //app.ai_api.File.file
+                      filePath: tempFilePath,  //文件路径  这里是mp3文件
+                      name: 'file',  //随意
+                      header: {
+                          'Content-Type': 'multipart/form-data',
+                          'Authorization': wx.getStorageSync("access_token"),  //如果需要token的话要传
+                      },
+                      formData: {
+                          method: 'POST'   //请求方式
+                      },
+                      success(res){
+                          var data = JSON.parse(res.data)  // 坑2：与wx.request不同的是，upload返回的是字符串格式，需要字符串对象化
+                          if (data.code == 200) {
+                              that.fileTrans(data.data.id); //执行接口函数 语音文件转文字
+                          } else {
+                              console.log('上传失败')
+                              wx.showToast({
+                                  title: res.message,
+                                  icon: 'none'
+                              })
+                          }
+                      }
+                  })*/
+            },
+            finishCertain(){
+                console.log("确认完成");
             }
         },
         created() {
@@ -453,8 +620,8 @@
 
     .ipts {
         width: 740rpx;
-        min-height: 38px;
-        line-height: 70rpx;
+        min-height: 76rpx;
+        line-height: 76rpx;
         font-size: 28rpx;
         display: block;
         margin: 0 auto;
@@ -502,6 +669,17 @@
         border-radius: 10rpx;
         vertical-align: middle;
         margin-top: 10rpx;
+
+    }
+
+    .fkreason {
+        float: right;
+        border: 1rpx solid #1c2438;
+        padding: 0 10rpx;
+        height: 50rpx;
+        line-height: 50rpx;
+        margin-top: 18rpx;
+        border-radius: 10rpx;
 
     }
 
@@ -565,11 +743,11 @@
         margin-right: 20rpx;
     }
 
-    .imgbox {
+   .imgbox {
         display: inline-block;
         width: 200rpx;
         height: 200rpx;
-        background: rgba(170, 255, 119, 0.6);
+        background: #fff;
         margin: 0 20rpx 0 0;
         position: relative;
         overflow: hidden;
@@ -590,7 +768,7 @@
         margin-bottom: 150rpx;
     }
 
-    .addressworker {
+    .addressworker, .fkbeizhu {
         display: block;
         float: none;
         background: #f7f4f4;
@@ -603,7 +781,7 @@
 
     }
 
-    .paidan, .fankui {
+    .paidan, .fankui, .finish {
         width: 100vw;
         height: 100vh;
         position: fixed;
@@ -629,6 +807,20 @@
     .fankuicard {
         width: 75%;
         height: 800rpx;
+        background: white;
+        border-radius: 20rpx;
+        -webkit-border-radius: 20rpx;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        padding: 0 30rpx;
+    }
+
+    .finishcard {
+        width: 75%;
+        height: 600rpx;
         background: white;
         border-radius: 20rpx;
         -webkit-border-radius: 20rpx;
@@ -782,7 +974,7 @@
     }
 
     .voiceplay {
-        background: #a9e97b;
+        background: #ffffff;
 
     }
 
@@ -803,16 +995,85 @@
         top: 569rpx;
 
     }
-    .cardclose{
-        width:45rpx;
-        height:45rpx;
-        right:20rpx;
-        top:18rpx;
+
+    .cardclose {
+        width: 45rpx;
+        height: 45rpx;
+        right: 20rpx;
+        top: 18rpx;
         position: absolute;
     }
-    .fkbtn{
+
+    .fkbtn {
         width: 100%;
         display: block;
         margin-top: 138rpx;
+    }
+
+    .finishtips {
+        width: 100%;
+        text-align: left;
+        font-size: 27rpx;
+    }
+
+    .uoloadimgs {
+        display: inline-block;
+        width: 150rpx;
+        text-align: center;
+        line-height: 107rpx;
+        font-size: 78rpx;
+        height: 150rpx;
+        border: 2rpx solid #cbcbcb;
+        background: #f3f3f3;
+        margin: 10rpx 18rpx;
+        /*border-radius : 16rpx;*/
+        color: #d0d0d0;
+        position: relative;
+        margin-top: 63rpx;
+        margin-bottom: 56rpx;
+
+    }
+
+    .tips {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        left: 0;
+        top: 57rpx;
+        font-size: 20rpx;
+        color: #d0d0d0;
+
+    }
+
+    .finishcard .imgbox {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+    }
+
+    .uploadedimg {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        /*height   : 100%;*/
+        z-index: 1;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        background: white;
+
+    }
+
+    .delete {
+        position: absolute;
+        right: -18rpx;
+        top: -18rpx;
+        width: 36rpx;
+        height: 36rpx;
+        z-index: 2;
+
     }
 </style>
