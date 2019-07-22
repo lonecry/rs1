@@ -33,22 +33,29 @@
         methods: {
             register(){
                 console.log('You Just Fucked register');
-                mpvue.setStorageSync({
-                    "cell": this.cell,
-                    "psw": this.psw
+                // mpvue.setStorageSync({
+                //     "cell": this.cell?this.cell:"111",
+                //     "psw": this.psw?this.psw:"sadasd"
+                // })
+                mpvue.navigateTo({
+                    url: '../register/main',
                 })
             },
             pswreset(){
                 console.log('You Just Fucked pswreset');
+                mpvue.navigateTo({
+                    url: '../changecell2/main',
+                })
             },
             handleClick(){
                 console.log(this.cell)
                 console.log('You Just Fucked me');
-                const url = '../logs/main'
+                const url = '../indexswiper/main'
                 if (mpvuePlatform === 'wx') {
                     console.log('mpvue switchTab ');
                     // mpvue.switchTab({url})
-                    // mpvue.navigateTo({url})
+                    mpvue.navigateTo({url})
+
                 } else {
                     console.log('mpvue navigateTo ');
                     // mpvue.navigateTo({url})

@@ -464,7 +464,7 @@
                 console.log(e.touches[e.touches.length - 1].clientY - this.startY);
                 //touchmove时触发一
                 var moveLenght = e.touches[e.touches.length - 1].clientY - this.startY; //移动距离
-                if (Math.abs(moveLenght) > 300) {
+                if (Math.abs(moveLenght) > 400) {
                     $Toast.hide();
                     $Toast({
                         content: '松开手指取消',
@@ -473,7 +473,7 @@
                     });
                     this.sendLock = true;//触发了上滑取消发送，上锁
                     this.stop()
-                } else if (Math.abs(moveLenght) > 100) {
+                } else if (Math.abs(moveLenght) > 200) {
                     $Toast.hide();
                     $Toast({
                         content: '松开手指取消',
@@ -974,7 +974,7 @@
     }
 
     .voiceplay {
-        background: #ffffff;
+        background: #a9e97b;
 
     }
 

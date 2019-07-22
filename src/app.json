@@ -1,17 +1,16 @@
 {
     "pages": [
-        "pages/detailforworker/main",
-
+        "pages/login/main",
         "pages/indexswiper/main",
+        "pages/detailforworker/main",
         "pages/detail/main",
         "pages/report/main",
         "pages/locationSearch/main",
-        "pages/changcell2/main",
-        "pages/changcell1/main",
+        "pages/changecell2/main",
+        "pages/changecell1/main",
         "pages/index/main",
         "pages/pswreset/main",
         "pages/register/main",
-        "pages/login/main",
         "pages/logs/main"
     ],
     "window": {
