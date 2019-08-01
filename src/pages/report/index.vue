@@ -1,56 +1,59 @@
 <template>
     <div>
-        <div class = "ipts">
-            <span class = "ititle">报修人姓名</span>
-            <input class = "ript" v-model = "value1" title = "报修人姓名" autofocus placeholder = "请输入姓名"/>
+        <div class="ipts">
+            <span class="ititle">报修人姓名</span>
+            <input class="ript" v-model="value1" title="报修人姓名" autofocus placeholder="请输入姓名"/>
         </div>
-        <div class = "ipts">
-            <span class = "ititle">手机号</span>
-            <input class = "ript" v-model = "value2" title = "报修人手机" type = "number" autofocus placeholder = "请输入手机号"/>
+        <div class="ipts">
+            <span class="ititle">手机号</span>
+            <input class="ript" v-model="value2" title="报修人手机" type="number" autofocus placeholder="请输入手机号"/>
         </div>
-        <div class = "ipts">
-            <span class = "ititle">*报修类型</span>
-            <input class = "ript ript3" v-model = "value3" title = "报修类型" autofocus disabled placeholder = "报修类型"/>
+        <div class="ipts">
+            <span class="ititle">*报修类型</span>
+            <input class="ript ript3" v-model="value3" title="报修类型" autofocus disabled placeholder="报修类型"/>
         </div>
-        <div class = "ipts iptbox">
-            <span class = "iboxtitle">*报修类型</span>
-            <span @click = "selectErr" :class = "{active:currnetIndex==index}" :data-errkey = "item.errKey" class = "rptypes" v-for = "(item,index) in errors" :key = "index">{{item.errDetail}} <span class = "gou">√</span> </span>
+        <div class="ipts iptbox">
+            <span class="iboxtitle">*报修内容</span>
+            <span @click="selectErr" :class="{active:currnetIndex==index}" :data-errkey="item.errKey" class="rptypes"
+                  v-for="(item,index) in errors" :key="index">{{item.errDetail}} <span class="gou">√</span> </span>
         </div>
-        <div class = "ipts iptbox">
-            <span class = "iboxtitle">*现场图片(请拍摄附近参照物)</span>
-            <div class = "uoloadimgs" :data-upid = "index" @click = "uploadImg" v-for = "(item,index) in upload" :key = "index">
+        <div class="ipts iptbox">
+            <span class="iboxtitle">*现场图片(请拍摄附近参照物)</span>
+            <div class="uoloadimgs" :data-upid="index" @click="uploadImg" v-for="(item,index) in upload" :key="index">
                 <span>+</span>
-                <span class = "tips">上传图片</span>
-                <div v-if = "item.show" class = "imgbox">
-                    <img :src = "item.imgurl" :mode = "'widthFix'" @click.stop = "preview(index)" class = "uploadedimg">
+                <span class="tips">上传图片</span>
+                <div v-if="item.show" class="imgbox">
+                    <img :src="item.imgurl" :mode="'widthFix'" @click.stop="preview(index)" class="uploadedimg">
                 </div>
-                <img v-if = "item.show" :data-upid = "index" src = "/static/images/delete.png" @click.stop = 'deleteImg' class = "delete">
+                <img v-if="item.show" :data-upid="index" src="/static/images/delete.png" @click.stop='deleteImg'
+                     class="delete">
             </div>
         </div>
-        <div class = "ipts">
-            <span class = "ititle">*选则车站</span>
-            <div class = "selocation" @click = "searchstation">
-                <i-icon type = "coordinates_fill" size = "26" color = "#2d8cf0" class = "usericon"/>
-                <span class = "zhantai">{{zhantai}}</span>
+        <div class="ipts">
+            <span class="ititle">*选则车站</span>
+            <div class="selocation" @click="searchstation">
+                <i-icon type="coordinates_fill" size="26" color="#2d8cf0" class="usericon"/>
+                <span class="zhantai">{{zhantai}}</span>
             </div>
             <!--<input class = "ript" v-model = "value4" title = "选则车站" autofocus placeholder = "选则车站"/>-->
         </div>
-        <div class = "ipts iptbox">
-            <span class = "ititle">*详细位置描述</span>
-            <textarea class = "reportDesc" v-model = "value5" type = "textarea" title = "详细位置描述" maxlength = "50" autofocus placeholder = "请输入报修描述"></textarea>
+        <div class="ipts iptbox">
+            <span class="ititle">*详细位置描述</span>
+            <textarea class="reportDesc" v-model="value5" type="textarea" title="详细位置描述" maxlength="50" autofocus
+                      placeholder="请输入报修描述"></textarea>
         </div>
-        <div class = "ipts">
-            <span class = "ititle">台单号(选填)</span>
-            <input class = "ript" v-model = "value6" title = "台单号" autofocus placeholder = "台单号"/>
+        <div class="ipts">
+            <span class="ititle">台单号(选填)</span>
+            <input class="ript" v-model="value6" title="台单号" autofocus placeholder="台单号"/>
         </div>
-        <div class = "submit">
-            <i-button @click = "handleClick" type = "primary">提交报修</i-button>
+        <div class="submit">
+            <i-button @click="handleClick" type="primary">提交报修</i-button>
         </div>
     </div>
 </template>
 <script>
     export default {
-        data(){
+        data() {
             return {
                 addr: '',
                 value1: '朝夕',
@@ -79,20 +82,20 @@
             }
         },
         methods: {
-            selectErr(e){
+            selectErr(e) {
                 // console.log(e.mp.currentTarget.dataset.errkey);
                 this.currnetIndex = e.mp.currentTarget.dataset.errkey
             },
-            preview: function (k){
+            preview: function (k) {
                 var wx = mpvue
-                var urls=[]
+                var urls = []
                 urls.push(this.imgsUrl[k])
                 wx.previewImage({
                     current: urls[0], // 当前显示图片的http链接
                     urls: urls // 需要预览的图片http链接列表
                 })
             },
-            uploadImg(e){
+            uploadImg(e) {
                 var _this = this
                 var indexOfLoad = e.mp.currentTarget.dataset.upid
                 let wx = mpvue
@@ -106,7 +109,7 @@
                     count: max || 1,           //一次最多可以选择的图片张数
                     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                    success: function (res){
+                    success: function (res) {
                         // tempFilePath可以作为img标签的src属性显示图片
                         const tempFilePaths = res.tempFilePaths
                         // console.log(tempFilePaths);
@@ -122,22 +125,22 @@
                         // })
                         // _this.fileUpload(imgFilePaths, i, upLength);			//上传操作
                     },
-                    fail: function (){
+                    fail: function () {
                         console.log('fail');
                     },
-                    complete: function (){
+                    complete: function () {
                         console.log('commplete');
                     }
                 })
             },
-            deleteImg(e){
+            deleteImg(e) {
                 var _this = this
                 var indexOfLoad = e.mp.currentTarget.dataset.upid
                 _this.upload[indexOfLoad].show = false
                 _this.upload[indexOfLoad].imgurl = ''
                 _this.imgsUrl[indexOfLoad] = ''
             },
-            fileUpload: function (tempFilePaths){
+            fileUpload: function (tempFilePaths) {
                 console.log(tempFilePaths);
                 var wx = mpvue
                 var that = this;
@@ -148,7 +151,7 @@
                 wx.getFileSystemManager().readFile({
                     filePath: tempFilePaths[0], //选择图片返回的相对路径
                     encoding: 'base64', //编码格式
-                    success: res =>{ //成功的回调
+                    success: res => { //成功的回调
                         console.log(res);
                     }
                 })
@@ -187,168 +190,211 @@
                       }
                   })*/
             },
-            handleClick(){
+            handleClick() {
                 console.log("clicked")
             },
-            searchstation(){
+            searchstation() {
                 mpvue.navigateTo({
                     url: '../locationSearch/main',
                 })
             }
         },
-        created(){
+        created() {
         },
-        onShow: function (){
+        onShow: function () {
             this.zhantai = mpvue.getStorageSync("addr") || this.zhantai
             console.log(this.zhantai);
+
+
+            var wx = mpvue;
+            var _this=this
+
+            wx.request({
+                url: 'https://hd.xmountguan.com/railway/m.aspx?func=get_m_ddl',
+
+                success(res) {
+                    console.log(res.data)
+
+                    _this.errors =   []
+                    for (var item of res.data) {
+                        console.log(item);
+                        _this.errors.push(
+                            {"errKey": item.mid, "errDetail": item.maintenanceType},
+                        )
+                    }
+                    console.log(_this.errors);
+
+                },
+                fail() {
+                    console.log('网络错误')
+                }
+            })
+
+
         },
     }
 </script>
 <style>
     .ipts {
-        width         : 740rpx;
-        height        : 70rpx;
-        line-height   : 70rpx;
-        font-size     : 28rpx;
-        display       : block;
-        margin        : 0 auto;
-        color         : #3f4147;
-        border-bottom : 1rpx solid rgba(222, 222, 222, 0.67);
+        width: 740rpx;
+        height: 70rpx;
+        line-height: 70rpx;
+        font-size: 28rpx;
+        display: block;
+        margin: 0 auto;
+        color: #3f4147;
+        border-bottom: 1rpx solid rgba(222, 222, 222, 0.67);
     }
+
     .submit {
-        width         : 740rpx;
-        height        : 100rpx;
-        margin-top    : 100rpx;
-        position      : relative;
-        margin-bottom : 200rpx;
+        width: 740rpx;
+        height: 100rpx;
+        margin-top: 100rpx;
+        position: relative;
+        margin-bottom: 200rpx;
 
     }
+
     .ititle {
-        display      : block;
-        float        : left;
-        padding-left : 10rpx;
+        display: block;
+        float: left;
+        padding-left: 10rpx;
     }
 
     .iboxtitle {
-        display      : block;
+        display: block;
         /*float        : left;*/
-        padding-left : 10rpx;
+        padding-left: 10rpx;
     }
+
     .ript {
-        display       : block;
-        height        : 70rpx;
-        line-height   : 70rpx;
-        float         : right;
-        text-align    : right;
-        padding-right : 10rpx;
+        display: block;
+        height: 70rpx;
+        line-height: 70rpx;
+        float: right;
+        text-align: right;
+        padding-right: 10rpx;
         /*background: #ededed;*/
-        width         : 525rpx;
+        width: 525rpx;
 
     }
+
     .ript3 {
-        color : #ff0762;
+        color: #ff0762;
     }
+
     .iptbox {
 
-        height : auto;
+        height: auto;
 
     }
+
     .rptypes {
-        width         : auto;
-        height        : 57rpx;
-        display       : inline-block;
-        margin        : 8rpx;
-        padding       : 0 25rpx;
-        border-radius : 20rpx;
-        border        : 1rpx solid #5e6268;
-        color         : #5e6268;
-        line-height   : 57rpx;
-        font-size     : 23rpx;
+        width: auto;
+        height: 57rpx;
+        display: inline-block;
+        margin: 8rpx;
+        padding: 0 25rpx;
+        border-radius: 20rpx;
+        border: 1rpx solid #5e6268;
+        color: #5e6268;
+        line-height: 57rpx;
+        font-size: 23rpx;
     }
+
     .gou {
-        display : none;
+        display: none;
     }
+
     .active {
-        border : 1rpx solid #4696ff;
-        color  : #4696ff;
+        border: 1rpx solid #4696ff;
+        color: #4696ff;
     }
+
     .active .gou {
-        display : inline;
+        display: inline;
     }
+
     .uoloadimgs {
-        display     : inline-block;
-        width       : 150rpx;
-        text-align  : center;
-        line-height : 107rpx;
-        font-size   : 78rpx;
-        height      : 150rpx;
-        border      : 2rpx solid #cbcbcb;
-        background  : #f3f3f3;
-        margin      : 10rpx 18rpx;
+        display: inline-block;
+        width: 150rpx;
+        text-align: center;
+        line-height: 107rpx;
+        font-size: 78rpx;
+        height: 150rpx;
+        border: 2rpx solid #cbcbcb;
+        background: #f3f3f3;
+        margin: 10rpx 18rpx;
         /*border-radius : 16rpx;*/
-        color       : #d0d0d0;
-        position    : relative;
+        color: #d0d0d0;
+        position: relative;
 
     }
+
     .tips {
-        position   : absolute;
-        width      : 100%;
-        text-align : center;
-        left       : 0;
-        top        : 57rpx;
-        font-size  : 20rpx;
-        color      : #d0d0d0;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        left: 0;
+        top: 57rpx;
+        font-size: 20rpx;
+        color: #d0d0d0;
 
     }
+
     .imgbox {
-        width    : 100%;
-        height   : 100%;
-        position : absolute;
-        left     : 0;
-        top      : 0;
-        overflow : hidden;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
     }
+
     .uploadedimg {
-        position          : absolute;
-        left              : 0;
-        top               : 50%;
-        width             : 100%;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
         /*height   : 100%;*/
-        z-index           : 1;
-        transform         : translateY(-50%);
-        -webkit-transform : translateY(-50%);
+        z-index: 1;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
         background: white;
 
     }
+
     .delete {
-        position : absolute;
-        right    : -18rpx;
-        top      : -18rpx;
-        width    : 36rpx;
-        height   : 36rpx;
-        z-index  : 2;
+        position: absolute;
+        right: -18rpx;
+        top: -18rpx;
+        width: 36rpx;
+        height: 36rpx;
+        z-index: 2;
 
     }
+
     .selocation {
-        width         : 242rpx;
-        float         : right;
-        height        : 100%;
-        text-align    : right;
-        padding-right : 10rpx;
+        width: 242rpx;
+        float: right;
+        height: 100%;
+        text-align: right;
+        padding-right: 10rpx;
 
     }
+
     .reportDesc {
-        display     : inline-block;
-        width       : 100%;
-        text-align  : justify;
-        line-height : 30rpx;
-        font-size   : 28rpx;
-        height      : 150rpx;
-        border      : 2rpx solid #cbcbcb;
-        background  : #f3f3f3;
-        color       : #5c5c5c;
-        position    : relative;
-        box-sizing  : border-box;
-        padding     : 10rpx;
+        display: inline-block;
+        width: 100%;
+        text-align: justify;
+        line-height: 30rpx;
+        font-size: 28rpx;
+        height: 150rpx;
+        border: 2rpx solid #cbcbcb;
+        background: #f3f3f3;
+        color: #5c5c5c;
+        position: relative;
+        box-sizing: border-box;
+        padding: 10rpx;
     }
 </style>

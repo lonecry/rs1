@@ -58,6 +58,9 @@
                             type: 'success',
                             duration: 2,
                         });
+                        wx.redirectTo({
+                            url:'../login/main'
+                        })
 
                     }
                 } else {
@@ -180,10 +183,11 @@
         display : block;
     }
     .loginbox {
-        width      : 500rpx;
-        height     : 709rpx;
-        text-align : center;
-        position   : relative;
+        width:500rpx;
+        height:709rpx;
+        text-align:center;
+        position:relative;
+        padding-top:2rpx;
 
     }
     .ipt {
@@ -229,7 +233,7 @@
         width      : 100%;
         height     : 10rpx;
         font-size  : 20rpx;
-        margin-top : 5rpx;
+        margin-top : 15rpx;
     }
     .sp1 {
         float : left;

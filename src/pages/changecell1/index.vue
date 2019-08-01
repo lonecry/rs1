@@ -41,13 +41,19 @@
                 mpvue.setStorageSync("cell", this.cell)
                 mpvue.setStorageSync("psw", this.psw)
                 if (this.check()) {
-                    if (true) {//注册成功
+                    wx.redirectTo({
+                        url:'../changecell2/main'
+                    })
+
+                    /*if (true) {//注册成功
                         $Toast({
-                            content: '注重置成功',
+                            content: '重置成功',
                             type: 'success',
                             duration: 2,
                         });
-                    }
+                    }*/
+
+
                 } else {
                     console.log(' 重置 不通过')
                 }

@@ -51,7 +51,7 @@
                 if (this.check()) {
                     if (true) {//注册成功
                         $Toast({
-                            content: '注重置成功',
+                            content: '重置成功',
                             type: 'success',
                             duration: 2,
                         });
@@ -162,7 +162,7 @@
         justify-content : center;
         width           : 100%;
         height          : 100vh;
-        background      : #33ac59;
+        /*background      : #33ac59;*/
         overflow: hidden;
     }
     .row {

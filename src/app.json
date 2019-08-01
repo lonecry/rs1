@@ -1,7 +1,7 @@
 {
     "pages": [
-        "pages/login/main",
         "pages/indexswiper/main",
+        "pages/login/main",
         "pages/detailforworker/main",
         "pages/detail/main",
         "pages/report/main",

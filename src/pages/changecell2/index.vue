@@ -1,26 +1,26 @@
 <template>
-    <div class = " box">
-        <h1 class = "miantitle">重置手机</h1>
-        <div class = "loginbox">
-            <div class = "ipt" style = " overflow:hidden;">
-                <input class = "usercell" v-model = "cell" placeholder = "请输入新的手机号码"/>
-                <i-icon type = "mobilephone" size = "26" color = "#ACACAC" class = "usericon"/>
+    <div class=" box">
+        <h1 class="miantitle">重置手机</h1>
+        <div class="loginbox">
+            <div class="ipt" style=" overflow:hidden;">
+                <input class="usercell" v-model="cell" placeholder="请输入新的手机号码"/>
+                <i-icon type="mobilephone" size="26" color="#ACACAC" class="usericon"/>
             </div>
-            <div class = "ipt">
-                <input class = "password " v-model = "authcode" placeholder = "验证码" style = "width:50%;"/>
-                <i-icon type = "lock" size = "26" color = "#ACACAC" class = "usericon"/>
-                <button @click = "getcode" class = "getcode" :disabled = "btnable">{{codeText}}</button>
+            <div class="ipt">
+                <input class="password " v-model="authcode" placeholder="验证码" style="width:50%;"/>
+                <i-icon type="lock" size="26" color="#ACACAC" class="usericon"/>
+                <button @click="getcode" class="getcode" :disabled="btnable">{{codeText}}</button>
             </div>
-            <button @click = "zhuce" class = "enter">确定更换</button>
+            <button @click="zhuce" class="enter">确定更换</button>
         </div>
-        <i-toast id = "toast"/>
+        <i-toast id="toast"/>
     </div>
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
 
     export default {
-        data(){
+        data() {
             return {
                 btnable: "",
                 codeText: "获取验证码",
@@ -36,23 +36,27 @@
         },
         components: {},
         methods: {
-            zhuce(){
+            zhuce() {
                 console.log('You Just Fucked register');
                 mpvue.setStorageSync("cell", this.cell)
                 mpvue.setStorageSync("psw", this.psw)
                 if (this.check()) {
                     if (true) {//注册成功
                         $Toast({
-                            content: '注重置成功',
+                            content: '重置成功',
                             type: 'success',
                             duration: 2,
                         });
+                        wx.redirectTo({
+                            url: '../indexswiper/main'
+                        })
                     }
+
                 } else {
                     console.log(' 重置 不通过')
                 }
             },
-            getcode(){
+            getcode() {
                 if (this.cell == "") {
                     $Toast({
                         content: '请输入手机号码',
@@ -69,7 +73,7 @@
                     const TIME_COUNT = 15;
                     if (!this.timer) {
                         this.count = TIME_COUNT;
-                        this.timer = setInterval(() =>{
+                        this.timer = setInterval(() => {
                             if (this.count > 0 && this.count <= TIME_COUNT) {
                                 this.count--;
                                 this.codeText = this.count + 's后重新获取'
@@ -84,7 +88,7 @@
                 }
             }
             ,
-            check(){
+            check() {
                 if (this.cell == "") {
                     $Toast({
                         content: '请输入正确的手机号',
@@ -115,113 +119,125 @@
             }
         }
         ,
-        created(){
+        created() {
             // let app = getApp()
         }
     }
 </script>
 <style scoped>
     .miantitle {
-        width      : 100%;
-        display    : block;
-        text-align : center;
-        font-size  : 35rpx;
-        position   : absolute;
-        top        : 22rpx;
-        left       : 0;
+        width: 100%;
+        display: block;
+        text-align: center;
+        font-size: 35rpx;
+        position: absolute;
+        top: 22rpx;
+        left: 0;
 
     }
+
     .getcode {
-        width       : 185rpx;
-        height      : 70rpx;
-        display     : block;
-        float       : right;
-        position    : absolute;
-        top         : 4rpx;
-        right       : 10rpx;
-        background  : #2d8cf0;
-        line-height : 70rpx;
-        color       : white;
-        font-size   : 26rpx;
-        padding     : 0;
-        box-sizing  : border-box;
+        width: 185rpx;
+        height: 70rpx;
+        display: block;
+        float: right;
+        position: absolute;
+        top: 4rpx;
+        right: 10rpx;
+        background: #2d8cf0;
+        line-height: 70rpx;
+        color: white;
+        font-size: 26rpx;
+        padding: 0;
+        box-sizing: border-box;
 
     }
+
     .box {
-        display         : flex;
-        flex-direction  : column;
-        align-items     : center;
-        justify-content : center;
-        width           : 100%;
-        height          : 100vh;
-        overflow        : hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
     }
+
     .row {
-        width   : 100%;
-        height  : 500rpx;
-        display : block;
+        width: 100%;
+        height: 500rpx;
+        display: block;
     }
+
     .loginbox {
-        width      : 500rpx;
-        height     : 709rpx;
-        text-align : center;
-        position   : relative;
+        width: 500rpx;
+        height: 709rpx;
+        text-align: center;
+        position: relative;
 
     }
+
     .ipt {
-        width         : 100%;
-        height        : 80rpx;
-        line-height   : 80rpx;
-        font-size     : 22rpx;
-        background    : white;
-        border-radius : 18rpx;
-        text-align    : left;
-        border        : 1rpx solid #b1b1b1;
-        position      : relative;
-        margin-bottom : 50rpx;
+        width: 100%;
+        height: 80rpx;
+        line-height: 80rpx;
+        font-size: 22rpx;
+        background: white;
+        border-radius: 18rpx;
+        text-align: left;
+        border: 1rpx solid #b1b1b1;
+        position: relative;
+        margin-bottom: 50rpx;
 
     }
+
     .ipt .usercell, .ipt .password {
-        width       : 88%;
-        height      : 100%;
-        margin-left : 12%;
+        width: 88%;
+        height: 100%;
+        margin-left: 12%;
     }
 
     .usericon {
-        position  : absolute;
-        left      : 5rpx;
-        top       : -3rpx;
-        font-size : 18rpx;
+        position: absolute;
+        left: 5rpx;
+        top: -3rpx;
+        font-size: 18rpx;
     }
+
     .password {
         /*margin-top : 10rpx;*/
     }
+
     .enter {
-        width       : 100%;
+        width: 100%;
         /*background:  rgba(188,188,188,0.39);*/
-        background  : #2d8cf0;;
-        position    : relative;
-        color       : white;
-        margin-top  : 115rpx;
-        height      : 80rpx;
-        line-height : 80rpx;
-        font-size   : 28rpx;
+        background: #2d8cf0;;
+        position: relative;
+        color: white;
+        margin-top: 115rpx;
+        height: 80rpx;
+        line-height: 80rpx;
+        font-size: 28rpx;
 
     }
+
     .spans {
-        width      : 100%;
-        height     : 10rpx;
-        font-size  : 20rpx;
-        margin-top : 5rpx;
+        width: 100%;
+        height: 10rpx;
+        font-size: 20rpx;
+        margin-top: 5rpx;
     }
+
     .sp1 {
-        float : left;
-        color : #2d8cf0;
+        float: left;
+        color: #2d8cf0;
     }
+
     .sp2 {
-        float : right;
+        float: right;
     }
+
     .i-btn {
-        margin : 0;
+        margin: 0;
     }
 </style>
