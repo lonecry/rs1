@@ -55,6 +55,10 @@
                             type: 'success',
                             duration: 2,
                         });
+                        wx.redirectTo({
+                            url: '../login/main'
+                        })
+
                     }
                 } else {
                     console.log(' 重置 不通过')
@@ -175,6 +179,7 @@
         height     : 709rpx;
         text-align : center;
         position   : relative;
+        padding-top: 20rpx;
 
     }
     .ipt {

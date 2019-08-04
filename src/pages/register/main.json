@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "register",
+    "navigationBarTitleText": "铁路智慧报修系统",
     "usingComponents": {
         "i-row": "../../../static/iview/row/index",
         "i-col": "../../../static/iview/col/index",

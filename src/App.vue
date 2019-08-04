@@ -25,7 +25,10 @@
         },
         log(){
             console.log(`log at:${Date.now()}`)
-        }
+        },
+        mounted() {
+            wx.showShareMenu();
+        },
     }
 </script>
 <style>

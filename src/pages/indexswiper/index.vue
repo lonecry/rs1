@@ -408,6 +408,10 @@
                 })
             }
 
+
+            wx.showShareMenu();
+
+
         },
     }
 

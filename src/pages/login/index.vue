@@ -90,7 +90,7 @@
             // let app = getApp()
         },
         onShow() {
-
+            wx.showShareMenu();
         }
     }
 </script>
