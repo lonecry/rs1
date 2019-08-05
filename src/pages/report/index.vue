@@ -9,13 +9,21 @@
             <input class="ript" v-model="value2" title="报修人手机" type="number" autofocus placeholder="请输入手机号"/>
         </div>
         <div class="ipts">
+
+
             <span class="ititle">*报修类型</span>
-            <input class="ript ript3" v-model="value3" title="报修类型" autofocus disabled placeholder="报修类型"/>
+            <picker @change="bindPickerChange2" :value="errtypes" :range="errorsarray">
+                <view class="ript ript3">
+                    {{errtypes}}
+                </view>
+                <!--<input class="ript ript3" v-model="value3" title="报修类型" autofocus disabled placeholder="报修类型"/>-->
+            </picker>
+
         </div>
         <div class="ipts iptbox">
             <span class="iboxtitle">*报修内容</span>
-            <span @click="selectErr" :class="{active:currnetIndex==index}" :data-errkey="item.errKey" class="rptypes"
-                  v-for="(item,index) in errors" :key="index">{{item.errDetail}} <span class="gou">√</span> </span>
+            <span @click="selectErr" :class="{active:currnetIndex==index}" :data-errkey="index" class="rptypes"
+                  v-for="(item,index) in errors" :key="index">{{item.errcontent}} <span class="gou">√</span> </span>
         </div>
         <div class="ipts iptbox">
             <span class="iboxtitle">*现场图片(请拍摄附近参照物)</span>
@@ -49,9 +57,30 @@
         <div class="submit">
             <i-button @click="handleClick" type="primary">提交报修</i-button>
         </div>
+        <i-toast id="toast"/>
+        <van-popup :show="slectType" position="bottom">
+            <view class="check">
+                <span class="ckitem ckitem1" @click="slectTypecancel">取消</span>
+                <span class="ckitem ckitem2" @click="slectTypesure">确定</span>
+            </view>
+            <scroll-view scroll-y="true" :style="{ height: '460rpx'}">
+                <i-panel>
+                    <i-checkbox-group :current="slectTypecurrent" :data-set="slectTypecurrent"
+                                      @change="handleTypeChange">
+                        <i-checkbox v-for=" (item,index) in slectType" :position="'right'" :key="index"
+                                    :value="item.name">
+                        </i-checkbox>
+                    </i-checkbox-group>
+                </i-panel>
+            </scroll-view>
+        </van-popup>
+
+
     </div>
 </template>
 <script>
+    import {$Toast} from '../../../static/iview/base/index'
+
     export default {
         data() {
             return {
@@ -64,27 +93,59 @@
                 value6: '',
                 value7: '',
                 currnetIndex: '-1',
+                errorTypes: [],
                 errors: [
-                    {"errKey": "0 ", "errDetail": '水表坏'},
-                    {"errKey": "1 ", "errDetail": '水表坏'},
-                    {"errKey": "2 ", "errDetail": '水表块了'},
-                    {"errKey": "3 ", "errDetail": '水表满了'},
-                    {"errKey": "4 ", "errDetail": '水表不转'},
-                    {"errKey": "5 ", "errDetail": '水表不准'},
-                    {"errKey": "6 ", "errDetail": '水表指针不见了'},
+                    // {"errKey": "0 ", "errDetail": ''},
+
                 ],
+                errtypes: '请点击选择',
+                mid: '',
+                uid: '',
+                errorsarray: [],
+                array2: ['修补了detail', '不能修detail', '不可归我管detail', '其他detail'],
                 upload: [
                     {imgurl: '', show: false},
                     {imgurl: '', show: false},
                 ],
                 imgsUrl: [],
+                imgsId: [],
+                imgsforload: '',
+                m_c_value: '',
                 zhantai: "点击选择站台",
+                slectType: false,
             }
         },
         methods: {
+            bindPickerChange2(e) {
+                var _this = this
+                console.log('picker发送选择改变，携带值为', e.mp.detail.value)
+                this.errtypes = this.errorTypes[e.mp.detail.value].errDetail
+                _this.mid = this.errorTypes[e.mp.detail.value].errKey
+                wx.request({
+                    url: 'https://hd.xmountguan.com/railway/m.aspx?func=get_m_content_ddl&mid=' + _this.mid,//
+                    success(res) {
+                        console.log(res.data)
+                        _this.errors = []
+                        for (var item of res.data) {
+
+
+                            _this.errors.push(
+                                {"errKey": item.MCID, "errcontent": item.MaintenanceContent},
+                            )
+                        }
+                        console.log(_this.errors);
+
+                    },
+                    fail() {
+                        console.log('网络错误')
+                    }
+                })
+
+            },
             selectErr(e) {
                 // console.log(e.mp.currentTarget.dataset.errkey);
                 this.currnetIndex = e.mp.currentTarget.dataset.errkey
+                this.m_c_value = this.errors[this.currnetIndex].errcontent
             },
             preview: function (k) {
                 var wx = mpvue
@@ -99,7 +160,7 @@
                 var _this = this
                 var indexOfLoad = e.mp.currentTarget.dataset.upid
                 let wx = mpvue
-                console.log("uploadImg")
+
                 let i = 0;					// 多图上传时使用到的index
                 let that = this;
                 let max = that.maxImg;		//最大选择数
@@ -119,17 +180,22 @@
                         /**
                          * 上传完成后把文件上传到服务器
                          */
-                        _this.fileUpload(tempFilePaths)
-                        // wx.showLoading({
-                        //     title: '上传中...',
-                        // })
-                        // _this.fileUpload(imgFilePaths, i, upLength);			//上传操作
+                        _this.fileUpload(tempFilePaths, indexOfLoad)
+                        // $Toast({
+                        //     content: '开始上传文件',
+                        //     type: 'warning'
+                        // });
+
                     },
                     fail: function () {
                         console.log('fail');
+                        $Toast({
+                            content: '网络错误，请稍后重试',
+                            type: 'warning'
+                        });
                     },
                     complete: function () {
-                        console.log('commplete');
+                        console.log('完成同步上传');
                     }
                 })
             },
@@ -140,58 +206,131 @@
                 _this.upload[indexOfLoad].imgurl = ''
                 _this.imgsUrl[indexOfLoad] = ''
             },
-            fileUpload: function (tempFilePaths) {
-                console.log(tempFilePaths);
+            fileUpload: function (tempFilePaths, index) {
+                console.log("待上传 ：" + tempFilePaths);
                 var wx = mpvue
                 var that = this;
-                wx.showLoading({
-                    title: '上传中...',
-                    duration: 2
-                })
-                wx.getFileSystemManager().readFile({
-                    filePath: tempFilePaths[0], //选择图片返回的相对路径
-                    encoding: 'base64', //编码格式
-                    success: res => { //成功的回调
-                        console.log(res);
+
+
+                var _this = this
+                wx.uploadFile({
+                    url: "https://hd.xmountguan.com/railway/upload_single_pic.aspx",//url地址， //app.ai_api.File.file
+                    filePath: tempFilePaths.toString(),//要上传文件资源的路径 String类型
+                    name: 'uploadimg',//按个人情况修改，文件对应的 key,开发者在服务器端通过这个 key 可以获取到文件二进制内容，(后台接口规定的关于图片的请求参数)
+                    header: {
+                        "Content-Type": "multipart/form-data"//记得设置
+                    },
+                    formData: {
+                        //和服务器约定的token, 一般也可以放在header中
+                        // 'session_token': wx.getStorageSync('session_token')
+                    },
+                    success: function (res) {
+                        //当调用uploadFile成功之后，再次调用后台修改的操作，这样才真正做了修改头像
+                        if (res.statusCode = 200) {
+                            var data = JSON.parse(res.data)
+                            // var statusCode = res.statusCode
+                            // console.log("返回值1" + data);
+                            // console.log("返回值2" + statusCode)
+                            //这里调用后台的修改操作， tempFilePaths[0],是上面uploadFile上传成功，然后赋值到修改这里。
+                            console.log(data);
+                            console.log("文件路径" + data.imgurl);
+
+                            _this.imgsUrl[index] = data.imgurl
+                            _this.upload[index].imgurl = data.imgurl
+                            _this.imgsId[index] = data.imgID
+
+                            console.log("待提交文件", _this.upload)
+                            // $Toast({
+                            //     content: '上传成功',
+                            //     type: 'success',
+                            //     duration: 2,
+                            // });
+                        }
+                    },
+                    fail(e) {
+                        console.log(e);
+                        $Toast({
+                            content: '网络错误，请稍后重试',
+                            type: 'warning'
+                        });
+
                     }
                 })
-                /*const uploadTask = wx.uploadFile({
-                    // .....
-                })
-                uploadTask.onProgressUpdate((res) => {
-                    console.log('上传进度', res.progress)
-                    console.log('已经上传的数据长度', res.totalBytesSent)
-                    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
-                })*/
-                /*  var _this = this
-                  let wx = mpvue
-                  wx.uploadFile({
-                      url: "",//url地址， //app.ai_api.File.file
-                      filePath: tempFilePath,  //文件路径  这里是mp3文件
-                      name: 'file',  //随意
-                      header: {
-                          'Content-Type': 'multipart/form-data',
-                          'Authorization': wx.getStorageSync("access_token"),  //如果需要token的话要传
-                      },
-                      formData: {
-                          method: 'POST'   //请求方式
-                      },
-                      success(res){
-                          var data = JSON.parse(res.data)  // 坑2：与wx.request不同的是，upload返回的是字符串格式，需要字符串对象化
-                          if (data.code == 200) {
-                              that.fileTrans(data.data.id); //执行接口函数 语音文件转文字
-                          } else {
-                              console.log('上传失败')
-                              wx.showToast({
-                                  title: res.message,
-                                  icon: 'none'
-                              })
-                          }
-                      }
-                  })*/
+
             },
             handleClick() {
-                console.log("clicked")
+                var wx = mpvue;
+                var _this = this
+                // console.log("clicked")
+                //
+                // _this.imgsUrl[indexOfLoad] = tempFilePaths[0]
+                // for (var item in  _this.imgsUrl){
+                //     _this.fileUpload(_this.imgsUrl[item], item)
+                // }
+
+
+                var flg1 = this.imgsId[0]
+                var flg2 = this.imgsId[1]
+                var imgsidforload = ''
+                if (flg1 && flg2) {
+                    imgsidforload = this.imgsId.join(',')
+                } else if (flg1) {
+                    imgsidforload = this.imgsId[0]
+                } else if (flg2) {
+                    imgsidforload = this.imgsId[1]
+                }
+
+
+                var json = {
+                    "ordertype": this.mid,
+                    "sid": 1,//写死
+                    "detaillocation": this.value5,
+                    "taidanno": _this.value6,
+                    "mid": _this.mid,
+                    "m_c_value": this.m_c_value,
+                    "uid": _this.uid,
+                    "pictures": imgsidforload
+                }
+
+                var urlafter = ""
+                for (var key in json) {
+                    urlafter = urlafter + "&" + key + '=' + json[key]
+
+                }
+                console.log(urlafter);
+
+                if (json.ordertype == "" || json.sid == "" || json.detaillocation == "" || json.mid == "" || json.m_c_value == "" || json.uid == "" || json.pictures == "") {
+                    //输入校验
+                    $Toast({
+                        content: '请完善输入',
+                        type: 'warning'
+                    });
+                } else {
+                    //提交
+                    wx.request({
+                        url: 'https://hd.xmountguan.com/railway/order.aspx?func=add_order_auto&' + urlafter,
+                        success(res) {
+                            console.log(res.data)
+                            if (res.data.oid) {
+                                $Toast({
+                                    content: '上传成功',
+                                    type: 'success',
+                                    duration: 2,
+                                });
+                            }
+
+
+                        },
+                        fail() {
+                            console.log('网络错误')
+                            $Toast({
+                                content: '网络错误，请稍后重试',
+                                type: 'warning'
+                            });
+                        }
+                    })
+                }
+
             },
             searchstation() {
                 mpvue.navigateTo({
@@ -207,19 +346,21 @@
 
 
             var wx = mpvue;
-            var _this=this
-
+            var _this = this
+            _this.uid = wx.getStorageSync('UID');
             wx.request({
                 url: 'https://hd.xmountguan.com/railway/m.aspx?func=get_m_ddl',
 
                 success(res) {
-                    console.log(res.data)
 
-                    _this.errors =   []
+                    _this.errorTypes = []
                     for (var item of res.data) {
                         console.log(item);
-                        _this.errors.push(
+                        _this.errorTypes.push(
                             {"errKey": item.mid, "errDetail": item.maintenanceType},
+                        )
+                        _this.errorsarray.push(
+                            item.maintenanceType,
                         )
                     }
                     console.log(_this.errors);
