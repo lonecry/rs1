@@ -31,6 +31,7 @@
                 stationheight: '',
                 value: "浙江",
                 activelocation: '0',
+                location:'',
                 locations: [
                     [{loindex: 0, location: "杭州东站"},],
                     [{loindex: 1, location: "宁波东站"},
@@ -93,6 +94,8 @@
                     console.log(_this.stationheight);
                 },
             })
+            this.location=wx.getStorageSync('location')
+            console.log(this.location);
         },
     }
 </script>

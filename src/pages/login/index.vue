@@ -179,7 +179,7 @@
         width: 100%;
         height: 10rpx;
         font-size: 20rpx;
-        margin-top: 5rpx;
+        margin-top: 25rpx;
     }
 
     .sp1 {
