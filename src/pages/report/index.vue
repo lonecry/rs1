@@ -292,6 +292,9 @@
                                     type: 'success',
                                     duration: 2,
                                 });
+                                wx.redirectTo({
+                                    url:'../indexswiper/main'
+                                })
                             }
                         },
                         fail(){
@@ -404,6 +407,8 @@
             var wx = mpvue;
             var _this = this
             _this.uid = wx.getStorageSync('UID');
+            this.value1=wx.getStorageSync("UserName")
+            this.value2=wx.getStorageSync("Mobile")
             wx.request({
                 url: 'https://hd.xmountguan.com/railway/m.aspx?func=get_m_ddl',
                 success(res){
@@ -467,7 +472,7 @@
 
     }
     .ript3 {
-        color : #ff0762;
+        /*color : #ff0762;*/
     }
     .iptbox {
 
