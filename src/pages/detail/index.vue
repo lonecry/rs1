@@ -5,10 +5,10 @@
             <span
                 :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
         </div>
-        <div class="ipts">
+       <!-- <div class="ipts">
             <span class="ititle">维修班组</span>
             <span class="ript">{{detail.banzu}}</span>
-        </div>
+        </div>-->
         <div class="ipts">
             <span class="ititle">工长</span>
             <span class="ript">{{detail.gongzhang}}</span>
@@ -21,10 +21,10 @@
             <span class="ititle">维修工</span>
             <span class="ript">{{detail.weixiugong}}</span>
         </div>
-        <div class="ipts">
+     <!--   <div class="ipts">
             <span class="ititle">维修工电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
-        </div>
+        </div>-->
         <div class="ipts">
             <span class="ititle">调度室举报电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
@@ -41,12 +41,22 @@
         <div class="detailbox">
             <span class="xqtxt">详情:</span>
             <div class="detail">
-                <span class="bxlist"><span class="spans inspan">报修单号:</span><span class="spans  ">{{detail.origin.danhao}}</span></span>
-                <span class="bxlist"><span class="spans inspan">报修时间:</span><span class="spans    ">{{detail.origin.time}}</span></span>
-                <span class="bxlist"><span class="spans inspan">报修人姓名:</span><span class="spans  ">{{detail.origin.name}}</span></span>
-                <span class="bxlist"><span class="spans inspan">手机号:</span>  <span class="spans  phone"
-                                                                                   @click='makeacall'
-                                                                                   :data-cell="detail.origin.phone">{{detail.origin.phone}}</span></span>
+                <span class="bxlist">
+                    <span class="spans inspan">报修单号:</span>
+                    <span class="spans  ">{{detail.origin.danhao}}</span>
+                </span>
+                <span class="bxlist">
+                    <span class="spans inspan">报修时间:</span>
+                    <span class="spans    ">{{detail.origin.time}}</span>
+                </span>
+               <!-- <span class="bxlist">
+                    <span class="spans inspan">报修人姓名:</span>
+                    <span class="spans  ">{{detail.origin.name}}</span>
+                </span>
+                <span class="bxlist">
+                    <span class="spans inspan">手机号:</span>
+                    <span class="spans  phone" @click='makeacall' :data-cell="detail.origin.phone">{{detail.origin.phone}}</span>
+                </span>-->
                 <span class="bxlist"><span class="spans inspan">报修类型:</span>  <span class="spans  ">{{detail.origin.type}}</span></span>
                 <span class="bxlist">
                     <span class="spans inspan">报修内容:</span>
@@ -102,7 +112,7 @@
         data() {
             return {
                 detail: {
-                    state: 3,
+                    state: 2,
                     banzu: '一工队',
                     gongzhang: '张三',
                     gzcell: '13858585654',
@@ -116,7 +126,7 @@
                         name: "张三",
                         phone: "13854587485",
                         type: '水电问题',
-                        content: ['度数不转', '水表度数块', '其他问题', '还有问题', '能量不打钩', '旖旎你水电'],
+                        content: ['度数不转'],
                         imgsUrl: ['http://www.simpleqq.com/index/imgs/tab/tab4.jpg', "https://www.simpleqq.com/index/imgs/imgdemo.jpg"],
                         station: "杭州南站",
                         address: "杭州南站习广场东侧候车厅小隔间大阳台小浴室的拐角的洞洞里",
@@ -297,14 +307,14 @@
     }
 
     .ipts {
-        width:740rpx;
-        min-height:38px;
-        line-height:70rpx;
-        font-size:28rpx;
-        display:block;
-        margin:0 auto;
-        color:#3f4147;
-        border-bottom:1rpx solid rgba(222, 222, 222, 0.67);
+        width: 740rpx;
+        min-height: 38px;
+        line-height: 70rpx;
+        font-size: 28rpx;
+        display: block;
+        margin: 0 auto;
+        color: #3f4147;
+        border-bottom: 1rpx solid rgba(222, 222, 222, 0.67);
 
     }
 
@@ -492,16 +502,15 @@
     }
 
     .stopreason {
-        display:block;
-        width:97%;
-        margin:0 auto;
-        padding:20rpx;
-        box-sizing:border-box;
+        display: block;
+        width: 97%;
+        margin: 0 auto;
+        padding: 20rpx;
+        box-sizing: border-box;
         background: rgba(247, 244, 244, 0.59);
         /*border:1rpx solid gray;*/
-        line-height:34rpx;
-        font-size:27rpx;
-
+        line-height: 34rpx;
+        font-size: 27rpx;
 
     }
 

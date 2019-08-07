@@ -399,9 +399,8 @@
                 return pmse
             },
         },
-        created(){
-        },
-        onLoad: function (){
+
+        mounted: function (){
             this.zhantai = mpvue.getStorageSync("addr") || this.zhantai
             console.log(this.zhantai);
             var wx = mpvue;

@@ -298,6 +298,8 @@
 
     .listlocation {
         top: 232rpx;
+        height: 56rpx;
+        overflow: hidden;
     }
 
     .listicon {
