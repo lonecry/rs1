@@ -223,7 +223,7 @@
                 console.log("cardid is " + e.mp.currentTarget.dataset.cardid);
                 mpvue.navigateTo({
                     // url: '../detailforworker/main',
-                    url: '../detail/main',
+                    url : '../detail/main?oid=' + e.mp.currentTarget.dataset.cardid,
                 })
             },
             change(e) {
@@ -295,9 +295,54 @@
                 if(!this.end){
                     this.loaddata(this.page)
                 }
-            },  loaddata(page){
+            },
+            loaddata(page){
                 var _this = this;
                 var uid = wx.getStorageSync("UID");
+                wx.request({
+                    url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=0' + '&page=' + this.page, //仅为示例，并非真实的接口地址
+
+                    success(res) {
+                        console.log(res.data)
+                        var Things = res.data
+
+                        for (var i = 0; i < Things.length; i++) {
+                            if(Things.length < 5){
+                                _this.end = true
+
+                            } else {
+                                _this.end = false
+                                _this.page = parseInt(_this.page) + 1
+                            }
+                            var statusText = Things[i].OrderStatus
+                            var statuscode = ''
+                            if (statusText == "待处理") {
+                                statuscode = "0"
+                            } else if (statusText == "维修中") {
+                                statuscode = "1"
+                            } else if (statusText == "已完成") {
+                                statuscode = "2"
+                            } else if (statusText == "已中止") {
+                                statuscode = "3"
+                            }
+                            var json = {
+                                "listId": Things[i].OID,
+                                "listNumber": Things[i].SerialNo,
+                                "listTime": Things[i].CreateTime,
+                                "listType": Things[i].MaintenanceType,
+                                "listState": statuscode,
+                                "listLoca": Things[i].DetailLocation
+                            }
+                            _this.lists.push(json)
+                        }
+                    }
+                })
+            }
+        },
+        mounted() {
+            var _this = this
+            var uid = wx.getStorageSync("UID")
+            if (uid){
                 wx.request({
                     url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=0' + '&page=' + this.page, //仅为示例，并非真实的接口地址
 
@@ -331,42 +376,6 @@
                     }
                 })
             }
-        },
-        mounted() {
-            var _this = this
-            var uid = wx.getStorageSync("UID")
-            wx.request({
-                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=0' + '&page=' + this.page, //仅为示例，并非真实的接口地址
-
-                success(res) {
-                    console.log(res.data)
-                    var Things = res.data
-
-                    for (var i = 0; i < Things.length; i++) {
-                        console.log(Things[i])
-                        var statusText = Things[i].OrderStatus
-                        var statuscode = ''
-                        if (statusText == "待处理") {
-                            statuscode = "0"
-                        } else if (statusText == "维修中") {
-                            statuscode = "1"
-                        } else if (statusText == "已完成") {
-                            statuscode = "2"
-                        } else if (statusText == "已中止") {
-                            statuscode = "3"
-                        }
-                        var json = {
-                            "listId": Things[i].OID,
-                            "listNumber": Things[i].SerialNo,
-                            "listTime": Things[i].CreateTime,
-                            "listType": Things[i].MaintenanceType,
-                            "listState": statuscode,
-                            "listLoca": Things[i].DetailLocation
-                        }
-                        _this.lists.push(json)
-                    }
-                }
-            })
         },
         onShow() {
             let _this = this;

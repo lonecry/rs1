@@ -5,10 +5,10 @@
             <span
                 :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
         </div>
-       <!-- <div class="ipts">
-            <span class="ititle">维修班组</span>
-            <span class="ript">{{detail.banzu}}</span>
-        </div>-->
+        <!-- <div class="ipts">
+             <span class="ititle">维修班组</span>
+             <span class="ript">{{detail.banzu}}</span>
+         </div>-->
         <div class="ipts">
             <span class="ititle">工长</span>
             <span class="ript">{{detail.gongzhang}}</span>
@@ -21,10 +21,10 @@
             <span class="ititle">维修工</span>
             <span class="ript">{{detail.weixiugong}}</span>
         </div>
-     <!--   <div class="ipts">
-            <span class="ititle">维修工电话</span>
-            <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
-        </div>-->
+        <!--   <div class="ipts">
+               <span class="ititle">维修工电话</span>
+               <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
+           </div>-->
         <div class="ipts">
             <span class="ititle">调度室举报电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
@@ -35,9 +35,9 @@
                 中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因
             </view>
         </div>
-        <div class="ipts">
-            <span class="ititle" @click='forNav'>forNav</span>
-        </div>
+        <!--<div class="ipts">-->
+            <!--<span class="ititle" @click='forNav'>forNav</span>-->
+        <!--</div>-->
         <div class="detailbox">
             <span class="xqtxt">详情:</span>
             <div class="detail">
@@ -49,14 +49,14 @@
                     <span class="spans inspan">报修时间:</span>
                     <span class="spans    ">{{detail.origin.time}}</span>
                 </span>
-               <!-- <span class="bxlist">
-                    <span class="spans inspan">报修人姓名:</span>
-                    <span class="spans  ">{{detail.origin.name}}</span>
-                </span>
-                <span class="bxlist">
-                    <span class="spans inspan">手机号:</span>
-                    <span class="spans  phone" @click='makeacall' :data-cell="detail.origin.phone">{{detail.origin.phone}}</span>
-                </span>-->
+                <!-- <span class="bxlist">
+                     <span class="spans inspan">报修人姓名:</span>
+                     <span class="spans  ">{{detail.origin.name}}</span>
+                 </span>
+                 <span class="bxlist">
+                     <span class="spans inspan">手机号:</span>
+                     <span class="spans  phone" @click='makeacall' :data-cell="detail.origin.phone">{{detail.origin.phone}}</span>
+                 </span>-->
                 <span class="bxlist"><span class="spans inspan">报修类型:</span>  <span class="spans  ">{{detail.origin.type}}</span></span>
                 <span class="bxlist">
                     <span class="spans inspan">报修内容:</span>
@@ -75,7 +75,7 @@
                                                                                   color="#2d8cf0"
                                                                                   class="usericon"/><span
                     class="spans  ">{{detail.origin.station}}</span></span>
-                <span class="bxlist"><span class="spans inspan">详细位置:</span> {{detail.origin.address}} </span>
+                <span class="bxlist" style="text-align: left"><span class="spans inspan">详细位置:</span> {{detail.origin.address}} </span>
                 <span class="bxlist"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
             </div>
         </div>
@@ -118,7 +118,7 @@
                     gzcell: '13858585654',
                     weixiugong: '李四',
                     wxgcell: '13865656545',
-                    jubao: '10086',
+                    jubao: '0571-88888888',
                     location: '',
                     origin: {
                         danhao: 'WX1245151424',
@@ -138,6 +138,7 @@
                 judgeShow: false,
                 reasonShow: false,
                 badReason: "",
+                oid: ''
 
             }
         },
@@ -286,6 +287,59 @@
         },
         onShow: function () {
 
+            var _this = this
+            this.oid = this.$root.$mp.query.oid;
+            console.log(this.oid)
+            console.log(this.$root.$mp.appOptions)
+            console.log(this.$root.$mp.query)
+            //
+            wx.request({
+                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_order_detail&oid=' + this.oid, //仅为示例，并非真实的接口地址
+
+                success(res) {
+
+
+
+
+
+
+                    console.log(res.data)
+                    var Things = res.data
+
+                    _this.detail.weixiugong=Things.RepairMan
+                    _this.detail.origin.danhao=Things.SerialNo;
+
+                    _this.detail.gongzhang=Things.Dealer;
+                    _this.detail.gzcell=Things.DealerMobile;
+                    _this.detail.origin.time=Things.CreateTime;
+
+                    _this.detail.origin.type=Things.MaintenanceType;
+                    _this.detail.origin.content= [Things.MaintenanceContentValue];
+                    _this.detail.origin.imgsUrl= Things.Pictures;
+                    _this.detail.origin.station= Things.Station;
+                        _this.detail.origin.address= Things.DetailLocation;
+                        _this.detail.origin.taidanhao=Things.TaidanNo;
+
+
+
+
+
+
+                    var statusText = Things.OrderStatus
+                    var statuscode = ''
+                    if (statusText == "待处理") {
+                        statuscode = "0"
+                    } else if (statusText == "维修中") {
+                        statuscode = "1"
+                    } else if (statusText == "已完成") {
+                        statuscode = "2"
+                    } else if (statusText == "已中止") {
+                        statuscode = "3"
+                    }
+                    _this.detail.state=statuscode
+
+                }
+            })
         },
     }
 </script>
@@ -394,13 +448,14 @@
 
     .inspan {
         margin-right: 20rpx;
+        text-align: left;
     }
 
     .imgbox {
         display: inline-block;
         width: 200rpx;
         height: 200rpx;
-        background: rgba(170, 255, 119, 0.6);
+        /*background: rgba(170, 255, 119, 0.6);*/
         margin: 0 20rpx 0 0;
         position: relative;
         overflow: hidden;

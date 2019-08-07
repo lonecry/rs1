@@ -25,7 +25,7 @@ import { $Toast } from '../../../static/iview/base/index'
 export default {
     data() {
         return {
-            cell: '13111111111',
+            cell: '13555555555',
             psw: '12345678'
         }
     },
@@ -52,7 +52,7 @@ export default {
             var wx = mpvue;
 
             wx.request({
-                url: 'https://hd.xmountguan.com/railway/user.aspx?func=login&mobile=' + this.cell + '&pwd=' + this.psw + '&role=1', //仅为示例，并非真实的接口地址
+                url: 'https://hd.xmountguan.com/railway/user.aspx?func=login&mobile=' + this.cell + '&pwd=' + this.psw + '&role=0', //仅为示例，并非真实的接口地址
 
                 success(res) {
                     console.log(res.data)
@@ -89,9 +89,7 @@ export default {
             });
         },
     },
-    created() {
-        // let app = getApp()
-    },
+
     onShow() {
         wx.showShareMenu();
     }

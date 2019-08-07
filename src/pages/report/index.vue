@@ -260,7 +260,7 @@
                     imgsidforload = this.imgsId[1]
                 }
                 var json = {
-                    "ordertype": this.mid,
+                    "ordertype":1,
                     "sid": 1,//写死
                     "detaillocation": this.value5,
                     "taidanno": _this.value6,
