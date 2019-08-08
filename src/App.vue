@@ -22,7 +22,7 @@
             //     logs.unshift(Date.now())
             //     mpvue.setStorageSync('logs', logs)
             // }
-            wx.clearStorageSync()
+            // wx.clearStorageSync()
         },
         log(){
             console.log(`log at:${Date.now()}`)

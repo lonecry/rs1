@@ -37,12 +37,12 @@
                 btnable: "",
                 codeText: "获取验证码",
                 count: '',
-                name: '张三',
-                cell: '13888888888',
-                psw: '111111',
-                vcode: "123456",
+                name: '',
+                cell: '',
+                psw: '',
+                vcode: "",
                 timer: "",
-                authcode: '12312'
+                authcode: ''
             }
         },
         components: {},

@@ -9,15 +9,15 @@
              <span class="ititle">维修班组</span>
              <span class="ript">{{detail.banzu}}</span>
          </div>-->
-        <div class="ipts">
+        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3">
             <span class="ititle">工长</span>
             <span class="ript">{{detail.gongzhang}}</span>
         </div>
-        <div class="ipts">
+        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3">
             <span class="ititle">工长监督电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.gzcell">{{detail.gzcell}}</span>
         </div>
-        <div class="ipts">
+        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3">
             <span class="ititle">维修工</span>
             <span class="ript">{{detail.weixiugong}}</span>
         </div>
@@ -25,7 +25,7 @@
                <span class="ititle">维修工电话</span>
                <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
            </div>-->
-        <div class="ipts">
+        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3">
             <span class="ititle">调度室举报电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
         </div>
@@ -36,10 +36,11 @@
             </view>
         </div>
         <!--<div class="ipts">-->
-            <!--<span class="ititle" @click='forNav'>forNav</span>-->
+        <!--<span class="ititle" @click='forNav'>forNav</span>-->
         <!--</div>-->
         <div class="detailbox">
-            <span class="xqtxt">详情:</span>
+            <span class="xqtxt">详情:
+                <i-icon type="label" size="20"/></span>
             <div class="detail">
                 <span class="bxlist">
                     <span class="spans inspan">报修单号:</span>
@@ -57,42 +58,47 @@
                      <span class="spans inspan">手机号:</span>
                      <span class="spans  phone" @click='makeacall' :data-cell="detail.origin.phone">{{detail.origin.phone}}</span>
                  </span>-->
-                <span class="bxlist"><span class="spans inspan">报修类型:</span>  <span class="spans  ">{{detail.origin.type}}</span></span>
+                <span class="bxlist"><span class="spans inspan">报修类型:</span> <span class="spans  ">{{detail.origin.type}}</span></span>
                 <span class="bxlist">
                     <span class="spans inspan">报修内容:</span>
                     <span class="neirong" v-for="(item,index) in detail.origin.content" :key="index">{{item}}</span>
                 </span>
                 <span class="bxlist">
                     <span class="spans inspan">现场图片:</span>
-                      <div>
+                    <div>
                         <div class="imgbox" v-for="(item,index) in detail.origin.imgsUrl" :key="index">
                             <img :src="item" :mode="'widthFix'" @click='preview(index)' class="slt" alt="缩略图">
                         </div>
-                      </div>
+                    </div>
                 </span>
-                <span class="bxlist"><span class="spans inspan">车站:</span><i-icon style="position:relative;top:-4rpx;"
-                                                                                  type="coordinates_fill" size="26"
-                                                                                  color="#2d8cf0"
-                                                                                  class="usericon"/><span
-                    class="spans  ">{{detail.origin.station}}</span></span>
+                <span class="bxlist"><span class="spans inspan">车站:</span>
+                    <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="26" color="#2d8cf0"
+                            class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
                 <span class="bxlist" style="text-align: left"><span class="spans inspan">详细位置:</span> {{detail.origin.address}} </span>
                 <span class="bxlist"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
+                <span class="bxlist" v-if="ratealready"><span class="spans inspan">满意度:</span> {{ratetxt}} </span>
             </div>
         </div>
-        <i-button v-if="judgement" type="primary" class="judge" @click="judgeToggle">评 价</i-button>
+        <i-button v-if="judgement&&!ratealready" type="primary" class="judge" @click="judgeToggle">评 价</i-button>
         <div class="mask" v-show="judgeShow" @click="judgeToggle">
-            <div class="card">
+            <div class="card" @click.stop=''>
                 <view style="overflow: hidden">
-                    <span :class="[{select:selectIndex==1},'col6', 'col1']" data-sid="1" @click.stop="judge">
-                    <img src="/static/images/nice.png" class="nice jicon" alt="">
-                    <img src="/static/images/niceactive.png" class="niceactive jicon" alt="">
-                   <span class="jdtext">好评</span>
-                </span>
-                    <span :class="[{select:selectIndex==2},'col6']" data-sid="2" @click.stop="judge">
-                     <img src="/static/images/bad.png" class="bad jicon" alt="">
-                     <img src="/static/images/badactive.png" class="badactive jicon" alt="">
-                     <span class="jdtext">差评</span>
-                </span>
+                    <van-rate :value="rate" @change="onrateChange"
+                              style='display: block;margin: 0 auto;width: 100%;text-align: center;margin-top: 52rpx;'/>
+                    <div class="ratebox">
+                        <span class="ratetxt">满意度调查：</span>
+                        <span class="ratetxt">{{ratetxt}}</span>
+                    </div>
+                    <!--  <span :class="[{select:selectIndex==1},'col6', 'col1']" data-sid="1" @click.stop="judge">
+                       <img src="/static/images/nice.png" class="nice jicon" alt="">
+                       <img src="/static/images/niceactive.png" class="niceactive jicon" alt="">
+                       <span class="jdtext">好评</span>
+                   </span>
+                   <span :class="[{select:selectIndex==2},'col6']" data-sid="2" @click.stop="judge">
+                       <img src="/static/images/bad.png" class="bad jicon" alt="">
+                       <img src="/static/images/badactive.png" class="badactive jicon" alt="">
+                       <span class="jdtext">差评</span>
+                   </span> -->
                 </view>
                 <view class="reasoniptbox" v-if="reasonShow">
                     <textarea :value="badReason" class="reasonipt" placeholder="请填写您的差评理由(200字以内)" maxlength="200"/>
@@ -138,7 +144,12 @@
                 judgeShow: false,
                 reasonShow: false,
                 badReason: "",
-                oid: ''
+                oid: '',
+                rate: 3,//评分
+                ratetxt: '基本满意',
+                ratecode: 2,
+                ratealready: false
+
 
             }
         },
@@ -280,7 +291,38 @@
 
                 }
             },
+            onrateChange(e) {
+                this.rate = e.mp.detail
+                if (this.rate == 1) {
+                    this.ratetxt = '不满意'
+                    this.ratecode = 1
+                } else if (this.rate < 5) {
+                    this.ratetxt = '基本满意'
+                    this.ratecode = 2
+                } else if (this.rate == 5) {
+                    this.ratetxt = '满意'
+                    this.ratecode = 3
+                }
+                // console.log(this.rate,this.ratetxt,this.ratecode)
+
+            },
             submit: () => {
+                wx.request({
+                    url: 'https://hd.xmountguan.com/railway/order.aspx?func=rate_order&uid=' + wx.getStorageSync('UID') + '&oid=' + this.oid + '&rate=' + this.ratecode,
+                    success(res) {
+                        $Toast({
+                            content: '评价成功',
+                            type: 'success',
+                            duration: 2,
+                        });
+                    }, fail() {
+                        $Toast({
+                            content: '请稍后重试',
+                            type: 'warning'
+                        });
+                    }
+                })
+
             }
         },
         created() {
@@ -298,32 +340,38 @@
 
                 success(res) {
 
-
-
-
-
-
                     console.log(res.data)
                     var Things = res.data
 
-                    _this.detail.weixiugong=Things.RepairMan
-                    _this.detail.origin.danhao=Things.SerialNo;
+                    _this.detail.weixiugong = Things.RepairMan
+                    _this.detail.origin.danhao = Things.SerialNo;
 
-                    _this.detail.gongzhang=Things.Dealer;
-                    _this.detail.gzcell=Things.DealerMobile;
-                    _this.detail.origin.time=Things.CreateTime;
+                    _this.detail.gongzhang = Things.Dealer;
+                    _this.detail.gzcell = Things.DealerMobile;
+                    _this.detail.origin.time = Things.CreateTime;
 
-                    _this.detail.origin.type=Things.MaintenanceType;
-                    _this.detail.origin.content= [Things.MaintenanceContentValue];
-                    _this.detail.origin.imgsUrl= Things.Pictures;
-                    _this.detail.origin.station= Things.Station;
-                        _this.detail.origin.address= Things.DetailLocation;
-                        _this.detail.origin.taidanhao=Things.TaidanNo;
-
-
+                    _this.detail.origin.type = Things.MaintenanceType;
+                    _this.detail.origin.content = [Things.MaintenanceContentValue];
+                    _this.detail.origin.imgsUrl = Things.Pictures;
+                    _this.detail.origin.station = Things.Station;
+                    _this.detail.origin.address = Things.DetailLocation;
+                    _this.detail.origin.taidanhao = Things.TaidanNo;
 
 
-
+                    if (Things.rate) {
+                        _this.ratealready = true;
+                        _this.rate = parseInt(Things.rate);
+                        if (this.rate == 1) {
+                            this.ratetxt = '不满意'
+                            this.ratecode = 1
+                        } else if (this.rate < 5) {
+                            this.ratetxt = '基本满意'
+                            this.ratecode = 2
+                        } else if (this.rate == 5) {
+                            this.ratetxt = '满意'
+                            this.ratecode = 3
+                        }
+                    }
 
                     var statusText = Things.OrderStatus
                     var statuscode = ''
@@ -336,7 +384,7 @@
                     } else if (statusText == "已中止") {
                         statuscode = "3"
                     }
-                    _this.detail.state=statuscode
+                    _this.detail.state = statuscode
 
                 }
             })
@@ -361,14 +409,17 @@
     }
 
     .ipts {
-        width: 740rpx;
-        min-height: 38px;
+
+        min-height: 76rpx;
         line-height: 70rpx;
         font-size: 28rpx;
         display: block;
         margin: 0 auto;
         color: #3f4147;
         border-bottom: 1rpx solid rgba(222, 222, 222, 0.67);
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 20rpx;
 
     }
 
@@ -386,7 +437,7 @@
         text-align: right;
         padding-right: 10rpx;
         /*background: #ededed;*/
-        width: 525rpx;
+        width: 470rpx;
 
     }
 
@@ -408,6 +459,7 @@
 
     .xqtxt {
         font-weight: bold;
+        font-size: 30rpx
     }
 
     .detail {
@@ -598,4 +650,11 @@
 
     }
 
+    .ratebox {
+        text-align: center;
+        margin-top: 30rpx;
+
+    }
+
 </style>
+ 
