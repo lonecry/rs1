@@ -15,7 +15,7 @@
                 <i-icon type = "lock" size = "26" color = "#ACACAC" class = "usericon"/>
             </div>
             <div class = "ipt">
-                <input class = "password " v-model = "vcode" placeholder = "网内虚拟号"/>
+                <input class = "password " v-model = "vcode" placeholder = "网内虚拟号(选填)"/>
                 <i-icon type = "share" size = "26" color = "#ACACAC" class = "usericon"/>
             </div>
             <div class = "ipt">

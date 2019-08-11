@@ -39,7 +39,7 @@
             </swiper-item>
             <swiper-item class = "swiperitem">
                 <span v-if="refreshicon" style = "position:absolute;width:750rpx;left:0;text-align:center;display:block;font-size:20rpx">  下拉刷新<i-icon size = '14'  type = "refresh"/></span>
-    
+
                 <scroll-view :scroll-y = "scrolly" :style = "computedClassObject" @scrolltolower = "loadmore"
                              :upper-threshold = "150" @scrolltoupper = "refresh">
                     <div class = "card" :data-cardid = "item.listId" ref = "dataNum" @click = "cardClick($event)" v-for = "(item,index) in  lists" :key = "index" v-if = "item.listState==0">
@@ -62,7 +62,7 @@
             </swiper-item>
             <swiper-item class = "swiperitem">
                 <span v-if="refreshicon" style = "position:absolute;width:750rpx;left:0;text-align:center;display:block;font-size:20rpx">  下拉刷新<i-icon   size = '14'  type = "refresh"/></span>
-    
+
                 <scroll-view :scroll-y = "scrolly" :style = "computedClassObject" @scrolltolower = "loadmore"
                              :upper-threshold = "150" @scrolltoupper = "refresh">
                     <div class = "card" :data-cardid = "item.listId" ref = "dataNum" @click = "cardClick($event)" v-for = "(item,index) in  lists" :key = "index" v-if = "item.listState==1">
@@ -86,7 +86,7 @@
             <swiper-item class = "swiperitem">
                 <span  v-if="refreshicon" style =
                     "position:absolute;width:750rpx;left:0;text-align:center;display:block;font-size:20rpx">  下拉刷新<i-icon size = '14'  type = "refresh"/></span>
-    
+
                 <scroll-view :scroll-y = "scrolly" :style = "computedClassObject" @scrolltolower = "loadmore"
                              :upper-threshold = "150" @scrolltoupper = "refresh">
                     <div class = "card" :data-cardid = "item.listId" ref = "dataNum" @click = "cardClick($event)" v-for = "(item,index) in  lists" :key = "index" v-if = "item.listState==2">
@@ -110,7 +110,7 @@
             <swiper-item class = "swiperitem">
                 <span  v-if="refreshicon" style =
                     "position:absolute;width:750rpx;left:0;text-align:center;display:block;font-size:20rpx">  下拉刷新<i-icon   size = '14'  type = "refresh"/></span>
-    
+
                 <scroll-view :scroll-y = "scrolly" :style = "computedClassObject" @scrolltolower = "loadmore"
                              :upper-threshold = "150" @scrolltoupper = "refresh">
                     <div class = "card" :data-cardid = "item.listId" ref = "dataNum" @click = "cardClick($event)" v-for = "(item,index) in  lists" :key = "index" v-if = "item.listState==3">
@@ -370,14 +370,14 @@
             var _this = this
             var uid = wx.getStorageSync("UID")
             if(uid){
-                
+
                 /*  wx.request({
 					  url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=0' + '&page=' + this.page, //仅为示例，并非真实的接口地址
-	
+
 					  success(res) {
 						  console.log(res.data)
 						  var Things = res.data
-	
+
 						  for (var i = 0; i < Things.length; i++) {
 							  console.log(Things[i])
 							  var statusText = Things[i].OrderStatus
@@ -424,12 +424,12 @@
             })
             var login = wx.getStorageSync('login')
             console.log(login);
-            if(! login){
+           /* if(! login){
                 wx.redirectTo({
                     // url: '../detailforworker/main',
                     url: '../login/main',
                 })
-            }
+            }*/
             wx.showShareMenu();
         },
     }
@@ -618,7 +618,7 @@
             transform         : rotate(360deg);
             -webkit-transform : rotate(360deg);
         }
-        
+
     }
     @-webkit-keyframes spinspin {
         from {
@@ -631,6 +631,6 @@
             transform         : rotate(360deg);
             -webkit-transform : rotate(360deg);
         }
-        
+
     }
 </style>
