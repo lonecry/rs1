@@ -58,7 +58,7 @@
 
                         //提交
                         wx.request({
-                            url : 'https://hd.xmountguan.com/railway/user.aspx?func=register&name=' + _this.name+"&mobile="+_this.cell+"&pwd="+_this.psw+'&vcode='+_this.vcode,
+                            url : 'https://hd.xmountguan.com/railway/user.aspx?func=register&name=' + _this.name+"&mobile="+_this.cell+"&pwd="+_this.psw+'&vcode='+_this.authcode,
                             success(res){
                                 console.log(res.data)
                                 if(res.data.uid){
