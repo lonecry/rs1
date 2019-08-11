@@ -48,18 +48,38 @@
         components: {},
         methods: {
             zhuce(){
+                var _this=this
                 console.log('You Just Fucked register');
                 mpvue.setStorageSync("cell", this.cell)
                 mpvue.setStorageSync("psw", this.psw)
                 if (this.check()) {
                     if (true) {//注册成功
-                        $Toast({
-                            content: '注册成功',
-                            type: 'success',
-                            duration: 2,
-                        });
-                        wx.redirectTo({
-                            url:'../login/main'
+
+
+                        //提交
+                        wx.request({
+                            url : 'https://hd.xmountguan.com/railway/user.aspx?func=register&name=' + _this.name+"&mobile="+_this.cell+"&pwd="+_this.psw+'&vcode='+_this.vcode,
+                            success(res){
+                                console.log(res.data)
+                                if(res.data.uid){
+                                    $Toast({
+                                        content: '注册成功',
+                                        type: 'success',
+                                        duration: 2,
+                                    });
+                                    wx.redirectTo({
+                                        url:'../login/main'
+                                    })
+
+                                }
+                            },
+                            fail(){
+                                console.log('网络错误')
+                                $Toast({
+                                    content : '网络错误，请稍后重试',
+                                    type    : 'warning'
+                                });
+                            }
                         })
 
                     }
