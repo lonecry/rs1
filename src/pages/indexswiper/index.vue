@@ -243,21 +243,21 @@
             },
             pswreset(){
                 this.showleft = ! this.showleft
-                wx.redirectTo({
+                wx.navigateTo({
                     url: '../pswreset/main'
                 })
                 this.showleft = ! this.showleft
             },
             changecell(){
                 this.showleft = ! this.showleft
-                wx.redirectTo({
+                wx.navigateTo({
                     url: '../changecell1/main'
                 })
                 this.showleft = ! this.showleft
             },
             logout(){
                 wx.clearStorageSync()
-                wx.redirectTo({
+                wx.navigateTo({
                     url: '../login/main'
                 })
                 this.showleft = ! this.showleft
