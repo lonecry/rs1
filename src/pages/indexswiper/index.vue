@@ -1,6 +1,6 @@
 <template>
     <div class = " box">
-        
+
         <button open-type = "getUserInfo" @getuserinfo = "bindGetUserInfo" @click = "getUserInfoClick" style = "width: 100rpx;background: transparent;height: 100rpx;position: fixed;z-index: 2;border: none">
             <i-icon type = "mine" size = "26" color = "#ACACAC" class = "icon"/>
         </button>
@@ -118,8 +118,8 @@
         <i-button @click = "goreport" class = "goreport" type = "primary">一键报修</i-button>
         <i-drawer mode = "left" @click = "toggleLeft" :visible = "showleft" class = "i-drawer-mask">
             <div class = "demo-container" @click.stop>
-                <img :src = "userIcon" class = "usericon" @click = "changeIcon" alt = ""/>
-                <span class = "username">{{usserName}}</span>
+                <img v-if="usershow" :src = "userIcon" class = "usericon" @click = "changeIcon" alt = ""/>
+                <span v-if="usershow"  class = "username">{{usserName}}</span>
                 <view v-if = "login" style = "width: 80%">
                     <view class = "cz chongzhiPsw" @click = "pswreset">
                         <i-icon type = "lock_fill" size = "21" color = "#ACACAC"/>
@@ -140,7 +140,7 @@
                         登录
                     </view>
                 </view>
-            
+
             </div>
         </i-drawer>
     </div>
@@ -153,6 +153,8 @@
                 navtabs       : ["全部","待处理","维修中","已完成","已中止"],
                 Role          : 2,
                 showleft      : false,
+                user:"",
+                usershow:false,
                 current_scroll: '0',
                 userIcon      : '/static/images/Avator.png',
                 usserName     : "一万年朝夕",
@@ -778,8 +780,8 @@
             },
             logout(){
                 this.showleft = false
-                wx.clearStorageSync()
-                wx.navigateTo({
+                wx.setStorageSync("UID",'')
+                wx.redirectTo({
                     url: '../login/main'
                 })
             },
@@ -809,7 +811,9 @@
                     this.toggleLeft() // 变 化
                     wx.setStorageSync('user',e.mp.detail.userInfo);
                     this.userSet(e.mp.detail.userInfo)
+                    this.usershow=true
                 } else {
+                    this.toggleLeft() // 变 化
                     //用户按了拒绝按钮
                     console.log('用户按了拒绝按钮');
                 }
@@ -850,7 +854,7 @@
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=0' + '&page=' + this.page + '&pagesize=5', //仅为示例，并非真实的接口地址
                         success(res){
-                            
+
                             // var Things =
                             //
                             console.log(res.data)
@@ -900,7 +904,7 @@
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=1' + '&page=' + this.page + '&pagesize=10', //仅为示例，并非真实的接口地址
                         success(res){
-                            
+
                             // var Things =
                             //
                             console.log(res.data)
@@ -950,7 +954,7 @@
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=2' + '&page=' + this.page2 + '&pagesize=5', //仅为示例，并非真实的接口地址
                         success(res){
-                            
+
                             // var Things =
                             //
                             console.log(res.data)
@@ -1000,7 +1004,7 @@
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=3' + '&page=' + this.page3 + '&pagesize=10', //仅为示例，并非真实的接口地址
                         success(res){
-                            
+
                             // var Things =
                             //
                             console.log(res.data)
@@ -1050,7 +1054,7 @@
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=4' + '&page=' + this.page4 + '&pagesize=10', //仅为示例，并非真实的接口地址
                         success(res){
-                            
+
                             // var Things =
                             //
                             console.log(res.data)
@@ -1100,8 +1104,17 @@
         mounted(){
             let _this = this;
             let wx = mpvue;
-            _this.login = wx.getStorageSync('login')
-            console.log(_this.login);
+              setTimeout(()=>{
+                  _this.user=wx.getStorageSync("user")
+                  _this.login = wx.getStorageSync('login')
+                  console.log(_this.login);
+
+
+                  if(_this.login){
+                      console.log('加载数据')
+                      _this.loaddatas()
+                  }
+              },1500)
             //roel init
             // var Role = wx.getStorageSync('Role');
             // if(Role == 1){
@@ -1118,8 +1131,7 @@
                     console.log(_this.scrollData.height);
                 },
             })
-            var login = wx.getStorageSync('login')
-            console.log(login);
+
             // if(!login){
             //     wx.redirectTo({
             //         // url: '../detailforworker/main',
@@ -1146,15 +1158,13 @@
         },
         onShow(){
             /* var stateChange = wx.getStorageSync('stateChange');
-
-
              if(stateChange !== ""){
                  this.lists[wx.getStorageSync('cardinex')].listState = stateChange
                  wx.setStorageSync('cardinex','');
                  wx.setStorageSync('stateChange','');
              }*/
             console.log('show')
-            this.loaddatas()
+            // this.loaddatas()
         },
         // 在app.js里写下以下代码
         /*  onLaunch(){
@@ -1193,7 +1203,6 @@
 			  }
 		  }*/
     }
-
 </script>
 <style scoped>
     .box button::after {
@@ -1379,5 +1388,4 @@
         font-size  : 20rpx;
         color      : rgba(0, 0, 0, 0.56);margin-top : 10rpx;
     }
-
 </style>

@@ -63,16 +63,46 @@
                         success(res) {
                             console.log(res.data)
                             if (res.data.uid) {
-                                $Toast({
-                                    content: '注册成功',
-                                    type: 'success',
-                                    duration: 2,
-                                });
-                                setTimeout(() => {
-                                    wx.redirectTo({
-                                        url: '../login/main'
-                                    })
-                                }, 2000)
+
+
+                                wx.request({
+                                    url: 'https://hd.xmountguan.com/railway/user.aspx?func=update_openid&openid=' + wx.getStorageSync("openid") + '&uid=' + res.data.uid, //仅为示例，并非真实的接口地址
+                                    success(rlt) {
+                                        if (rlt.data.success) {
+                                            $Toast({
+                                                content: '注册成功',
+                                                type: 'success',
+                                                duration: 2,
+                                            });
+                                            wx.setStorageSync("UID", res.data.uid)
+                                            setTimeout(() => {
+                                                // wx.redirectTo({
+                                                //     url: '../login/main'
+                                                // })
+
+                                                wx.redirectTo({
+                                                    url: '../indexswiper/main'
+                                                })
+
+
+                                            }, 2000)
+
+                                        }else {
+
+                                            $Toast({
+                                                content: '请稍候重试',
+                                                type: 'warning'
+                                            });
+                                        }
+
+                                    }
+                                })
+
+
+
+
+
+
                             } else if (res.data.error == "mobile has been registered") {
                                 $Toast({
                                     content: '手机号以被注册',
@@ -209,8 +239,27 @@
             }
         }
         ,
-        created() {
+        mounted() {
             // let app = getApp()
+            console.log('created')
+            mpvue.setStorageSync("cell", "")
+            mpvue.setStorageSync("psw", "")
+                this.btnable= "",
+                this.codeText= "获取验证码",
+                this.count= '',
+                this.name='',
+                this.cell= '',
+                this.psw= '',
+                this.psw2= '',
+                this.vcode= "",
+                this.timer= "",
+                this.authcode=''
+
+
+
+
+
+
         }
     }
 </script>

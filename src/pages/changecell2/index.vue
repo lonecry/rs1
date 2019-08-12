@@ -18,7 +18,7 @@
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-    
+
     export default {
         data(){
             return {
@@ -48,16 +48,46 @@
                         success(res){
                             console.log(res.data)
                             if(res.data.result == "1|update success"){
-                                $Toast({
-                                    content : '重置成功',
-                                    type    : 'success',
-                                    duration: 2,
-                                });
-                                setTimeout(() =>{
-                                    wx.redirectTo({
-                                        url: '../indexswiper/main'
-                                    })
-                                },2000)
+
+
+                                wx.request({
+                                    url: 'https://hd.xmountguan.com/railway/user.aspx?func=update_openid&openid=' + wx.getStorageSync("openid") + '&uid=' +  wx.getStorageSync("UID"), //仅为示例，并非真实的接口地址
+                                    success(res) {
+                                        if (res.data.success) {
+
+                                            $Toast({
+                                                content : '重置成功',
+                                                type    : 'success',
+                                                duration: 2,
+                                            });
+                                            setTimeout(() =>{
+                                                wx.redirectTo({
+                                                    url: '../indexswiper/main'
+                                                })
+                                            },2000)
+                                        }else {
+
+                                            $Toast({
+                                                content: '请稍候重试',
+                                                type: 'warning'
+                                            });
+                                        }
+
+                                    }
+                                })
+
+
+
+
+
+
+
+
+
+
+
+
+
                             }else{
                                 console.log('网络错误')
                                 $Toast({
@@ -86,7 +116,7 @@
                         type   : 'warning'
                     });
                 } else {
-                    
+
                     //提交
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/other.aspx?func=SendSms&mobile=' + _this.cell,

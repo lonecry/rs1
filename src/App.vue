@@ -53,10 +53,13 @@
             getAccess    : function(){   //获取用户信息接口  这个可以直接获取。不需要授权
                 var that = this
                 that.getOpenid().then((json) =>{
-                    console.log("openid :" + json.uid);
-                    console.log("session_key :" + json.session_key);
-                    wx.setStorageSync("openid",json.uid)
-                    wx.setStorageSync("sessionKey",json.session_key)
+
+                    if(json.UID){
+                        wx.setStorageSync('login','user has already login')
+                    }
+                    wx.setStorageSync("UID",json.UID)
+                    wx.setStorageSync("Mobile",json.Mobile)
+                    wx.setStorageSync("openid",json.OpenID)
                 }).catch(() =>{
                     wx.showToast({
                         title   : "网络失败请重试！",
@@ -69,7 +72,7 @@
             getOpenid    : function(){
                 var pms = new Promise((resolve,reject) =>{
                     wx.request({
-                        url    : 'https://hd.xmountguan.com/omf/i_userinfo.aspx?code=' + wx.getStorageSync("code"),
+                            url    : 'https://hd.xmountguan.com/railway/i_getopenid_baoxiu.aspx?code=' + wx.getStorageSync("code"),
                         method : 'GET',
                         success: function(rlt){
                             console.log(rlt.data);
@@ -165,8 +168,8 @@
                     }
                 })
             }
-            
-            
+
+
             /* try {
 			 wx.removeStorageSync('openid')
 			 wx.removeStorageSync('userInfo')
