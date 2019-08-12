@@ -9,15 +9,15 @@
              <span class="ititle">维修班组</span>
              <span class="ript">{{detail.banzu}}</span>
          </div>-->
-        <div class = "ipts" v-if = "detail.state==1||detail.state==2||detail.state==3">
+        <div class = "ipts" v-if = "(detail.state==1||detail.state==2||detail.state==3)&&(detail.gongzhang)">
             <span class = "ititle">工长</span>
             <span class = "ript">{{detail.gongzhang}}</span>
         </div>
-        <div class = "ipts" v-if = "detail.state==1||detail.state==2||detail.state==3">
+        <div class = "ipts" v-if = "(detail.state==1||detail.state==2||detail.state==3)&&(detail.gzcell)">
             <span class = "ititle">工长监督电话</span>
             <span class = "ript phone" @click = 'makeacall' :data-cell = "detail.gzcell">{{detail.gzcell}}</span>
         </div>
-        <div class = "ipts" v-if = "detail.state==1||detail.state==2||detail.state==3">
+        <div class = "ipts" v-if = "(detail.state==1||detail.state==2||detail.state==3)&&(detail.weixiugong)">
             <span class = "ititle">维修工</span>
             <span class = "ript">{{detail.weixiugong}}</span>
         </div>

@@ -15,7 +15,7 @@
                 <i-icon type = "lock" size = "26" color = "#ACACAC" class = "usericon"/>
             </div>
             <div class = "ipt">
-                <input class = "password " v-model = "authcode"   placeholder = "验证码" style = "width:50%;"/>
+                <input class = "password " v-model = "authcode" placeholder = "验证码" style = "width:50%;"/>
                 <i-icon type = "lock" size = "26" color = "#ACACAC" class = "usericon"/>
                 <button @click = "getcode" class = "getcode" :disabled = "btnable">{{codeText}}</button>
             </div>
@@ -26,99 +26,140 @@
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-
+    
     export default {
         data(){
             return {
-                btnable: "",
+                btnable : "",
                 codeText: "获取验证码",
-                count: '',
-                name: '张三',
-                cell: '13888888888',
-                psw: '111111',
-                psw2: '111111',
-                vcode: "123456",
-                timer: "",
-                authcode: '12312'
+                count   : '',
+                name    : '张三',
+                cell    : '',
+                psw     : '',
+                psw2    : '',
+                vcode   : "",
+                timer   : "",
+                authcode: ''
             }
         },
         components: {},
-        methods: {
+        methods   : {
             zhuce(){
+                var _this = this
                 console.log('You Just Fucked register');
-                mpvue.setStorageSync("cell", this.cell)
-                mpvue.setStorageSync("psw", this.psw)
-                if (this.check()) {
-                    if (true) {//注册成功
-                        $Toast({
-                            content: '重置成功',
-                            type: 'success',
-                            duration: 2,
-                        });
-                        wx.redirectTo({
-                            url: '../login/main'
-                        })
-
-                    }
-                } else {
-                    console.log(' 重置 不通过')
+                mpvue.setStorageSync("cell",this.cell)
+                mpvue.setStorageSync("psw",this.psw)
+                if(this.check()){
+                    //提交重置
+                    wx.request({
+                        url: "https://hd.xmountguan.com/railway/user.aspx?func=resetPwd&mobile=" + _this.cell + "&newpwd=" + _this.psw + '&vcode=' + _this.authcode,
+                        success(res){
+                            console.log(res.data)
+                            if(res.data.success == "success"){
+                                $Toast({
+                                    content : '重置成功',
+                                    type    : 'success',
+                                    duration: 2,
+                                });
+                                wx.redirectTo({
+                                    url: '../login/main'
+                                })
+                            }
+                        },
+                        fail(){
+                            console.log('网络错误')
+                            $Toast({
+                                content: '网络错误，请稍后重试',
+                                type   : 'warning'
+                            });
+                        }
+                    })
                 }
             },
             getcode(){
-                if (this.cell == "") {
+                var _this = this
+                if(this.cell == ""){
                     $Toast({
                         content: '请输入手机号码',
-                        type: 'warning'
+                        type   : 'warning'
                     });
                 } else {
-                    $Toast({
-                        content: '验证码已发送',
-                        type: 'warning'
-                    });
-                    // this.disabled = "disabled"
-                    this.btnable = "disabled";
-                    console.log('You Just Fucked getcode');
-                    const TIME_COUNT = 15;
-                    if (!this.timer) {
-                        this.count = TIME_COUNT;
-                        this.timer = setInterval(() =>{
-                            if (this.count > 0 && this.count <= TIME_COUNT) {
-                                this.count--;
-                                this.codeText = this.count + 's后重新获取'
-                            } else {
-                                this.btnable = "",
-                                    clearInterval(this.timer);
-                                this.codeText = "获取验证码"
-                                this.timer = null;
+                    
+                    //提交
+                    wx.request({
+                        url: 'https://hd.xmountguan.com/railway/other.aspx?func=SendSms&mobile=' + _this.cell,
+                        success(res){
+                            if(res.data.success = "success"){
+                                $Toast({
+                                    content: '验证码已发送',
+                                    type   : 'warning'
+                                });
+                                // this.disabled = "disabled"
+                                _this.btnable = "disabled";
+                                console.log('You Just Fucked getcode');
+                                const TIME_COUNT = 15;
+                                if(! _this.timer){
+                                    _this.count = TIME_COUNT;
+                                    _this.timer = setInterval(() =>{
+                                        if(_this.count > 0 && _this.count <= TIME_COUNT){
+                                            _this.count --;
+                                            _this.codeText = _this.count + 's后重新获取'
+                                        } else {
+                                            _this.btnable = "",
+                                                clearInterval(_this.timer);
+                                            _this.codeText = "获取验证码"
+                                            _this.timer = null;
+                                        }
+                                    },1000)
+                                }
                             }
-                        }, 1000)
-                    }
+                        },
+                        fail(){
+                            console.log('网络错误')
+                            $Toast({
+                                content: '网络错误，请稍后重试',
+                                type   : 'warning'
+                            });
+                        }
+                    })
                 }
             }
             ,
             check(){
-                if (this.cell == "") {
+                if(this.cell == ""){
                     $Toast({
                         content: '请输入正确的手机号',
-                        type: 'warning'
+                        type   : 'warning'
                     });
                     return false
-                } else if (this.psw == "") {
+                } else if(! (/^1[3456789]\d{9}$/.test(this.cell))){
                     $Toast({
-                        content: '请输入注册密码',
-                        type: 'warning'
+                        content: '手机号码有误，请重填',
+                        type   : 'warning'
                     });
                     return false
-                } else if (this.psw2 != this.psw2) {
+                } else if(this.psw == ""){
+                    $Toast({
+                        content: '请输入新密码',
+                        type   : 'warning'
+                    });
+                    return false
+                } else if(this.psw2 == ""){
+                    $Toast({
+                        content: '请再次输入新密码',
+                        type   : 'warning'
+                    });
+                    return false
+                } else if(this.psw2 != this.psw){
                     $Toast({
                         content: '两次密码不一致',
-                        type: 'warning'
+                        type   : 'warning'
                     });
                     return false
-                } else if (this.authcode == "") {
+                } else if(this.authcode == ""){
                     $Toast({
                         content: '请获取验证码',
-                        type: 'warning'
+                        type   : 'warning'
                     });
                     return false
                 } else {
@@ -141,7 +182,6 @@
         position   : absolute;
         top        : 22rpx;
         left       : 0;
-
     }
     .getcode {
         width       : 185rpx;
@@ -157,7 +197,6 @@
         font-size   : 26rpx;
         padding     : 0;
         box-sizing  : border-box;
-
     }
     .box {
         display         : flex;
@@ -167,7 +206,7 @@
         width           : 100%;
         height          : 100vh;
         /*background      : #33ac59;*/
-        overflow: hidden;
+        overflow        : hidden;
     }
     .row {
         width   : 100%;
@@ -175,12 +214,11 @@
         display : block;
     }
     .loginbox {
-        width      : 500rpx;
-        height     : 709rpx;
-        text-align : center;
-        position   : relative;
-        padding-top: 20rpx;
-
+        width       : 500rpx;
+        height      : 709rpx;
+        text-align  : center;
+        position    : relative;
+        padding-top : 20rpx;
     }
     .ipt {
         width         : 100%;
@@ -193,13 +231,11 @@
         border        : 1rpx solid #b1b1b1;
         position      : relative;
         margin-bottom : 50rpx;
-
     }
     .ipt input {
         width       : 88%;
         height      : 100%;
         margin-left : 12%;
-
     }
     .usericon {
         position  : absolute;

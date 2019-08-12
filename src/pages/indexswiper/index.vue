@@ -141,10 +141,10 @@
                     <i-icon type = "lock_fill" size = "21" color = "#ACACAC"/>
                     重置密码
                 </view>
-                <view class = "cz chongzhiCell" @click = "changecell">
+              <!--  <view class = "cz chongzhiCell" @click = "changecell">
                     <i-icon type = "mobilephone_fill" size = "21" color = "#ACACAC"/>
                     更换绑定手机号
-                </view>
+                </view>-->
                 <view class = "cz chongzhiCell" @click = "logout">
                     <i-icon type = "offline_fill" size = "21" color = "#ACACAC"/>
                     退出
@@ -354,12 +354,12 @@
                 console.log('refresh');
                 this.page = 1
                 this.loaddata(this.page)
-                wx.showToast({
-                    title   : '数据刷新成功',
-                    icon    : 'none',
-                    duration: 1000,
-                    mask    : true
-                });
+                // wx.showToast({
+                //     title   : '数据刷新成功',
+                //     icon    : 'none',
+                //     duration: 1000,
+                //     mask    : true
+                // });
                 setTimeout(()=>{
                     _this.refreshicon=false
                 },1000)

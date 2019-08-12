@@ -44,7 +44,8 @@ export default {
         pswreset() {
             console.log('You Just Fucked pswreset');
             mpvue.navigateTo({
-                url: '../changecell2/main',
+                url: '../pswreset/main',
+ 
             })
         },
         handleClick() {

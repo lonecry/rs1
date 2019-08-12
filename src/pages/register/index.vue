@@ -53,10 +53,8 @@
                 mpvue.setStorageSync("cell", this.cell)
                 mpvue.setStorageSync("psw", this.psw)
                 if (this.check()) {
-                    if (true) {//注册成功
 
-
-                        //提交
+                        //提交注册
                         wx.request({
                             url : 'https://hd.xmountguan.com/railway/user.aspx?func=register&name=' + _this.name+"&mobile="+_this.cell+"&pwd="+_this.psw+'&vcode='+_this.authcode,
                             success(res){
@@ -82,40 +80,63 @@
                             }
                         })
 
-                    }
+                  
                 } else {
                     console.log('验证不通过')
                 }
             },
             getcode(){
+                var _this=this
                 if (this.cell == "") {
                     $Toast({
                         content: '请输入手机号码',
                         type: 'warning'
                     });
                 } else {
-                    $Toast({
-                        content: '验证码已发送',
-                        type: 'warning'
-                    });
-                    // this.disabled = "disabled"
-                    this.btnable = "disabled";
-                    console.log('You Just Fucked getcode');
-                    const TIME_COUNT = 15;
-                    if (!this.timer) {
-                        this.count = TIME_COUNT;
-                        this.timer = setInterval(() =>{
-                            if (this.count > 0 && this.count <= TIME_COUNT) {
-                                this.count--;
-                                this.codeText = this.count + 's后重新获取'
-                            } else {
-                                this.btnable = "",
-                                    clearInterval(this.timer);
-                                this.codeText = "获取验证码"
-                                this.timer = null;
+    
+                    //提交
+                    wx.request({
+                        url :  'https://hd.xmountguan.com/railway/other.aspx?func=SendSms&mobile='+_this.cell ,
+                        success(res){
+                           
+                            if(res.data.success ="success" ){
+                                $Toast({
+                                    content: '验证码已发送',
+                                    type: 'warning'
+                                });
+    
+                                // this.disabled = "disabled"
+                                _this.btnable = "disabled";
+                                console.log('You Just Fucked getcode');
+                                const TIME_COUNT = 15;
+                                if (!_this.timer) {
+                                    _this.count = TIME_COUNT;
+                                    _this.timer = setInterval(() =>{
+                                        if (_this.count > 0 && _this.count <= TIME_COUNT) {
+                                            _this.count--;
+                                            _this.codeText = _this.count + 's后重新获取'
+                                        } else {
+                                            _this.btnable = "",
+                                                clearInterval(_this.timer);
+                                            _this.codeText = "获取验证码"
+                                            _this.timer = null;
+                                        }
+                                    }, 1000)
+                                }
                             }
-                        }, 1000)
-                    }
+                        },
+                        fail(){
+                            console.log('网络错误')
+                            $Toast({
+                                content : '网络错误，请稍后重试',
+                                type    : 'warning'
+                            });
+                        }
+                    })
+                    
+                    
+                    
+           
                 }
             }
             ,
