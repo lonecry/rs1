@@ -174,7 +174,7 @@
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-    
+
     export default {
         data(){
             return {
@@ -588,7 +588,10 @@
                 console.log("确认完成");
             }
         },
-        created(){
+        mounted(){
+
+            console.log(this.$root.$mp.appOptions)
+            console.log(this.$root.$mp.query)
         },
         onShow  : function(){
         },

@@ -51,11 +51,14 @@
                 })
             },
             getAccess    : function(){   //获取用户信息接口  这个可以直接获取。不需要授权
-                var that = this
+                var that = this;
+                var  wx=mpvue
                 that.getOpenid().then((json) =>{
 
-                    if(json.UID){
+                    if(json.UID>0){
                         wx.setStorageSync('login','user has already login')
+                    }else {
+                        wx.setStorageSync('login','')
                     }
                     wx.setStorageSync("UID",json.UID)
                     wx.setStorageSync("Mobile",json.Mobile)

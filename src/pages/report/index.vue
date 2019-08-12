@@ -291,8 +291,9 @@
             }
             ,
             handleClick() {
-                var login = mpvue.getStorageSync('login')
-                if (!login) {
+                var wx=mpvue
+                var UID = wx.getStorageSync('UID')
+                if (!UID) {
                     /* wx.redirectTo({
                      // url: '../detailforworker/main',
                      url: '../login/main',

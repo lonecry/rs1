@@ -75,13 +75,14 @@
                                                 duration: 2,
                                             });
                                             wx.setStorageSync("UID", res.data.uid)
+                                            wx.setStorageSync("login", "user has already login")
                                             setTimeout(() => {
                                                 // wx.redirectTo({
                                                 //     url: '../login/main'
                                                 // })
 
                                                 wx.redirectTo({
-                                                    url: '../indexswiper/main'
+                                                    url: '../indexswiper/main?fromregister='+true
                                                 })
 
 

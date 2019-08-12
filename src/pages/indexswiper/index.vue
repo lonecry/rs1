@@ -1102,11 +1102,12 @@
             console.log('on load')
         },
         mounted(){
+            console.log('mounted')
             let _this = this;
             let wx = mpvue;
               setTimeout(()=>{
                   _this.user=wx.getStorageSync("user")
-                  _this.login = wx.getStorageSync('login')
+                  _this.login = wx.getStorageSync('UID')
                   console.log(_this.login);
 
 
