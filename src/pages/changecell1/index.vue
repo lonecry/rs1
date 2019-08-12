@@ -3,7 +3,7 @@
         <h1 class = "miantitle">重置手机</h1>
         <div class = "loginbox">
             <div class = "ipt" style = "background:rgba(188,188,188,0.39);overflow:hidden;">
-                <input class = "usercell" :disabled = 'true' v-model = "cell" placeholder = "请输入手机号码"/>
+                <input class = "usercell" disabled v-model = "cell" placeholder = "请输入手机号码"/>
                 <i-icon type = "mobilephone" size = "26" color = "#ACACAC" class = "usericon"/>
             </div>
             <div class = "ipt">
@@ -18,33 +18,58 @@
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-
+    
     export default {
         data(){
             return {
-                btnable: "",
+                btnable : "",
                 codeText: "获取验证码",
-                count: '',
-                name: '张三',
-                cell: '13888888888',
-                psw: '111111',
-                psw2: '111111',
-                vcode: "123456",
-                timer: "",
-                authcode: '12312'
+                count   : '',
+                name    : '张三',
+                cell    : '',
+                psw     : '',
+                psw2    : '',
+                vcode   : "",
+                timer   : "",
+                authcode: ''
             }
         },
         components: {},
-        methods: {
+        methods   : {
             zhuce(){
+                var _this = this
                 console.log('You Just Fucked register');
-                mpvue.setStorageSync("cell", this.cell)
-                mpvue.setStorageSync("psw", this.psw)
-                if (this.check()) {
-                    wx.redirectTo({
-                        url:'../changecell2/main'
+                mpvue.setStorageSync("cell",this.cell)
+                mpvue.setStorageSync("psw",this.psw)
+                if(this.check()){
+                    
+                    //提交
+                    wx.request({
+                        url:
+                        "https://hd.xmountguan.com/railway/user.aspx?func=check_oldmobile&uid=" +
+                        wx.getStorageSync("UID") + "&vcode=" + _this.authcode,
+                        success(res){
+                            console.log(res);
+                            if(res.data.result == "1|old mobile correct"){
+                                // 验证成功
+                                wx.redirectTo({
+                                    url: '../changecell2/main'
+                                })
+                            }else{
+                                $Toast({
+                                    content: '验证码错误',
+                                    type   : 'warning'
+                                });
+                            }
+                        },
+                        fail(){
+                            console.log('网络错误')
+                            $Toast({
+                                content: '网络错误，请稍后重试',
+                                type   : 'warning'
+                            });
+                        }
                     })
-
                     /*if (true) {//注册成功
                         $Toast({
                             content: '重置成功',
@@ -52,67 +77,63 @@
                             duration: 2,
                         });
                     }*/
-
-
                 } else {
                     console.log(' 重置 不通过')
                 }
             },
             getcode(){
-                if (this.cell == "") {
+                var _this = this
+                if(this.cell == ""){
                     $Toast({
                         content: '请输入手机号码',
-                        type: 'warning'
+                        type   : 'warning'
                     });
                 } else {
-                    $Toast({
-                        content: '验证码已发送',
-                        type: 'warning'
-                    });
-                    // this.disabled = "disabled"
-                    this.btnable = "disabled";
-                    console.log('You Just Fucked getcode');
-                    const TIME_COUNT = 15;
-                    if (!this.timer) {
-                        this.count = TIME_COUNT;
-                        this.timer = setInterval(() =>{
-                            if (this.count > 0 && this.count <= TIME_COUNT) {
-                                this.count--;
-                                this.codeText = this.count + 's后重新获取'
-                            } else {
-                                this.btnable = "",
-                                    clearInterval(this.timer);
-                                this.codeText = "获取验证码"
-                                this.timer = null;
+                    
+                    //提交
+                    wx.request({
+                        url: 'https://hd.xmountguan.com/railway/other.aspx?func=SendSms&mobile=' + _this.cell,
+                        success(res){
+                            if(res.data.success = "success"){
+                                $Toast({
+                                    content: '验证码已发送',
+                                    type   : 'warning'
+                                });
+                                // this.disabled = "disabled"
+                                _this.btnable = "disabled";
+                                console.log('You Just Fucked getcode');
+                                const TIME_COUNT = 60;
+                                if(! _this.timer){
+                                    _this.count = TIME_COUNT;
+                                    _this.timer = setInterval(() =>{
+                                        if(_this.count > 0 && _this.count <= TIME_COUNT){
+                                            _this.count --;
+                                            _this.codeText = _this.count + 's后重新获取'
+                                        } else {
+                                            _this.btnable = "",
+                                                clearInterval(_this.timer);
+                                            _this.codeText = "获取验证码"
+                                            _this.timer = null;
+                                        }
+                                    },1000)
+                                }
                             }
-                        }, 1000)
-                    }
+                        },
+                        fail(){
+                            console.log('网络错误')
+                            $Toast({
+                                content: '网络错误，请稍后重试',
+                                type   : 'warning'
+                            });
+                        }
+                    })
                 }
-            }
-            ,
+            },
             check(){
-                if (this.cell == "") {
-                    $Toast({
-                        content: '请输入正确的手机号',
-                        type: 'warning'
-                    });
-                    return false
-                } else if (this.psw == "") {
-                    $Toast({
-                        content: '请输入注册密码',
-                        type: 'warning'
-                    });
-                    return false
-                } else if (this.psw2 != this.psw2) {
-                    $Toast({
-                        content: '两次密码不一致',
-                        type: 'warning'
-                    });
-                    return false
-                } else if (this.authcode == "") {
+                if(this.authcode == ""){
                     $Toast({
                         content: '请获取验证码',
-                        type: 'warning'
+                        type   : 'warning'
                     });
                     return false
                 } else {
@@ -123,6 +144,9 @@
         ,
         created(){
             // let app = getApp()
+        },
+        mounted(){
+            this.cell = wx.getStorageSync('Mobile')
         }
     }
 </script>
@@ -135,7 +159,6 @@
         position   : absolute;
         top        : 22rpx;
         left       : 0;
-
     }
     .getcode {
         width       : 185rpx;
@@ -151,7 +174,6 @@
         font-size   : 26rpx;
         padding     : 0;
         box-sizing  : border-box;
-
     }
     .box {
         display         : flex;
@@ -172,7 +194,6 @@
         height     : 709rpx;
         text-align : center;
         position   : relative;
-
     }
     .ipt {
         width         : 100%;
@@ -185,7 +206,6 @@
         border        : 1rpx solid #b1b1b1;
         position      : relative;
         margin-bottom : 50rpx;
-
     }
     .ipt .usercell, .ipt .password {
         width       : 88%;
@@ -214,7 +234,6 @@
         height      : 80rpx;
         line-height : 80rpx;
         font-size   : 28rpx;
-
     }
     .spans {
         width      : 100%;

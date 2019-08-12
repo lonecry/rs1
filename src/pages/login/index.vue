@@ -25,8 +25,8 @@ import { $Toast } from '../../../static/iview/base/index'
 export default {
     data() {
         return {
-            cell: '13555555555',
-            psw: '12345678'
+            cell: '',
+            psw: ''
         }
     },
     components: {},
@@ -89,6 +89,9 @@ export default {
                 type: 'warning'
             });
         },
+    },
+    mounted(){
+    
     },
 
     onShow() {

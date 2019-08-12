@@ -10,7 +10,8 @@
         </div>
         <div class = "ipts iptbox">
             <span class = "iboxtitle">*报修内容</span>
-            <span @click = "selectErr" :class = "{active:currnetIndex==index}" :data-errkey = "index" :data-mid = 'item.errKey' class = "rptypes" v-for = "(item,index) in errors" :key = "index">{{item.errcontent}} <span class = "gou"><i-icon type = "flag_fill" size = "21" color = "red"/></span> </span>
+            <span @click = "selectErr" :class = "{active:currnetIndex==index}" :data-errkey = "index" :data-mid = "item.mid" class = "rptypes" v-for = "(item,index) in errors" :key = "index">{{item.errcontent}} <span
+                class = "gou"><i-icon type = "flag_fill" size = "21" color = "red"/></span> </span>
         </div>
         <div class = "ipts">
             <span class = "ititle">*报修类型</span>
@@ -139,7 +140,7 @@
                         console.log(res.data)
                         _this.errors = []
                         for(var item of res.data){
-                            _this.errors.push({"errKey" : item.MCID,"errcontent" : item.MaintenanceContent},)
+                            _this.errors.push({"errKey" : item.MCID,"errcontent" : item.MaintenanceContent})
                         }
                         console.log(_this.errors);
                     },
@@ -150,7 +151,7 @@
             },
             selectErr(e){
                 var _this = this
-                // console.log(e.mp.currentTarget.dataset.errkey);
+                console.log(e.mp.currentTarget.dataset);
                 this.currnetIndex = e.mp.currentTarget.dataset.errkey
                 this.m_c_value = this.errors[this.currnetIndex].errcontent
                 console.log(this.currnetIndex,this.m_c_value)
@@ -277,7 +278,7 @@
             gologin(){
                 this.gologinShow = false
                 mpvue.navigateTo({
-                    url : '../login/main',
+                    url : '../login/main?report='+true,
                 })
             },
             logoincancel(){
@@ -348,9 +349,11 @@
                                     // wx.redirectTo({
                                     //     url: '../indexswiper/main'
                                     // })
-                                    wx.reLaunch({
-                                        url : '../indexswiper/main'
-                                    })
+                                  setTimeout(()=>{
+                                      wx.reLaunch({
+                                          url : '../indexswiper/main'
+                                      })
+                                  },2000)
                                 }
                             },
                             fail(){
@@ -470,7 +473,7 @@
                     _this.errorTypes = []
                     for(var item of res.data){
                         console.log(item);
-                        _this.errorTypes.push({"errKey" : item.mid,"errDetail" : item.maintenanceType},)
+                        _this.errorTypes.push({"errKey" : item.mid,"errDetail" : item.maintenanceType} )
                         _this.errorsarray.push(
                             item.maintenanceType,
                         )
@@ -487,7 +490,7 @@
                     console.log(res.data)
                     _this.errors = []
                     for(var item of res.data){
-                        _this.errors.push({"errKey" : item.MCID,"errcontent" : item.MaintenanceContent},)
+                        _this.errors.push({"errKey" : item.MCID,"errcontent" : item.MaintenanceContent,"mid":item.MID} )
                     }
                     console.log(_this.errors);
                 },

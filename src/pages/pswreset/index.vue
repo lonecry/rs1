@@ -3,7 +3,7 @@
         <h1 class = "miantitle">重置密码</h1>
         <div class = "loginbox">
             <div class = "ipt">
-                <input class = "usercell" v-model = "cell" placeholder = "请输入手机号码"/>
+                <input class = "usercell" v-model = "cell" disabled placeholder = "请输入手机号码"/>
                 <i-icon type = "mobilephone" size = "26" color = "#ACACAC" class = "usericon"/>
             </div>
             <div class = "ipt">
@@ -55,7 +55,7 @@
                         url: "https://hd.xmountguan.com/railway/user.aspx?func=resetPwd&mobile=" + _this.cell + "&newpwd=" + _this.psw + '&vcode=' + _this.authcode,
                         success(res){
                             console.log(res.data)
-                            if(res.data.success == "success"){
+                            if(res.data.result == "1|reset success"){
                                 $Toast({
                                     content : '重置成功',
                                     type    : 'success',
@@ -166,11 +166,11 @@
                     return true
                 }
             }
+        },
+        mounted(){
+            this.cell = wx.getStorageSync("Mobile")
         }
-        ,
-        created(){
-            // let app = getApp()
-        }
+  
     }
 </script>
 <style scoped>
