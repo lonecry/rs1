@@ -3,7 +3,7 @@
         <h1 class = "miantitle">重置密码</h1>
         <div class = "loginbox">
             <div class = "ipt">
-                <input class = "usercell" v-model = "cell" disabled placeholder = "请输入手机号码"/>
+                <input class = "usercell" v-model = "cell"   placeholder = "请输入手机号码"/>
                 <i-icon type = "mobilephone" size = "26" color = "#ACACAC" class = "usericon"/>
             </div>
             <div class = "ipt">
