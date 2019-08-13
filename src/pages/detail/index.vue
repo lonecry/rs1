@@ -77,7 +77,7 @@
                 <span class="bxlist" style="text-align: left; word-break:break-all; "><span
                     class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
                 <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
-                <span class="bxlist" v-if="ratealready"><span class="spans inspan">满意度:</span> {{ratetxt}} </span>
+                <span class="bxlist" v-if="ratealready&&detail.state!==3"><span class="spans inspan">满意度:</span> {{ratetxt}} </span>
             </div>
         </div>
         <i-button v-if="judgement&&!ratealready" type="primary" class="judge" @click="judgeToggle">评 价</i-button>
@@ -357,7 +357,8 @@
                     _this.detail.origin.address = Things.DetailLocation;
                     _this.detail.origin.taidanhao = Things.TaidanNo;
                     console.log(Things.Rate);
-                    if (Things.Rate !== "") {
+
+                    if (!(Things.Rate == ""||Things.Rate==null||typeof(Things.Rate)=="undefined")) {
                         _this.ratealready = true;
                         _this.rate = parseInt(Things.rate);
                         console.log("000");
@@ -365,11 +366,11 @@
                             console.log("111");
                             _this.ratetxt = '不满意'
                             _this.ratecode = 1
-                        } else if (Things.Rate < 5) {
+                        } else if (Things.Rate < 2) {
                             console.log("222");
                             _this.ratetxt = '基本满意'
                             _this.ratecode = 2
-                        } else if (Things.Rate == 5) {
+                        } else if (Things.Rate == 3) {
                             console.log("333");
                             _this.ratetxt = '满意'
                             _this.ratecode = 3

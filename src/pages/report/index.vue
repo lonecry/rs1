@@ -302,7 +302,7 @@
                 this.gologinShow = false
                 wx.setStorageSync('fromreport', true)
                 mpvue.navigateTo({
-                    url: '../login/main?fromreport=' + true,
+                    url: '../login/main?fromreport=',
                 })
             },
             logoincancel() {
@@ -386,7 +386,7 @@
                                             url: '../indexswiper/main?fromreport=yes'
                                         })
                                     }, 2000)
-                                    wx.setStorageSync('fromreport', false)
+
                                 }
                             },
                             fail() {
