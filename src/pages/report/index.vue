@@ -383,7 +383,7 @@
                                     // })
                                     setTimeout(() => {
                                         wx.reLaunch({
-                                            url: '../indexswiper/main'
+                                            url: '../indexswiper/main?fromreport=yes'
                                         })
                                     }, 2000)
                                     wx.setStorageSync('fromreport', false)

@@ -1,7 +1,11 @@
 <template>
     <div class=" box">
 
-        <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" @click="getUserInfoClick"
+      <!--  <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" @click="getUserInfoClick"
+                style="width: 100rpx;background: transparent;height: 100rpx;position: fixed;z-index: 2;border: none">
+            <i-icon type="mine" size="26" color="#ACACAC" class="icon"/>
+        </button>  -->
+        <button   @click="bindGetUserInfo"
                 style="width: 100rpx;background: transparent;height: 100rpx;position: fixed;z-index: 2;border: none">
             <i-icon type="mine" size="26" color="#ACACAC" class="icon"/>
         </button>
@@ -166,8 +170,8 @@
         <i-button @click="goreport" class="goreport" type="primary">一键报修</i-button>
         <i-drawer mode="left" @click="toggleLeft" :visible="showleft" class="i-drawer-mask">
             <div class="demo-container" @click.stop>
-                <img v-if="usershow" :src="userIcon" class="usericon" @click="changeIcon" alt=""/>
-                <span v-if="usershow" class="username">{{usserName}}</span>
+               <!-- <img v-if="usershow" :src="userIcon" class="usericon" @click="changeIcon" alt=""/>
+                <span v-if="usershow" class="username">{{usserName}}</span>-->
                 <view v-if="login" style="width: 80%">
                     <view class="cz chongzhiPsw" @click="pswreset">
                         <i-icon type="lock_fill" size="21" color="#ACACAC"/>
@@ -886,20 +890,21 @@
                 })
             },
             bindGetUserInfo(e) {
+                this.toggleLeft() // 变 化
                 // console.log('回调事件后触发')
-                const self = this;
-                if (e.mp.detail.userInfo) {
-                    console.log('用户按了允许授权按钮')
-                    console.log(e.mp.detail.userInfo);
-                    this.toggleLeft() // 变 化
-                    wx.setStorageSync('user', e.mp.detail.userInfo);
-                    this.userSet(e.mp.detail.userInfo)
-                    this.usershow = true
-                } else {
-                    this.toggleLeft() // 变 化
-                    //用户按了拒绝按钮
-                    console.log('用户按了拒绝按钮');
-                }
+                // const self = this;
+                // if (e.mp.detail.userInfo) {
+                //     console.log('用户按了允许授权按钮')
+                //     console.log(e.mp.detail.userInfo);
+                //     this.toggleLeft() // 变 化
+                //     wx.setStorageSync('user', e.mp.detail.userInfo);
+                //     this.userSet(e.mp.detail.userInfo)
+                //     this.usershow = true
+                // } else {
+                //     this.toggleLeft() // 变 化
+                //     //用户按了拒绝按钮
+                //     console.log('用户按了拒绝按钮');
+                // }
             },
             userSet(res) {
                 this.userIcon = res.avatarUrl;
@@ -1202,6 +1207,11 @@
             console.log('on load')
         },
         mounted() {
+
+            var from = this.$root.$mp.query.fromreport
+            if(from=='yes'){
+                this.current_scroll=1
+            }
             console.log('mounted')
             let _this = this;
             let wx = mpvue;
