@@ -66,7 +66,7 @@
         </div>
         <div class="ipts iptbox">
             <span class="ititle">*详细位置描述</span>
-            <textarea class="reportDesc" v-model="value5" type="textarea" title="详细位置描述" maxlength="50" autofocus
+            <textarea class="reportDesc" v-model="value5" type="textarea" title="详细位置描述" maxlength="150" autofocus
                       placeholder="请输入报修描述"></textarea>
         </div>
         <div class="ipts">
@@ -333,13 +333,16 @@
                     var imgsidforload = ''
 
                     for (var item of this.imgsId) {
-                        if (item) {
+
+                        if (!(item==""||item==undefined||item==null||typeof(item) == "undefined")) {
+
                             arrtemp.push(item)
                         }
                     }
 
-                    imgsidforload = this.imgsId.join(',')
+                    imgsidforload =  arrtemp.join(',')
 
+                    console.log(imgsidforload);
 
                     var json = {
                         "ordertype": 1,
