@@ -63,6 +63,7 @@
                     wx.setStorageSync("UID",json.UID)
                     wx.setStorageSync("Mobile",json.Mobile)
                     wx.setStorageSync("openid",json.OpenID)
+                    wx.setStorageSync("UserName",json.UserName)
                 }).catch(() =>{
                     wx.showToast({
                         title   : "网络失败请重试！",

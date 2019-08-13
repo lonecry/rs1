@@ -18,7 +18,7 @@
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-    
+
     export default {
         data(){
             return {
@@ -42,7 +42,7 @@
                 mpvue.setStorageSync("cell",this.cell)
                 mpvue.setStorageSync("psw",this.psw)
                 if(this.check()){
-                    
+
                     //提交
                     wx.request({
                         url:
@@ -89,7 +89,7 @@
                         type   : 'warning'
                     });
                 } else {
-                    
+
                     //提交
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/other.aspx?func=SendSms&mobile=' + _this.cell,
@@ -147,6 +147,7 @@
         },
         mounted(){
             this.cell = wx.getStorageSync('Mobile')
+            this.authcode='';
         }
     }
 </script>

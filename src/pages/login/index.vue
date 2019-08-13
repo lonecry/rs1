@@ -98,7 +98,8 @@
             },
         },
         mounted() {
-
+            console.log(this.$root.$mp.appOptions)
+            console.log(this.$root.$mp.query)
         },
 
         onShow() {

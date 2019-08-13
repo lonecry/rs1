@@ -1,54 +1,54 @@
 <template>
-    <div style = "padding-bottom:150rpx;">
-        <div class = "ipts">
-            <span class = "ititle">状态</span>
+    <div style="padding-bottom:150rpx;">
+        <div class="ipts">
+            <span class="ititle">状态</span>
             <span
-                :class = "[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
+                :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
         </div>
         <!-- <div class="ipts">
              <span class="ititle">维修班组</span>
              <span class="ript">{{detail.banzu}}</span>
          </div>-->
-        <div class = "ipts" v-if = "(detail.state==1||detail.state==2||detail.state==3)&&(detail.gongzhang)">
-            <span class = "ititle">工长</span>
-            <span class = "ript">{{detail.gongzhang}}</span>
+        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3)&&(detail.gongzhang)">
+            <span class="ititle">工长</span>
+            <span class="ript">{{detail.gongzhang}}</span>
         </div>
-        <div class = "ipts" v-if = "(detail.state==1||detail.state==2||detail.state==3)&&(detail.gzcell)">
-            <span class = "ititle">工长监督电话</span>
-            <span class = "ript phone" @click = 'makeacall' :data-cell = "detail.gzcell">{{detail.gzcell}}</span>
+        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3)&&(detail.gzcell)">
+            <span class="ititle">工长监督电话</span>
+            <span class="ript phone" @click='makeacall' :data-cell="detail.gzcell">{{detail.gzcell}}</span>
         </div>
-        <div class = "ipts" v-if = "(detail.state==1||detail.state==2||detail.state==3)&&(detail.weixiugong)">
-            <span class = "ititle">维修工</span>
-            <span class = "ript">{{detail.weixiugong}}</span>
+        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3)&&(detail.weixiugong)">
+            <span class="ititle">维修工</span>
+            <span class="ript">{{detail.weixiugong}}</span>
         </div>
         <!--   <div class="ipts">
                <span class="ititle">维修工电话</span>
                <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
            </div>-->
-        <div class = "ipts" v-if = "detail.state==1||detail.state==2||detail.state==3">
-            <span class = "ititle">调度室举报电话</span>
-            <span class = "ript phone" @click = 'makeacall' :data-cell = "detail.jubao">{{detail.jubao}}</span>
+        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3">
+            <span class="ititle">调度室举报电话</span>
+            <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
         </div>
-        <div class = "ipts" v-if = "detail.state==3">
-            <span class = "ititle stoptitle">中止原因</span>
-            <view class = "stopreason">
+        <div class="ipts" v-if="detail.state==3">
+            <span class="ititle stoptitle">中止原因</span>
+            <view class="stopreason">
                 中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因
             </view>
         </div>
         <!--<div class="ipts">-->
         <!--<span class="ititle" @click='forNav'>forNav</span>-->
         <!--</div>-->
-        <div class = "detailbox">
-            <span class = "xqtxt">详情:
-                <i-icon type = "label" size = "20"/></span>
-            <div class = "detail">
-                <span class = "bxlist">
-                    <span class = "spans inspan">报修单号:</span>
-                    <span class = "spans  ">{{detail.origin.danhao}}</span>
+        <div class="detailbox">
+            <span class="xqtxt">详情:
+                <i-icon type="label" size="20"/></span>
+            <div class="detail">
+                <span class="bxlist">
+                    <span class="spans inspan">报修单号:</span>
+                    <span class="spans  ">{{detail.origin.danhao}}</span>
                 </span>
-                <span class = "bxlist">
-                    <span class = "spans inspan">报修时间:</span>
-                    <span class = "spans    ">{{detail.origin.time}}</span>
+                <span class="bxlist">
+                    <span class="spans inspan">报修时间:</span>
+                    <span class="spans    ">{{detail.origin.time}}</span>
                 </span>
                 <!-- <span class="bxlist">
                      <span class="spans inspan">报修人姓名:</span>
@@ -58,35 +58,37 @@
                      <span class="spans inspan">手机号:</span>
                      <span class="spans  phone" @click='makeacall' :data-cell="detail.origin.phone">{{detail.origin.phone}}</span>
                  </span>-->
-                <span class = "bxlist"><span class = "spans inspan">报修类型:</span> <span class = "spans  ">{{detail.origin.type}}</span></span>
-                <span class = "bxlist">
-                    <span class = "spans inspan">报修内容:</span>
-                    <span class = "neirong" v-for = "(item,index) in detail.origin.content" :key = "index">{{item}}</span>
+                <span class="bxlist"><span class="spans inspan">报修类型:</span> <span class="spans  ">{{detail.origin.type}}</span></span>
+                <span class="bxlist">
+                    <span class="spans inspan">报修内容:</span>
+                    <span class="neirong" v-for="(item,index) in detail.origin.content" :key="index">{{item}}</span>
                 </span>
-                <span class = "bxlist">
-                    <span class = "spans inspan">现场图片:</span>
+                <span class="bxlist">
+                    <span class="spans inspan">现场图片:</span>
                     <div>
-                        <div class = "imgbox" v-for = "(item,index) in detail.origin.imgsUrl" :key = "index">
-                            <img :src = "item" :mode = "'widthFix'" @click = 'preview(index)' class = "slt" alt = "缩略图">
+                        <div class="imgbox" v-for="(item,index) in detail.origin.imgsUrl" :key="index">
+                            <img :src="item" :mode="'widthFix'" @click='preview(index)' class="slt" alt="缩略图">
                         </div>
                     </div>
                 </span>
-                <span class = "bxlist"><span class = "spans inspan">车站:</span>
-                    <i-icon style = "position:relative;top:-4rpx;" type = "coordinates_fill" size = "26" color = "#2d8cf0"
-                            class = "usericon"/><span class = "spans  ">{{detail.origin.station}}</span></span>
-                <span class = "bxlist" style = "text-align: left"><span class = "spans inspan">详细位置:</span> {{detail.origin.address}} </span>
-                <span class = "bxlist"><span class = "spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
-                <span class = "bxlist" v-if = "ratealready"><span class = "spans inspan">满意度:</span> {{ratetxt}} </span>
+                <span class="bxlist"><span class="spans inspan">车站:</span>
+                    <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="26" color="#2d8cf0"
+                            class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
+                <span class="bxlist" style="text-align: left; word-break:break-all; "><span
+                    class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
+                <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
+                <span class="bxlist" v-if="ratealready"><span class="spans inspan">满意度:</span> {{ratetxt}} </span>
             </div>
         </div>
-        <i-button v-if = "judgement&&!ratealready" type = "primary" class = "judge" @click = "judgeToggle">评 价</i-button>
-        <div class = "mask" v-show = "judgeShow" @click = "judgeToggle">
-            <div class = "card" @click.stop = ''>
-                <view style = "overflow: hidden">
-                    <van-rate :value = "rate" @change = "onrateChange" style = 'display: block;margin: 0 auto;width: 100%;text-align: center;margin-top: 52rpx;'/>
-                    <div class = "ratebox">
-                        <span class = "ratetxt">满意度调查：</span>
-                        <span class = "ratetxt">{{ratetxt}}</span>
+        <i-button v-if="judgement&&!ratealready" type="primary" class="judge" @click="judgeToggle">评 价</i-button>
+        <div class="mask" v-show="judgeShow" @click="judgeToggle">
+            <div class="card" @click.stop=''>
+                <view style="overflow: hidden">
+                    <van-rate :value="rate" @change="onrateChange"
+                              style='display: block;margin: 0 auto;width: 100%;text-align: center;margin-top: 52rpx;'/>
+                    <div class="ratebox">
+                        <span class="ratetxt">满意度调查：</span>
+                        <span class="ratetxt">{{ratetxt}}</span>
                     </div>
                     <!--  <span :class="[{select:selectIndex==1},'col6', 'col1']" data-sid="1" @click.stop="judge">
                        <img src="/static/images/nice.png" class="nice jicon" alt="">
@@ -99,64 +101,64 @@
                        <span class="jdtext">差评</span>
                    </span> -->
                 </view>
-                <view class = "reasoniptbox" v-if = "reasonShow">
-                    <textarea :value = "badReason" class = "reasonipt" placeholder = "请填写您的差评理由(200字以内)" maxlength = "200"/>
+                <view class="reasoniptbox" v-if="reasonShow">
+                    <textarea :value="badReason" class="reasonipt" placeholder="请填写您的差评理由(200字以内)" maxlength="200"/>
                 </view>
-                <view class = "submitbox">
-                    <i-button type = "primary" size = "small" @click.stop = "submit">提交</i-button>
+                <view class="submitbox">
+                    <i-button type="primary" size="small" @click.stop="submit">提交</i-button>
                 </view>
             </div>
         </div>
-        <i-toast id = "toast"/>
+        <i-toast id="toast"/>
     </div>
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-    
+
     export default {
-        data(){
+        data() {
             return {
-                detail     : {
-                    state     : 2,
-                    banzu     : '一工队',
-                    gongzhang : '张三',
-                    gzcell    : '13858585654',
+                detail: {
+                    state: 2,
+                    banzu: '一工队',
+                    gongzhang: '张三',
+                    gzcell: '13858585654',
                     weixiugong: '李四',
-                    wxgcell   : '13865656545',
-                    jubao     : '0571-88888888',
-                    location  : '',
-                    origin    : {
-                        danhao   : 'WX1245151424',
-                        time     : "2019年7月04日 18:44",
-                        name     : "张三",
-                        phone    : "13854587485",
-                        type     : '水电问题',
-                        content  : ['度数不转'],
-                        imgsUrl  : ['http://www.simpleqq.com/index/imgs/tab/tab4.jpg',"https://www.simpleqq.com/index/imgs/imgdemo.jpg"],
-                        station  : "杭州南站",
-                        address  : "杭州南站习广场东侧候车厅小隔间大阳台小浴室的拐角的洞洞里",
+                    wxgcell: '13865656545',
+                    jubao: '0571-88888888',
+                    location: '',
+                    origin: {
+                        danhao: 'WX1245151424',
+                        time: "2019年7月04日 18:44",
+                        name: "张三",
+                        phone: "13854587485",
+                        type: '水电问题',
+                        content: ['度数不转'],
+                        imgsUrl: ['http://www.simpleqq.com/index/imgs/tab/tab4.jpg', "https://www.simpleqq.com/index/imgs/imgdemo.jpg"],
+                        station: "杭州南站",
+                        address: "杭州南站习广场东侧候车厅小隔间大阳台小浴室的拐角的洞洞里",
                         taidanhao: 'this is off'
                     },
                 },
                 selectIndex: '',
-                judgeShow  : false,
-                reasonShow : false,
-                badReason  : "",
-                oid        : '',
-                rate       : 3,//评分
-                ratetxt    : '基本满意',
-                ratecode   : 2,
+                judgeShow: false,
+                reasonShow: false,
+                badReason: "",
+                oid: '',
+                rate: 3,//评分
+                ratetxt: '基本满意',
+                ratecode: 2,
                 ratealready: false
             }
         },
         computed: {
-            judgement: function(){
+            judgement: function () {
                 console.log(this.detail.state);
                 return (this.detail.state == 2 || this.detail.state == 3) ? true : false
             }
         },
-        methods : {
-            makeacall(e){
+        methods: {
+            makeacall(e) {
                 let wx = mpvue
                 let number = e.mp.currentTarget.dataset.cell
                 console.log(number)
@@ -164,7 +166,7 @@
                     phoneNumber: number //仅为示例，并非真实的电话号码
                 })
             },
-            forNav       : function(){
+            forNav: function () {
                 // 地图选择
                 // wx.chooseLocation({
                 //     success: function (res){
@@ -182,58 +184,58 @@
                 // })
                 // wx.vibrateShort()
                 var _this = this
-                _this.getPermission(_this).then(() =>{
+                _this.getPermission(_this).then(() => {
                     var destination = {
-                        latitude : _this.data.latitude,
+                        latitude: _this.data.latitude,
                         longitude: _this.data.longitude,
-                        name     : "中国浙江省杭州市西湖区莫干山路111号",
-                        address  : "浙江省杭州市拱墅区米市巷街道半道红社区西南方向",
-                        scale    : 18
+                        name: "中国浙江省杭州市西湖区莫干山路111号",
+                        address: "浙江省杭州市拱墅区米市巷街道半道红社区西南方向",
+                        scale: 18
                     }
-                    wx.setStorageSync('destination',destination)
+                    wx.setStorageSync('destination', destination)
                     mpvue.navigateTo({
                         url: '../locationSearch/main',
                     })
                 })
             },
-            getPermission: function(obj){
+            getPermission: function (obj) {
                 var wx = mpvue
-                var pmse = new Promise((resolve,reject) =>{
+                var pmse = new Promise((resolve, reject) => {
                     wx.getLocation({
-                        type   : 'gcj02', //返回可以用于wx.openLocation的经纬度
-                        success: function(res){
+                        type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+                        success: function (res) {
                             console.log(res);
                             obj.location = {
-                                latitude : res.latitude,     //latitude,
+                                latitude: res.latitude,     //latitude,
                                 longitude: res.longitude      //latitude
                             }
                             resolve()
                         },
-                        fail   : function(){
+                        fail: function () {
                             wx.getSetting({
-                                success: function(res){
+                                success: function (res) {
                                     var statu = res.authSetting;
-                                    if(! statu['scope.userLocation']){
+                                    if (!statu['scope.userLocation']) {
                                         wx.showModal({
-                                            title  : '是否授权当前位置',
+                                            title: '是否授权当前位置',
                                             content: '需要获取您的地理位置，请确认授权，否则地图功能将无法使用',
-                                            success: function(tip){
-                                                if(tip.confirm){
+                                            success: function (tip) {
+                                                if (tip.confirm) {
                                                     wx.openSetting({
-                                                        success: function(data){
-                                                            if(data.authSetting["scope.userLocation"] === true){
+                                                        success: function (data) {
+                                                            if (data.authSetting["scope.userLocation"] === true) {
                                                                 $Toast({
-                                                                    title   : '授权成功',
-                                                                    icon    : 'success',
+                                                                    title: '授权成功',
+                                                                    icon: 'success',
                                                                     duration: 1
                                                                 })
                                                                 //授权成功之后，再调用chooseLocation选择地方
                                                                 wx.getLocation({
-                                                                    type   : 'gcj02', //返回可以用于wx.openLocation的经纬度
-                                                                    success: function(res){
+                                                                    type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+                                                                    success: function (res) {
                                                                         console.log(res);
                                                                         obj.location = {
-                                                                            latitude : res.latitude,     //latitude,
+                                                                            latitude: res.latitude,     //latitude,
                                                                             longitude: res.longitude      //latitude
                                                                         }
                                                                         resolve()
@@ -241,8 +243,8 @@
                                                                 })
                                                             } else {
                                                                 $Toast({
-                                                                    title   : '授权失败',
-                                                                    icon    : 'success',
+                                                                    title: '授权失败',
+                                                                    icon: 'success',
                                                                     duration: 1
                                                                 })
                                                                 reject()
@@ -254,10 +256,10 @@
                                         })
                                     }
                                 },
-                                fail   : function(res){
+                                fail: function (res) {
                                     $Toast({
-                                        title   : '调用授权窗口失败',
-                                        icon    : 'success',
+                                        title: '调用授权窗口失败',
+                                        icon: 'success',
                                         duration: 1
                                     })
                                     reject()
@@ -268,70 +270,70 @@
                 })
                 return pmse
             },
-            preview      : function(key){
+            preview: function (key) {
                 wx.previewImage({
                     current: this.detail.origin.imgsUrl[key], // 当前显示图片的http链接
-                    urls   : this.detail.origin.imgsUrl  // 需要预览的图片http链接列表
+                    urls: this.detail.origin.imgsUrl  // 需要预览的图片http链接列表
                 })
             },
-            judgeToggle  : function(){
-                this.judgeShow = ! this.judgeShow
+            judgeToggle: function () {
+                this.judgeShow = !this.judgeShow
             },
-            judge        : function(e){
+            judge: function (e) {
                 var sid = e.mp.currentTarget.dataset.sid
                 this.selectIndex = sid;
-                if(sid == 1){
+                if (sid == 1) {
                     this.reasonShow = false
                 } else {
                     this.reasonShow = true
                 }
             },
-            onrateChange(e){
+            onrateChange(e) {
                 this.rate = e.mp.detail
-                if(this.rate == 1){
+                if (this.rate == 1) {
                     this.ratetxt = '不满意'
                     this.ratecode = 1
-                } else if(this.rate < 5){
+                } else if (this.rate < 5) {
                     this.ratetxt = '基本满意'
                     this.ratecode = 2
-                } else if(this.rate == 5){
+                } else if (this.rate == 5) {
                     this.ratetxt = '满意'
                     this.ratecode = 3
                 }
-                console.log(this.rate,this.ratetxt,this.ratecode)
+                console.log(this.rate, this.ratetxt, this.ratecode)
             },
-            submit(){
+            submit() {
                 var _this = this
                 wx.request({
                     url: 'https://hd.xmountguan.com/railway/order.aspx?func=rate_order&uid=' + wx.getStorageSync('UID') + '&oid=' + _this.oid + '&rate=' + _this.ratecode,
-                    success(res){
+                    success(res) {
                         console.log(res);
-                        if(res.data.success){
+                        if (res.data.success) {
                             $Toast({
-                                content : '评价成功',
-                                type    : 'success',
+                                content: '评价成功',
+                                type: 'success',
                                 duration: 2,
                             });
-                            _this.ratealready=true
-                            _this.judgeShow=false
+                            _this.ratealready = true
+                            _this.judgeShow = false
                         } else {
                             $Toast({
                                 content: '请稍后重试',
-                                type   : 'warning'
+                                type: 'warning'
                             });
                         }
-                    },fail(){
+                    }, fail() {
                         $Toast({
                             content: '请稍后重试',
-                            type   : 'warning'
+                            type: 'warning'
                         });
                     }
                 })
             }
         },
-        created(){
+        created() {
         },
-        onShow  : function(){
+        onShow: function () {
             var _this = this
             this.oid = this.$root.$mp.query.oid;
             console.log(this.oid)
@@ -340,7 +342,7 @@
             //
             wx.request({
                 url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_order_detail&oid=' + this.oid, //仅为示例，并非真实的接口地址
-                success(res){
+                success(res) {
                     console.log(res.data)
                     var Things = res.data
                     _this.detail.weixiugong = Things.RepairMan
@@ -355,19 +357,19 @@
                     _this.detail.origin.address = Things.DetailLocation;
                     _this.detail.origin.taidanhao = Things.TaidanNo;
                     console.log(Things.Rate);
-                    if(Things.Rate!==""){
+                    if (Things.Rate !== "") {
                         _this.ratealready = true;
                         _this.rate = parseInt(Things.rate);
                         console.log("000");
-                        if(Things.Rate == 1){
+                        if (Things.Rate == 1) {
                             console.log("111");
                             _this.ratetxt = '不满意'
                             _this.ratecode = 1
-                        } else if(Things.Rate< 5){
+                        } else if (Things.Rate < 5) {
                             console.log("222");
                             _this.ratetxt = '基本满意'
                             _this.ratecode = 2
-                        } else if(Things.Rate== 5){
+                        } else if (Things.Rate == 5) {
                             console.log("333");
                             _this.ratetxt = '满意'
                             _this.ratecode = 3
@@ -375,13 +377,13 @@
                     }
                     var statusText = Things.OrderStatus
                     var statuscode = ''
-                    if(statusText == "待处理"){
+                    if (statusText == "待处理") {
                         statuscode = "0"
-                    } else if(statusText == "维修中"){
+                    } else if (statusText == "维修中") {
                         statuscode = "1"
-                    } else if(statusText == "已完成"){
+                    } else if (statusText == "已完成") {
                         statuscode = "2"
-                    } else if(statusText == "已中止"){
+                    } else if (statusText == "已中止") {
                         statuscode = "3"
                     }
                     _this.detail.state = statuscode
@@ -392,217 +394,252 @@
 </script>
 <style>
     .gray {
-        color : gray;
+        color: gray;
     }
+
     .yellow {
-        color : #ff8c2e;
+        color: #ff8c2e;
     }
+
     .green {
-        color : green;
+        color: green;
     }
+
     .red {
-        color : #ed283c;
+        color: #ed283c;
     }
+
     .ipts {
-        min-height    : 76rpx;
-        line-height   : 70rpx;
-        font-size     : 28rpx;
-        display       : block;
-        margin        : 0 auto;
-        color         : #3f4147;
-        border-bottom : 1rpx solid rgba(222, 222, 222, 0.67);
-        width         : 100%;
-        box-sizing    : border-box;
-        padding       : 0 20rpx;
+        min-height: 76rpx;
+        line-height: 70rpx;
+        font-size: 28rpx;
+        display: block;
+        margin: 0 auto;
+        color: #3f4147;
+        border-bottom: 1rpx solid rgba(222, 222, 222, 0.67);
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 20rpx;
     }
+
     .ititle {
-        display      : block;
-        float        : left;
-        padding-left : 10rpx;
+        display: block;
+        float: left;
+        padding-left: 10rpx;
     }
+
     .ript {
-        display       : block;
-        height        : 70rpx;
-        line-height   : 70rpx;
-        float         : right;
-        text-align    : right;
-        padding-right : 10rpx;
+        display: block;
+        height: 70rpx;
+        line-height: 70rpx;
+        float: right;
+        text-align: right;
+        padding-right: 10rpx;
         /*background: #ededed;*/
-        width         : 470rpx;
+        width: 470rpx;
     }
+
     .phone {
-        color : #2d8cf0;
+        color: #2d8cf0;
     }
+
     .active .gou {
-        display : inline;
+        display: inline;
     }
+
     .detailbox {
-        width              : 100%;
-        padding            : 20rpx;
-        box-sizing         : border-box;
-        -webkit-box-sizing : border-box;
+        width: 100%;
+        padding: 20rpx;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
     }
+
     .xqtxt {
-        font-weight : bold;
-        font-size   : 30rpx
+        font-weight: bold;
+        font-size: 30rpx
     }
+
     .detail {
-        width      : 100%;
-        min-height : 600rpx;
-        border     : 1rpx solid rgba(128, 128, 128, 0.37);
-        margin-top : 10rpx;
-        padding    : 10rpx;
-        box-sizing : border-box;
-        box-shadow : 0 0 10rpx rgba(92, 92, 92, 0.36);
+        width: 100%;
+        min-height: 600rpx;
+        border: 1rpx solid rgba(128, 128, 128, 0.37);
+        margin-top: 10rpx;
+        padding: 10rpx;
+        box-sizing: border-box;
+        box-shadow: 0 0 10rpx rgba(92, 92, 92, 0.36);
+        border-radius: 15rpx;
     }
+
     .bxlist {
-        width        : 100%;
-        display      : block;
-        min-height   : 50rpx;
-        line-height  : 50rpx;
-        font-size    : 28rpx;
-        text-align   : justify;
-        padding-left : 10rpx;
-        box-sizing   : border-box;
+        width: 100%;
+        display: block;
+        min-height: 50rpx;
+        line-height: 50rpx;
+        font-size: 28rpx;
+        text-align: justify;
+        padding-left: 10rpx;
+        box-sizing: border-box;
     }
+
     .spans, .neirong {
-        display : inline-block;
+        display: inline-block;
     }
+
     .neirong {
-        border        : 1rpx solid #b2b8c5;
-        border-radius : 10rpx;
-        margin        : 0 10rpx 10rpx 10rpx;
-        box-sizing    : border-box;
-        padding       : 0 10rpx;
-        font-size     : 24rpx;
+        border: 1rpx solid #b2b8c5;
+        border-radius: 10rpx;
+        margin: 0 10rpx 10rpx 10rpx;
+        box-sizing: border-box;
+        padding: 0 10rpx;
+        font-size: 24rpx;
     }
+
     .inspan {
-        margin-right : 20rpx;
-        text-align   : left;
+        margin-right: 20rpx;
+        text-align: left;
     }
+
     .imgbox {
-        display  : inline-block;
-        width    : 200rpx;
-        height   : 200rpx;
+        display: inline-block;
+        width: 200rpx;
+        height: 200rpx;
         /*background: rgba(170, 255, 119, 0.6);*/
-        margin   : 0 20rpx 0 0;
-        position : relative;
-        overflow : hidden;
+        margin: 0 20rpx 0 0;
+        position: relative;
+        overflow: hidden;
     }
+
     .slt {
-        position          : absolute;
-        width             : 100%;
-        height            : auto;
-        display           : block;
-        left              : 0;
-        top               : 50%;
-        transform         : translateY(-50%);
-        -webkit-transform : translateY(-50%);
+        position: absolute;
+        width: 100%;
+        height: auto;
+        display: block;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
     }
+
     .judge {
-        margin-bottom : 150rpx;
+        margin-bottom: 150rpx;
     }
+
     .mask {
-        display         : block;
-        width           : 100vw;
-        height          : 100vh;
-        position        : fixed;
-        left            : 0;
-        top             : 0;
-        background      : rgba(0, 0, 0, 0.77);
-        display         : flex;
-        flex-flow       : column wrap;
-        justify-content : center;
-        align-items     : center;
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.77);
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
     }
+
     .card {
-        width          : 70%;
+        width: 70%;
         /*min-height: 500rpx;*/
-        display        : block;
-        background     : white;
-        border-radius  : 20rpx;
-        padding-bottom : 30rpx;
+        display: block;
+        background: white;
+        border-radius: 20rpx;
+        padding-bottom: 30rpx;
     }
+
     .col6 {
-        width       : 40%;
-        height      : 50rpx;
+        width: 40%;
+        height: 50rpx;
         /*background: rgba(28, 36, 56, 0.17);*/
-        float       : left;
-        margin-top  : 74rpx;
-        line-height : 50rpx;
-        text-align  : center;
-        padding     : 0;
-        box-sizing  : border-box;
+        float: left;
+        margin-top: 74rpx;
+        line-height: 50rpx;
+        text-align: center;
+        padding: 0;
+        box-sizing: border-box;
     }
+
     .col1 {
-        margin-left : 10%;
+        margin-left: 10%;
     }
+
     .jicon {
-        width   : 50rpx;
-        height  : 50rpx;
-        display : inline-block;
+        width: 50rpx;
+        height: 50rpx;
+        display: inline-block;
     }
+
     .jdtext {
-        display     : inline-block;
-        font-size   : 20rpx;
-        margin-left : 10rpx;
-        line-height : 21rpx;
-        margin-top  : -68rpx;
-        position    : relative;
-        top         : -14rpx;
+        display: inline-block;
+        font-size: 20rpx;
+        margin-left: 10rpx;
+        line-height: 21rpx;
+        margin-top: -68rpx;
+        position: relative;
+        top: -14rpx;
     }
+
     .select .jdtext {
-        color : rgb(18, 150, 219);
+        color: rgb(18, 150, 219);
     }
+
     .niceactive, .badactive {
-        display : none;
+        display: none;
     }
+
     .select .niceactive, .select .badactive {
-        display : inline-block;
+        display: inline-block;
     }
+
     .select .nice, .select .bad {
-        display : none;
+        display: none;
     }
+
     .stoptitle {
-        display : block;
-        float   : none;
+        display: block;
+        float: none;
     }
+
     .stopreason {
-        display     : block;
-        width       : 97%;
-        margin      : 0 auto;
-        padding     : 20rpx;
-        box-sizing  : border-box;
-        background  : rgba(247, 244, 244, 0.59);
+        display: block;
+        width: 97%;
+        margin: 0 auto;
+        padding: 20rpx;
+        box-sizing: border-box;
+        background: rgba(247, 244, 244, 0.59);
         /*border:1rpx solid gray;*/
-        line-height : 34rpx;
-        font-size   : 27rpx;
+        line-height: 34rpx;
+        font-size: 27rpx;
     }
+
     .reasoniptbox {
-        width      : 81%;
-        border     : 1rpx solid #b2b2b2;
-        display    : block;
-        margin     : 0 auto;
-        margin-top : 30rpx;
-        height     : 142rpx;
-        box-sizing : border-box;
-        padding    : 10rpx;
+        width: 81%;
+        border: 1rpx solid #b2b2b2;
+        display: block;
+        margin: 0 auto;
+        margin-top: 30rpx;
+        height: 142rpx;
+        box-sizing: border-box;
+        padding: 10rpx;
     }
+
     .submitbox {
-        width      : 89%;
-        display    : block;
-        margin     : 0 auto;
-        margin-top : 60rpx;
+        width: 89%;
+        display: block;
+        margin: 0 auto;
+        margin-top: 60rpx;
     }
+
     .reasonipt {
-        width      : 100%;
-        height     : 100%;
-        text-align : justify;
-        font-size  : 23rpx;
-        overflow   : scroll;
+        width: 100%;
+        height: 100%;
+        text-align: justify;
+        font-size: 23rpx;
+        overflow: scroll;
     }
+
     .ratebox {
-        text-align : center;
-        margin-top : 30rpx;
+        text-align: center;
+        margin-top: 30rpx;
     }
 </style>

@@ -54,8 +54,9 @@
         methods: {
             zhuce() {
                 var _this = this
-                mpvue.setStorageSync("cell", this.cell)
-                mpvue.setStorageSync("psw", this.psw)
+                mpvue.setStorageSync("UserName", this.name)
+                mpvue.setStorageSync("Mobile", this.cell)
+                // mpvue.setStorageSync("psw", this.psw)
                 if (this.check()) {
                     //提交注册
                     wx.request({
@@ -81,8 +82,11 @@
                                                 //     url: '../login/main'
                                                 // })
 
+
+                                                var fromreport=wx.getStorageSync("fromreport")
+                                                var url=fromreport?'../report/main?fromreport=yes':'../indexswiper/main'
                                                 wx.redirectTo({
-                                                    url: '../indexswiper/main?fromregister='+true
+                                                    url: url
                                                 })
 
 
@@ -243,8 +247,8 @@
         mounted() {
             // let app = getApp()
             console.log('created')
-            mpvue.setStorageSync("cell", "")
-            mpvue.setStorageSync("psw", "")
+            mpvue.setStorageSync("Mobile", "")
+/*            mpvue.setStorageSync("psw", "")*/
                 this.btnable= "",
                 this.codeText= "获取验证码",
                 this.count= '',

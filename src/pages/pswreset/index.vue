@@ -26,7 +26,7 @@
 </template>
 <script>
     import {$Toast} from '../../../static/iview/base/index'
-    
+
     export default {
         data(){
             return {
@@ -47,8 +47,8 @@
             zhuce(){
                 var _this = this
                 console.log('You Just Fucked register');
-                mpvue.setStorageSync("cell",this.cell)
-                mpvue.setStorageSync("psw",this.psw)
+                mpvue.setStorageSync("Mobile",this.cell)
+                // mpvue.setStorageSync("psw",this.psw)
                 if(this.check()){
                     //提交重置
                     wx.request({
@@ -84,7 +84,7 @@
                         type   : 'warning'
                     });
                 } else {
-                    
+
                     //提交
                     wx.request({
                         url: 'https://hd.xmountguan.com/railway/other.aspx?func=SendSms&mobile=' + _this.cell,
@@ -169,8 +169,11 @@
         },
         mounted(){
             this.cell = wx.getStorageSync("Mobile")
+            this.psw='';
+            this.psw2='';
+            this.authcode='';
         }
-  
+
     }
 </script>
 <style scoped>

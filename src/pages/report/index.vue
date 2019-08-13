@@ -1,12 +1,25 @@
 <template>
     <div>
+        <!-- <div class="ipts">
+             <span class="ititle">报修人姓名</span>
+             <input class="ript" disabled v-model="value1" title="报修人姓名" autofocus placeholder="请输入姓名"/>
+         </div>
+         <div class="ipts">
+             <span class="ititle">手机号</span>
+             <input class="ript" disabled v-model="value2" title="报修人手机" type="number" autofocus placeholder="请输入手机号"/>
+         </div>-->
         <div class="ipts">
-            <span class="ititle">报修人姓名</span>
-            <input class="ript" v-model="value1" title="报修人姓名" autofocus placeholder="请输入姓名"/>
-        </div>
-        <div class="ipts">
-            <span class="ititle">手机号</span>
-            <input class="ript" v-model="value2" title="报修人手机" type="number" autofocus placeholder="请输入手机号"/>
+            <span class="ititle">报修人 </span>
+            <view v-if="!value1" class="reportor">
+                <span @click="gologinfirst">请先登录</span>
+            </view>
+            <view v-else class="reportor">
+                <span style="margin-right: 20rpx">{{value1}}</span>
+                <span>{{value2}}</span>
+            </view>
+
+            <!--     <input class="ript" disabled v-model="value1" title="报修人姓名" autofocus placeholder="请输入姓名"/>
+                 <input class="ript" disabled v-model="value2" title="报修人手机" type="number" autofocus placeholder="请输入手机号"/>-->
         </div>
         <div class="ipts iptbox">
             <span class="iboxtitle">*报修内容</span>
@@ -110,6 +123,7 @@
                 errorsarray: [],
                 array2: ['修补了detail', '不能修detail', '不可归我管detail', '其他detail'],
                 upload: [
+                    {imgurl: '', show: false},
                     {imgurl: '', show: false},
                     {imgurl: '', show: false},
                 ],
@@ -233,6 +247,7 @@
                 _this.upload[indexOfLoad].show = false
                 _this.upload[indexOfLoad].imgurl = ''
                 _this.imgsUrl[indexOfLoad] = ''
+                _this.imgsId[indexOfLoad] = ''
             },
             fileUpload: function (tempFilePaths, index) {
                 console.log("待上传 ：" + tempFilePaths);
@@ -280,10 +295,14 @@
                     }
                 })
             },
+            gologinfirst() {
+                this.gologinShow = true
+            },
             gologin() {
                 this.gologinShow = false
+                wx.setStorageSync('fromreport', true)
                 mpvue.navigateTo({
-                    url: '../login/main?report=' + true,
+                    url: '../login/main?fromreport=' + true,
                 })
             },
             logoincancel() {
@@ -291,7 +310,7 @@
             }
             ,
             handleClick() {
-                var wx=mpvue
+                var wx = mpvue
                 var UID = wx.getStorageSync('UID')
                 if (!UID) {
                     /* wx.redirectTo({
@@ -308,16 +327,20 @@
                     // for (var item in  _this.imgsUrl){
                     //     _this.fileUpload(_this.imgsUrl[item], item)
                     // }
-                    var flg1 = this.imgsId[0]
-                    var flg2 = this.imgsId[1]
+
+                    var arrtemp = []
+
                     var imgsidforload = ''
-                    if (flg1 && flg2) {
-                        imgsidforload = this.imgsId.join(',')
-                    } else if (flg1) {
-                        imgsidforload = this.imgsId[0]
-                    } else if (flg2) {
-                        imgsidforload = this.imgsId[1]
+
+                    for (var item of this.imgsId) {
+                        if (item) {
+                            arrtemp.push(item)
+                        }
                     }
+
+                    imgsidforload = this.imgsId.join(',')
+
+
                     var json = {
                         "ordertype": 1,
                         "sid": _this.selectedCheZhanIndex, //写死
@@ -360,6 +383,7 @@
                                             url: '../indexswiper/main'
                                         })
                                     }, 2000)
+                                    wx.setStorageSync('fromreport', false)
                                 }
                             },
                             fail() {
@@ -464,24 +488,33 @@
                 return pmse
             },
             dataclear() {
-                //数据I清空
-                this.upload = [
-                    {imgurl: '', show: false},
-                    {imgurl: '', show: false},
-                ]
-                this.value1 = '';
-                this.value2 = '';
-                this.currnetIndex = -1
-                this.m_c_value = ""
-                this.errtypes = ""
-                this.chezhanindex = -1
-                this.value5 = ""
+
+                var from = this.$root.$mp.query.fromreport
+
+
+                if (from !== "yes") {
+                    //数据I清空
+                    this.upload = [
+                        {imgurl: '', show: false},
+                        {imgurl: '', show: false},
+                        {imgurl: '', show: false},
+                    ]
+                    // this.value1 = '';
+                    // this.value2 = '';
+                    this.currnetIndex = -1
+                    this.m_c_value = ""
+                    this.errtypes = ""
+                    this.chezhanindex = -1
+                    this.value5 = ""
+                }
 
 
             }
         },
         mounted: function () {
             console.log('mounted')
+            console.log(this.$root.$mp.appOptions)
+            console.log(this.$root.$mp.query)
 
             this.dataclear()
             this.zhantai = mpvue.getStorageSync("addr") || this.zhantai
@@ -489,8 +522,12 @@
             var wx = mpvue;
             var _this = this
             _this.uid = wx.getStorageSync('UID');
-            /* this.value1 = wx.getStorageSync("UserName")
-             this.value2 = wx.getStorageSync("Mobile")*/
+            if (_this.uid) {
+
+                this.value1 = wx.getStorageSync("UserName")
+                this.value2 = wx.getStorageSync("Mobile")
+            }
+
             wx.request({
                 url: 'https://hd.xmountguan.com/railway/m.aspx?func=get_m_ddl',
                 success(res) {
@@ -568,6 +605,10 @@
         display: block;
         float: left;
         padding-left: 10rpx;
+    }
+
+    .reportor {
+        float: right;
     }
 
     .iboxtitle {
