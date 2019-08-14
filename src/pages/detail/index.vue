@@ -29,12 +29,7 @@
             <span class="ititle">调度室举报电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
         </div>
-        <div class="ipts" v-if="detail.state==3">
-            <span class="ititle stoptitle">中止原因</span>
-            <view class="stopreason">
-                中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因中止原因
-            </view>
-        </div>
+
         <!--<div class="ipts">-->
         <!--<span class="ititle" @click='forNav'>forNav</span>-->
         <!--</div>-->
@@ -72,14 +67,18 @@
                     </div>
                 </span>
 
-                <span class="bxlist"><span class="spans inspan">车站:</span>
-                    <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="24" color="#2d8cf0"
-                            class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
-                <span class="bxlist" style="text-align: left; word-break:break-all; "><span
-                    class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
+                <span class="bxlist"><span class="spans inspan">车站:</span>    <i-icon
+                    style="position:relative;top:-4rpx;" type="coordinates_fill" size="24" color="#2d8cf0"
+                    class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
+                <span class="bxlist" style="text-align: left; word-break:break-all; ">   <span class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
+
                 <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
 
-                <span class="bxlist" v-if="weixiuimgs.length>0" style="overflow: hidden;border-top:2rpx solid #a0a0a0 ">
+                <span style="width: 98%;border-top: 1px solid #a0a0a0;height: 14rpx;  display: block;"></span>
+                <span class="bxlist" v-if="detail.state==2"
+                      style="text-align: left; word-break:break-all;">
+                    <span class="spans inspan">完成时间:</span>  {{detail.origin.EndTime}}  </span>
+                <span class="bxlist" v-if="weixiuimgs.length>0" style="overflow: hidden;">
 
                              <span class="spans inspan" style="display: block">维修图片:</span>
                         <div class="imgbox" v-for="(item,index) in weixiuimgs" :key="index" style="float:left">
@@ -88,11 +87,17 @@
 
                     <!--                    <div v-else style="display: inline"> 请耐心等待维修工前去维修</div>-->
                 </span>
-                <span class="bxlist" v-if="ratealready&&detail.state!==3"><span class="spans inspan">满意度:</span> {{ratetxt}}
+                <span class="bxlist" v-if="ratealready&& detail.state!=='3'"><span class="spans inspan">满意度:</span> {{ratetxt}}
                 <van-rate count="3" size="20" :value="ratecode"
                           style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
                 /></span>
             </div>
+        </div>
+        <div class="ipts" v-if="detail.state==3">
+            <span class="ititle stoptitle">中止原因</span>
+            <view class="stopreason">
+                {{detail.origin.stopreason}}
+            </view>
         </div>
         <i-button v-if="judgement&&!ratealready" type="primary" class="judge" @click="judgeToggle">评 价</i-button>
         <div class="mask" v-show="judgeShow" @click="judgeToggle">
@@ -152,7 +157,9 @@
                         imgsUrl: [],
                         station: "",
                         address: "",
-                        taidanhao: ''
+                        taidanhao: '',
+                        stopreason: '',
+                        EndTime: ''
                     },
                 },
                 Repairs: [],
@@ -375,6 +382,8 @@
                     _this.detail.origin.station = Things.Station;
                     _this.detail.origin.address = Things.DetailLocation;
                     _this.detail.origin.taidanhao = Things.TaidanNo;
+                    _this.detail.origin.stopreason = Things.Process;
+                    _this.detail.origin.EndTime = Things.EndTime;
                     _this.Repairs = Things.Repairs
                     console.log(Things.Rate);
                     console.log(_this.Repairs);
@@ -412,7 +421,7 @@
                     _this.weixiuimgs = [];
                     setTimeout(() => {
                         for (var item of _this.Repairs) {
-                            if (item.RepairPics.join('').length>2) {
+                            if (item.RepairPics.join('').length > 2) {
                                 console.log(item);
                                 for (var list of item.RepairPics) {
                                     if (list !== "" || list !== null || typeof (lsit) !== 'undefined') {
@@ -465,12 +474,14 @@
         box-sizing: border-box;
         padding: 0 20rpx;
     }
-    .ipts:nth-child(odd){
+
+    .ipts:nth-child(odd) {
         /*background: red;*/
     }
-    .ipts:nth-child(even){
-            background: rgba(246, 255, 213, 0.07);
-        }
+
+    .ipts:nth-child(even) {
+        background: rgba(246, 255, 213, 0.07);
+    }
 
     .ititle {
         display: block;
