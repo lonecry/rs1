@@ -67,7 +67,7 @@
         <div class="ipts iptbox">
             <span class="ititle">*详细位置描述</span>
             <textarea class="reportDesc" v-model="value5" type="textarea" title="详细位置描述" maxlength="150" autofocus
-                      placeholder="请输入报修描述"></textarea>
+                      placeholder="请输入详细位置描述"></textarea>
         </div>
         <div class="ipts">
             <span class="ititle">台单号(选填)</span>
@@ -750,4 +750,5 @@
         margin-top: 20rpx;
         margin-bottom: 20rpx;
     }
+
 </style>
