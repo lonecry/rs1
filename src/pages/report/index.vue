@@ -367,6 +367,8 @@
                         });
                     } else {
 
+                        console.log("提交")
+                        console.log(urlafter);
                         //提交
                         wx.request({
                             url: 'https://hd.xmountguan.com/railway/order.aspx?func=add_order_auto&' + urlafter,

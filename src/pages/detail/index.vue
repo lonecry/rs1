@@ -71,20 +71,31 @@
                         </div>
                     </div>
                 </span>
+                <span class="bxlist">
+                    <span class="spans inspan">维修图片:</span>
+                    <div>
+                        <div class="imgbox" v-for="(item,index) in detail.origin.imgsUrl" :key="index">
+                            <img :src="item" :mode="'widthFix'" @click='preview(index)' class="slt" alt="缩略图">
+                        </div>
+                    </div>
+                </span>
                 <span class="bxlist"><span class="spans inspan">车站:</span>
                     <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="26" color="#2d8cf0"
                             class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
                 <span class="bxlist" style="text-align: left; word-break:break-all; "><span
                     class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
                 <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
-                <span class="bxlist" v-if="ratealready&&detail.state!==3"><span class="spans inspan">满意度:</span> {{ratetxt}} </span>
+                <span class="bxlist" v-if="ratealready&&detail.state!==3"><span class="spans inspan">满意度:</span> {{ratetxt}}
+                <van-rate   count="3" size="25" :value="ratecode" style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
+                /></span>
             </div>
         </div>
         <i-button v-if="judgement&&!ratealready" type="primary" class="judge" @click="judgeToggle">评 价</i-button>
         <div class="mask" v-show="judgeShow" @click="judgeToggle">
+            <!--        <div class="mask"   @click="judgeToggle">-->
             <div class="card" @click.stop=''>
                 <view style="overflow: hidden">
-                    <van-rate :value="rate" @change="onrateChange"
+                    <van-rate :value="rate" @change="onrateChange" count="3" size="28"
                               style='display: block;margin: 0 auto;width: 100%;text-align: center;margin-top: 52rpx;'/>
                     <div class="ratebox">
                         <span class="ratetxt">满意度调查：</span>
@@ -293,10 +304,10 @@
                 if (this.rate == 1) {
                     this.ratetxt = '不满意'
                     this.ratecode = 1
-                } else if (this.rate < 5) {
+                } else if (this.rate == 2) {
                     this.ratetxt = '基本满意'
                     this.ratecode = 2
-                } else if (this.rate == 5) {
+                } else if (this.rate == 3) {
                     this.ratetxt = '满意'
                     this.ratecode = 3
                 }
@@ -358,7 +369,7 @@
                     _this.detail.origin.taidanhao = Things.TaidanNo;
                     console.log(Things.Rate);
 
-                    if (!(Things.Rate == ""||Things.Rate==null||typeof(Things.Rate)=="undefined")) {
+                    if (!(Things.Rate == "" || Things.Rate == null || typeof (Things.Rate) == "undefined")) {
                         _this.ratealready = true;
                         _this.rate = parseInt(Things.rate);
                         console.log("000");
@@ -366,7 +377,7 @@
                             console.log("111");
                             _this.ratetxt = '不满意'
                             _this.ratecode = 1
-                        } else if (Things.Rate < 2) {
+                        } else if (Things.Rate == 2) {
                             console.log("222");
                             _this.ratetxt = '基本满意'
                             _this.ratecode = 2
