@@ -232,7 +232,7 @@
                     fail: function () {
                         console.log('fail');
                         $Toast({
-                            content: '网络错误，请稍后重试',
+                            content: '已取消',
                             type: 'warning'
                         });
                     },
