@@ -73,11 +73,12 @@
                 </span>
                 <span class="bxlist">
                     <span class="spans inspan">维修图片:</span>
-                    <div>
-                        <div class="imgbox" v-for="(item,index) in detail.origin.imgsUrl" :key="index">
-                            <img :src="item" :mode="'widthFix'" @click='preview(index)' class="slt" alt="缩略图">
+                    <div v-if="weixiuimgs.length>0">
+                        <div class="imgbox" v-for="(item,index) in weixiuimgs" :key="index">
+                            <img :src="item" :mode="'widthFix'" @click='wxpreview(index)' class="slt" alt="缩略图">
                         </div>
                     </div>
+                    <div v-else style="display: inline"> 请耐心等待维修工前去维修</div>
                 </span>
                 <span class="bxlist"><span class="spans inspan">车站:</span>
                     <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="26" color="#2d8cf0"
@@ -86,7 +87,8 @@
                     class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
                 <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
                 <span class="bxlist" v-if="ratealready&&detail.state!==3"><span class="spans inspan">满意度:</span> {{ratetxt}}
-                <van-rate   count="3" size="25" :value="ratecode" style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
+                <van-rate count="3" size="25" :value="ratecode"
+                          style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
                 /></span>
             </div>
         </div>
@@ -151,6 +153,41 @@
                         taidanhao: 'this is off'
                     },
                 },
+                Repairs: [
+                    {
+                        "RPID": 68,
+                        "UID": 45,
+                        "OID": 77,
+                        "UserName": "测试维修工",
+                        "Mobile": "18969975466",
+                        "RepairStatus": "维修完毕",
+                        "AssignTime": "2019/8/15 8:53:00",
+                        "AcceptTime": "",
+                        "RepairContent": "那你呢",
+                        "RepairPics": [
+                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
+                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
+                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg"
+                        ],
+                        "FinishTime": "2019/8/14 11:41:23"
+                    }, {
+                        "RPID": 68,
+                        "UID": 45,
+                        "OID": 77,
+                        "UserName": "测试维修工",
+                        "Mobile": "18969975466",
+                        "RepairStatus": "维修完毕",
+                        "AssignTime": "2019/8/15 8:53:00",
+                        "AcceptTime": "",
+                        "RepairContent": "那你呢",
+                        "RepairPics": [
+                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
+                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
+                        ],
+                        "FinishTime": "2019/8/14 11:41:23"
+                    }
+                ],
+                weixiuimgs: [],
                 selectIndex: '',
                 judgeShow: false,
                 reasonShow: false,
@@ -287,6 +324,12 @@
                     urls: this.detail.origin.imgsUrl  // 需要预览的图片http链接列表
                 })
             },
+            wxpreview: function (key) {
+                wx.previewImage({
+                    current: this.weixiuimgs[key], // 当前显示图片的http链接
+                    urls: this.weixiuimgs  // 需要预览的图片http链接列表
+                })
+            },
             judgeToggle: function () {
                 this.judgeShow = !this.judgeShow
             },
@@ -344,7 +387,7 @@
         },
         created() {
         },
-        onShow: function () {
+        mounted() {
             var _this = this
             this.oid = this.$root.$mp.query.oid;
             console.log(this.oid)
@@ -367,7 +410,9 @@
                     _this.detail.origin.station = Things.Station;
                     _this.detail.origin.address = Things.DetailLocation;
                     _this.detail.origin.taidanhao = Things.TaidanNo;
+                    _this.Repairs= Things.Repairs
                     console.log(Things.Rate);
+                    console.log( _this.Repairs);
 
                     if (!(Things.Rate == "" || Things.Rate == null || typeof (Things.Rate) == "undefined")) {
                         _this.ratealready = true;
@@ -399,9 +444,20 @@
                         statuscode = "3"
                     }
                     _this.detail.state = statuscode
+                    _this.weixiuimgs = [];
+                    for (var item of _this.Repairs) {
+                        for (var list of item.RepairPics) {
+                            if (list !== "" || list !== null || typeof (lsit) !== 'undefined') {
+                                _this.weixiuimgs.push(list)
+                            }
+                        }
+                    }
                 }
             })
-        },
+
+
+
+        }
     }
 </script>
 <style>
