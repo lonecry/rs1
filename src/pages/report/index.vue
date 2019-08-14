@@ -71,7 +71,7 @@
         </div>
         <div class="ipts">
             <span class="ititle">台单号(选填)</span>
-            <input class="ript" v-model="value6" title="台单号" autofocus placeholder="台单号"/>
+            <input class="ript" type="number" v-model="value6" title="台单号" autofocus placeholder="台单号"/>
         </div>
         <div class="submit">
             <i-button @click="handleClick" type="primary">提交报修</i-button>
