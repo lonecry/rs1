@@ -165,7 +165,7 @@
                 rate: 3,//评分
                 ratetxt: '基本满意',
                 ratecode: 2,
-                ratealready: true
+                ratealready: false
             }
         },
         computed: {
