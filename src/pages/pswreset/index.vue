@@ -97,7 +97,7 @@
                                 // this.disabled = "disabled"
                                 _this.btnable = "disabled";
                                 console.log('You Just Fucked getcode');
-                                const TIME_COUNT = 15;
+                                const TIME_COUNT = 60;
                                 if(! _this.timer){
                                     _this.count = TIME_COUNT;
                                     _this.timer = setInterval(() =>{

@@ -71,23 +71,25 @@
                         </div>
                     </div>
                 </span>
-                <span class="bxlist">
-                    <span class="spans inspan">维修图片:</span>
-                    <div v-if="weixiuimgs.length>0">
-                        <div class="imgbox" v-for="(item,index) in weixiuimgs" :key="index">
-                            <img :src="item" :mode="'widthFix'" @click='wxpreview(index)' class="slt" alt="缩略图">
-                        </div>
-                    </div>
-                    <div v-else style="display: inline"> 请耐心等待维修工前去维修</div>
-                </span>
+
                 <span class="bxlist"><span class="spans inspan">车站:</span>
-                    <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="26" color="#2d8cf0"
+                    <i-icon style="position:relative;top:-4rpx;" type="coordinates_fill" size="24" color="#2d8cf0"
                             class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
                 <span class="bxlist" style="text-align: left; word-break:break-all; "><span
                     class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
                 <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
+
+                <span class="bxlist" v-if="weixiuimgs.length>0" style="overflow: hidden;border-top:2rpx solid #a0a0a0 ">
+
+                             <span class="spans inspan" style="display: block">维修图片:</span>
+                        <div class="imgbox" v-for="(item,index) in weixiuimgs" :key="index" style="float:left">
+                            <img :src="item" :mode="'widthFix'" @click='wxpreview(index)' class="slt" alt="缩略图">
+                        </div>
+
+                    <!--                    <div v-else style="display: inline"> 请耐心等待维修工前去维修</div>-->
+                </span>
                 <span class="bxlist" v-if="ratealready&&detail.state!==3"><span class="spans inspan">满意度:</span> {{ratetxt}}
-                <van-rate count="3" size="25" :value="ratecode"
+                <van-rate count="3" size="20" :value="ratecode"
                           style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
                 /></span>
             </div>
@@ -133,60 +135,27 @@
             return {
                 detail: {
                     state: 2,
-                    banzu: '一工队',
-                    gongzhang: '张三',
-                    gzcell: '13858585654',
-                    weixiugong: '李四',
-                    wxgcell: '13865656545',
+                    banzu: '',
+                    gongzhang: '',
+                    gzcell: '',
+                    weixiugong: '',
+                    wxgcell: '',
                     jubao: '0571-88888888',
                     location: '',
                     origin: {
-                        danhao: 'WX1245151424',
-                        time: "2019年7月04日 18:44",
-                        name: "张三",
-                        phone: "13854587485",
-                        type: '水电问题',
-                        content: ['度数不转'],
-                        imgsUrl: ['http://www.simpleqq.com/index/imgs/tab/tab4.jpg', "https://www.simpleqq.com/index/imgs/imgdemo.jpg"],
-                        station: "杭州南站",
-                        address: "杭州南站习广场东侧候车厅小隔间大阳台小浴室的拐角的洞洞里",
-                        taidanhao: 'this is off'
+                        danhao: '',
+                        time: "",
+                        name: "",
+                        phone: "",
+                        type: '',
+                        content: [],
+                        imgsUrl: [],
+                        station: "",
+                        address: "",
+                        taidanhao: ''
                     },
                 },
-                Repairs: [
-                    {
-                        "RPID": 68,
-                        "UID": 45,
-                        "OID": 77,
-                        "UserName": "测试维修工",
-                        "Mobile": "18969975466",
-                        "RepairStatus": "维修完毕",
-                        "AssignTime": "2019/8/15 8:53:00",
-                        "AcceptTime": "",
-                        "RepairContent": "那你呢",
-                        "RepairPics": [
-                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
-                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
-                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg"
-                        ],
-                        "FinishTime": "2019/8/14 11:41:23"
-                    }, {
-                        "RPID": 68,
-                        "UID": 45,
-                        "OID": 77,
-                        "UserName": "测试维修工",
-                        "Mobile": "18969975466",
-                        "RepairStatus": "维修完毕",
-                        "AssignTime": "2019/8/15 8:53:00",
-                        "AcceptTime": "",
-                        "RepairContent": "那你呢",
-                        "RepairPics": [
-                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
-                            "https://hd.xmountguan.com/railway/upload_pic/20190814114115035.jpg",
-                        ],
-                        "FinishTime": "2019/8/14 11:41:23"
-                    }
-                ],
+                Repairs: [],
                 weixiuimgs: [],
                 selectIndex: '',
                 judgeShow: false,
@@ -196,7 +165,7 @@
                 rate: 3,//评分
                 ratetxt: '基本满意',
                 ratecode: 2,
-                ratealready: false
+                ratealready: true
             }
         },
         computed: {
@@ -390,14 +359,10 @@
         mounted() {
             var _this = this
             this.oid = this.$root.$mp.query.oid;
-            console.log(this.oid)
-            console.log(this.$root.$mp.appOptions)
-            console.log(this.$root.$mp.query)
-            //
             wx.request({
                 url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_order_detail&oid=' + this.oid, //仅为示例，并非真实的接口地址
                 success(res) {
-                    console.log(res.data)
+
                     var Things = res.data
                     _this.detail.weixiugong = Things.RepairMan
                     _this.detail.origin.danhao = Things.SerialNo;
@@ -410,9 +375,9 @@
                     _this.detail.origin.station = Things.Station;
                     _this.detail.origin.address = Things.DetailLocation;
                     _this.detail.origin.taidanhao = Things.TaidanNo;
-                    _this.Repairs= Things.Repairs
+                    _this.Repairs = Things.Repairs
                     console.log(Things.Rate);
-                    console.log( _this.Repairs);
+                    console.log(_this.Repairs);
 
                     if (!(Things.Rate == "" || Things.Rate == null || typeof (Things.Rate) == "undefined")) {
                         _this.ratealready = true;
@@ -445,19 +410,30 @@
                     }
                     _this.detail.state = statuscode
                     _this.weixiuimgs = [];
-                    for (var item of _this.Repairs) {
-                        for (var list of item.RepairPics) {
-                            if (list !== "" || list !== null || typeof (lsit) !== 'undefined') {
-                                _this.weixiuimgs.push(list)
+                    setTimeout(() => {
+                        for (var item of _this.Repairs) {
+                            if (item.RepairPics.join('').length>2) {
+                                console.log(item);
+                                for (var list of item.RepairPics) {
+                                    if (list !== "" || list !== null || typeof (lsit) !== 'undefined') {
+                                        _this.weixiuimgs.push(list)
+                                    }
+                                }
                             }
                         }
-                    }
+                    })
                 }
             })
 
 
-
-        }
+        },
+        onload() {
+            Object.assign(this.$data, this.$options.data())
+        },
+        onUnload() {
+            console.log('onUnload', this)
+            Object.assign(this.$data, this.$options.data())
+        },
     }
 </script>
 <style>
@@ -489,6 +465,12 @@
         box-sizing: border-box;
         padding: 0 20rpx;
     }
+    .ipts:nth-child(odd){
+        /*background: red;*/
+    }
+    .ipts:nth-child(even){
+            background: rgba(246, 255, 213, 0.07);
+        }
 
     .ititle {
         display: block;
@@ -520,6 +502,7 @@
         padding: 20rpx;
         box-sizing: border-box;
         -webkit-box-sizing: border-box;
+        background: rgba(246, 255, 213, 0.07);
     }
 
     .xqtxt {
@@ -541,8 +524,8 @@
     .bxlist {
         width: 100%;
         display: block;
-        min-height: 50rpx;
-        line-height: 50rpx;
+        min-height: 65rpx;
+        line-height: 65rpx;
         font-size: 28rpx;
         text-align: justify;
         padding-left: 10rpx;
@@ -560,6 +543,10 @@
         box-sizing: border-box;
         padding: 0 10rpx;
         font-size: 24rpx;
+        height: 50rpx;
+        display: inline-block;
+        line-height: 50rpx;
+
     }
 
     .inspan {
