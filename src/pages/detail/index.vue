@@ -170,7 +170,7 @@
                 badReason: "",
                 oid: '',
                 rate: 3,//评分
-                ratetxt: '基本满意',
+                ratetxt: '满意',
                 ratecode: 2,
                 ratealready: false
             }
