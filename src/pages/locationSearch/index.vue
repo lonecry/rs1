@@ -31,7 +31,7 @@
         data() {
             return {
                 stationheight: '',
-                value: "杭州",
+                value: "",
                 activelocation: -1,
                 location: '',
                 locations: [],
@@ -96,11 +96,32 @@
                 _this.sid = e.mp.currentTarget.dataset.sid
                 _this.sname = e.mp.currentTarget.dataset.sname
                 console.log(_this.sid, _this.sname)
+                wx.setStorageSync("sid", _this.sid)
+                wx.setStorageSync("sname", _this.sname)
+
+                // var pages = getCurrentPages() //获取加载的页面
+                // console.log(pages);
+                // let prevPage = pages[pages.length - 2];
+                // prevPage.sid = _this.sid
+                // prevPage.sname = _this.sname
+
+
                 setTimeout(() => {
                     mpvue.redirectTo({
                         // ./join/main
                         url: '../report/main?fromreport=yes&sid=' + _this.sid + '&sname=' + _this.sname,
                     })
+
+
+                    // var pages = getCurrentPages();
+                    //
+                    // var prevPage = pages[pages.length - 2]; //上一个页面
+                    //
+                    // //直接调用上一个页面的setData()方法，把数据存到上一个页面中去
+                    //
+                    // prevPage.yes = "yes"
+
+
                 }, 300)
                 mpvue.setStorageSync('addr', addr)
                 // mpvue.navigateBack()
@@ -115,31 +136,33 @@
             console.log(latitude, longitude)
 
             var _this = this
-            _this.value = "杭州",
-                wx.request({
-                    // https://hd.xmountguan.com/railway/station.aspx?func=get_nearest_station&xcoordinate=120.219396&ycoordinate=30.305972
-                    url: 'https://hd.xmountguan.com/railway/station.aspx?func=get_nearest_station&xcoordinate=' + longitude + '&ycoordinate=' + latitude, //仅为示例，并非真实的接口地址
+            _this.value = "";
+            _this.activelocation = -1
+            wx.request({
+                // https://hd.xmountguan.com/railway/station.aspx?func=get_nearest_station&xcoordinate=120.219396&ycoordinate=30.305972
+                url: 'https://hd.xmountguan.com/railway/station.aspx?func=get_nearest_station&xcoordinate=' + longitude + '&ycoordinate=' + latitude, //仅为示例，并非真实的接口地址
 
-                    success(res) {
-                        _this.locations = []
-                        if (res.data.length > 0) {
-                            _this.noresult = false
-                        } else {
-                            _this.noresult = true
-                        }
-
-
-                        for (let item of res.data) {
-                            _this.locations.push(item)
-                        }
-                        console.log(_this.locations);
-
-
+                success(res) {
+                    _this.locations = []
+                    if (res.data.length > 0) {
+                        _this.noresult = false
+                    } else {
+                        _this.noresult = true
                     }
-                })
+
+
+                    for (let item of res.data) {
+                        _this.locations.push(item)
+                    }
+                    console.log(_this.locations);
+
+
+                }
+            })
         },
         onShow() {
             let _this = this;
+            _this.activelocation = -1
             // let app = getApp()
             mpvue.getSystemInfo({
                 success: function (res) {

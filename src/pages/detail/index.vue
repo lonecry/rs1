@@ -178,7 +178,7 @@
         computed: {
             judgement: function () {
                 console.log(this.detail.state);
-                return (this.detail.state == 2 || this.detail.state == 3) ? true : false
+                return (this.detail.state == '2' ) ? true : false
             }
         },
         methods: {

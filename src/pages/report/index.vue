@@ -105,6 +105,7 @@
     export default {
         data() {
             return {
+                yes: '',
                 addr: '',
                 value1: '',
                 value2: '',
@@ -517,9 +518,10 @@
             dataclear() {
 
                 var from = this.$root.$mp.query.fromreport
-                var sid = this.$root.$mp.query.sid
-                var sname = this.$root.$mp.query.sname
+                /*  var sid = this.$root.$mp.query.sid
+                  var sname = this.$root.$mp.query.sname*/
 
+                var fromlocation = wx.getStorageSync('sid')
 
                 if (from !== "yes") {
                     //数据I清空
@@ -538,9 +540,10 @@
                     this.value6 = ""
                     this.sid = ""
                     this.sname = "请选择车站"
-                } else {
-                    this.sname = sname
-                    this.sid = sid
+                } else if (fromlocation) {
+                    console.log('获取返回')
+                    this.sname = wx.getStorageSync('sname')
+                    this.sid = wx.getStorageSync('sid')
                 }
 
 
@@ -611,6 +614,8 @@
             // https://hd.xmountguan.com/railway/station.aspx?func=get_wx_station_ddl
         },
         onshow() {
+            console.log('show')
+            this.dataclear()
         },
     }
 </script>
