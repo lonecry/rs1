@@ -53,16 +53,16 @@
         </div>
         <div class="ipts">
             <span class="ititle">*选则车站</span>
-            <!--    <div class="selocation" @click="searchstation">
-                    <i-icon type="coordinates_fill" size="26" color="#2d8cf0" class="usericon" />
-                    <span class="zhantai">{{zhantai}}</span>
-                </div>-->
+            <div class="selocation" @click="searchstation">
+                <i-icon type="coordinates_fill" size="26" color="#2d8cf0" class="usericon"/>
+                <span class="zhantai">{{sname}}</span>
+            </div>
             <!--<input class = "ript" v-model = "value4" title = "选则车站" autofocus placeholder = "选则车站"/>-->
-            <picker @change="chehzanChange" :value="chezhanindex" :range="selectCheZhan" style="text-align: right">
-                <view class="picker">
-                    {{selectCheZhan[chezhanindex]?'当前选择：'+selectCheZhan[chezhanindex]:'请点击选择'}}
-                </view>
-            </picker>
+            <!--  <picker @change="chehzanChange" :value="chezhanindex" :range="selectCheZhan" style="text-align: right">
+                  <view class="picker">
+                      {{selectCheZhan[chezhanindex]?'当前选择：'+selectCheZhan[chezhanindex]:'请点击选择'}}
+                  </view>
+              </picker>-->
         </div>
         <div class="ipts iptbox">
             <span class="ititle">*详细位置描述</span>
@@ -71,7 +71,8 @@
         </div>
         <div class="ipts">
             <span class="ititle">台单号(选填)</span>
-            <input class="ript" type="number" v-model="value6" title="台单号" autofocus placeholder="台单号" style="padding: 0"/>
+            <input class="ript" type="number" v-model="value6" title="台单号" autofocus placeholder="台单号"
+                   style="padding: 0"/>
         </div>
         <div class="submit">
             <i-button @click="handleClick" type="primary">提交报修</i-button>
@@ -131,13 +132,14 @@
                 imgsId: [],
                 imgsforload: '',
                 m_c_value: '',
-                zhantai: "",
+                sname: "请选择车站",
                 slectType: false,
                 selectCheZhanjson: [],
                 selectCheZhan: [],
                 chezhanindex: -1,
                 selectedCheZhanIndex: 0,
-                gologinShow: false
+                gologinShow: false,
+                clickable: true
             }
         },
         methods: {
@@ -327,26 +329,18 @@
                     // for (var item in  _this.imgsUrl){
                     //     _this.fileUpload(_this.imgsUrl[item], item)
                     // }
-
                     var arrtemp = []
-
                     var imgsidforload = ''
-
                     for (var item of this.imgsId) {
-
-                        if (!(item==""||item==undefined||item==null||typeof(item) == "undefined")) {
-
+                        if (!(item == "" || item == undefined || item == null || typeof (item) == "undefined")) {
                             arrtemp.push(item)
                         }
                     }
-
-                    imgsidforload =  arrtemp.join(',')
-
+                    imgsidforload = arrtemp.join(',')
                     console.log(imgsidforload);
-
                     var json = {
                         "ordertype": 1,
-                        "sid": _this.selectedCheZhanIndex, //写死
+                        "sid": _this.sid, //写死
                         "detaillocation": this.value5,
                         "taidanno": _this.value6,
                         "mid": _this.mid,
@@ -361,44 +355,72 @@
                     console.log(urlafter);
                     if (json.ordertype == "" || json.sid == "" || json.detaillocation == "" || json.mid == "" || json.m_c_value == "" || json.uid == "" || json.pictures == "") {
                         //输入校验
-                        $Toast({
-                            content: '请完善输入',
-                            type: 'warning'
-                        });
+
+                        if (json.mid == "") {
+                            $Toast({
+                                content: '请选择报修内容',
+                                type: 'warning'
+                            });
+                        } else if (json.pictures == "") {
+                            $Toast({
+                                content: '请上传报修现场图片',
+                                type: 'warning'
+                            });
+                        } else if (json.sid == "") {
+                            $Toast({
+                                content: '请选择车站',
+                                type: 'warning'
+                            });
+                        } else if (json.detaillocation == "") {
+                            $Toast({
+                                content: '请输入详细位置描述',
+                                type: 'warning'
+                            });
+                        }
+
+
                     } else {
 
-                        console.log("提交")
+
+                        console.log("准备提交")
                         console.log(urlafter);
                         //提交
-                        wx.request({
-                            url: 'https://hd.xmountguan.com/railway/order.aspx?func=add_order_auto&' + urlafter,
-                            success(res) {
-                                console.log(res.data)
-                                if (res.data.oid) {
-                                    $Toast({
-                                        content: '上传成功',
-                                        type: 'success',
-                                        duration: 2,
-                                    });
-                                    // wx.redirectTo({
-                                    //     url: '../indexswiper/main'
-                                    // })
-                                    setTimeout(() => {
-                                        wx.reLaunch({
-                                            url: '../indexswiper/main?fromreport=yes'
-                                        })
-                                    }, 2000)
+                        if (_this.clickable) {
+                            _this.clickable = false
+                            wx.request({
+                                url: 'https://hd.xmountguan.com/railway/order.aspx?func=add_order_auto&' + urlafter,
+                                success(res) {
+                                    console.log(res.data)
+                                    if (res.data.oid) {
+                                        $Toast({
+                                            content: '上传成功',
+                                            type: 'success',
+                                            duration: 2,
+                                        });
+                                        // wx.redirectTo({
+                                        //     url: '../indexswiper/main'
+                                        // })
+                                        setTimeout(() => {
+                                            wx.reLaunch({
+                                                url: '../indexswiper/main?fromreport=yes'
+                                            })
+                                        }, 2000)
 
+                                    }
+                                },
+                                fail() {
+                                    console.log('网络错误')
+                                    $Toast({
+                                        content: '网络错误，请稍后重试',
+                                        type: 'warning'
+                                    });
+                                },
+                                complete() {
+                                    _this.clickable = true
                                 }
-                            },
-                            fail() {
-                                console.log('网络错误')
-                                $Toast({
-                                    content: '网络错误，请稍后重试',
-                                    type: 'warning'
-                                });
-                            }
-                        })
+                            })
+                        }
+
                     }
                 }
             },
@@ -495,6 +517,8 @@
             dataclear() {
 
                 var from = this.$root.$mp.query.fromreport
+                var sid = this.$root.$mp.query.sid
+                var sname = this.$root.$mp.query.sname
 
 
                 if (from !== "yes") {
@@ -511,6 +535,12 @@
                     this.errtypes = ""
                     this.chezhanindex = -1
                     this.value5 = ""
+                    this.value6 = ""
+                    this.sid = ""
+                    this.sname = "请选择车站"
+                } else {
+                    this.sname = sname
+                    this.sid = sid
                 }
 
 
@@ -522,8 +552,8 @@
             console.log(this.$root.$mp.query)
 
             this.dataclear()
-            this.zhantai = mpvue.getStorageSync("addr") || this.zhantai
-            console.log(this.zhantai);
+            // this.sname = mpvue.getStorageSync("addr") || this.sname
+            console.log(this.sname);
             var wx = mpvue;
             var _this = this
             _this.uid = wx.getStorageSync('UID');
@@ -581,8 +611,6 @@
             // https://hd.xmountguan.com/railway/station.aspx?func=get_wx_station_ddl
         },
         onshow() {
-
-
         },
     }
 </script>
