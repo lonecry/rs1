@@ -3,7 +3,7 @@
         <div class="ipts">
             <span class="ititle">状态</span>
             <span
-                :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' }, 'ript']">{{detail.state==0?"待处理":(detail.state==1?"维修中":(detail.state==2?"已完成":"已中止"))}}</span>
+                :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' },{  bgblue  : detail.state==='4' }, 'ript']"> {{detail.state == 0 ? "待处理" : (detail.state == 1 ? "维修中" : (detail.state == 2 ? "已完成" : (detail.state == 3 ? "已中止" : "反馈中")))}}</span>
         </div>
         <!-- <div class="ipts">
              <span class="ititle">维修班组</span>
@@ -178,7 +178,7 @@
         computed: {
             judgement: function () {
                 console.log(this.detail.state);
-                return (this.detail.state == '2' ) ? true : false
+                return (this.detail.state == '2') ? true : false
             }
         },
         methods: {
@@ -416,6 +416,8 @@
                         statuscode = "2"
                     } else if (statusText == "已中止") {
                         statuscode = "3"
+                    } else if (statusText == "反馈中") {
+                        statuscode = "4"
                     }
                     _this.detail.state = statuscode
                     _this.weixiuimgs = [];

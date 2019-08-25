@@ -1,11 +1,11 @@
 <template>
     <div class=" box">
 
-      <!--  <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" @click="getUserInfoClick"
-                style="width: 100rpx;background: transparent;height: 100rpx;position: fixed;z-index: 2;border: none">
-            <i-icon type="mine" size="26" color="#ACACAC" class="icon"/>
-        </button>  -->
-        <button   @click="bindGetUserInfo"
+        <!--  <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" @click="getUserInfoClick"
+                  style="width: 100rpx;background: transparent;height: 100rpx;position: fixed;z-index: 2;border: none">
+              <i-icon type="mine" size="26" color="#ACACAC" class="icon"/>
+          </button>  -->
+        <button @click="bindGetUserInfo"
                 style="width: 100rpx;background: transparent;height: 100rpx;position: fixed;z-index: 2;border: none">
             <i-icon type="mine" size="26" color="#ACACAC" class="icon"/>
         </button>
@@ -20,12 +20,14 @@
 
                     <view v-if="lists.length>0">
                         <!---->
-                        <div class="card" :data-cardid="item.listId" :data-cardindex="index"
+                        <div :data-cardid="item.listId" :data-cardindex="index"
                              ref="dataNum" @click="cardClick" v-for="(item,index) in  lists"
-                             :key="item.listId">
+                             :key="item.listId"
+
+                             :class="[{  bggray  : item.listState==='0' },{  bgyellow  : item.listState==='1' },{  bggreen  : item.listState==='2' },{  bgred  : item.listState==='3' },{  bgblue  : item.listState==='4' }, 'card']">
                             <span class="danhao">报修单号:{{item.listNumber}}</span>
                             <span
-                                :class="[{  gray  : item.listState==='0' },{  yellow  : item.listState==='1' },{  green  : item.listState==='2' },{  red  : item.listState==='3' }, 'state']">{{item.listState==0?"待处理":(item.listState==1?"维修中":(item.listState==2?"已完成":"已中止"))}}</span>
+                                :class="[{  gray  : item.listState==='0' },{  yellow  : item.listState==='1' },{  green  : item.listState==='2' },{  red  : item.listState==='3' },{  blue  : item.listState==='4' }, 'state']">   {{item.listState == 0 ? "待处理" : (item.listState == 1 ? "维修中" : (item.listState == 2 ? "已完成" : (item.listState == 3 ? "已中止" : "反馈中")))}}</span>
                             <div class="listtime">
                                 <i-icon type="time" size="29" color="#ACACAC" class="listicon"/>
                                 <span class="tdetail">{{item.listTime}}</span>
@@ -51,9 +53,12 @@
                     <view v-if="lists1.length>0">
 
 
-                        <div class="card" :data-cardid="item.listId" ref="dataNum" :data-cardindex="index"
+                        <div :data-cardid="item.listId" ref="dataNum" :data-cardindex="index"
                              @click="cardClick" v-for="(item,index) in  lists1" :key="item.listId"
-                             v-if="item.listState==0">
+                             v-if="item.listState==0"
+
+
+                             :class="[{  bggray  : item.listState==='0' },{  bgyellow  : item.listState==='1' },{  bggreen  : item.listState==='2' },{  bgred  : item.listState==='3' }, 'card']">
                             <span class="danhao">报修单号:{{item.listNumber}}</span>
                             <span
                                 :class="[{  gray  : item.listState==='0' },{  yellow  : item.listState==='1' },{  green  : item.listState==='2' },{  red  : item.listState==='3' }, 'state']">{{item.listState==0?"待处理":(item.listState==1?"维修中":(item.listState==2?"已完成":"已中止"))}}</span>
@@ -82,9 +87,12 @@
                              @scrolltoupper="refresh" @scrolltolower="loadmore2">
                     <view v-if="lists2.length>0">
 
-                        <div class="card" :data-cardid="item.listId" ref="dataNum" :data-cardindex="index"
+                        <div :data-cardid="item.listId" ref="dataNum" :data-cardindex="index"
                              @click="cardClick" v-for="(item,index) in  lists2" :key="item.listId"
-                             v-if="item.listState==1">
+                             v-if="item.listState==1"
+
+
+                             :class="[{  bggray  : item.listState==='0' },{  bgyellow  : item.listState==='1' },{  bggreen  : item.listState==='2' },{  bgred  : item.listState==='3' }, 'card']">
                             <span class="danhao">报修单号:{{item.listNumber}}</span>
                             <span
                                 :class="[{  gray  : item.listState==='0' },{  yellow  : item.listState==='1' },{  green  : item.listState==='2' },{  red  : item.listState==='3' }, 'state']">{{item.listState==0?"待处理":(item.listState==1?"维修中":(item.listState==2?"已完成":"已中止"))}}</span>
@@ -113,9 +121,12 @@
                     <view v-if="lists3.length>0">
 
 
-                        <div class="card" :data-cardid="item.listId" ref="dataNum" :data-cardindex="index"
+                        <div :data-cardid="item.listId" ref="dataNum" :data-cardindex="index"
                              @click="cardClick" v-for="(item,index) in  lists3" :key="item.listId"
-                             v-if="item.listState==2">
+                             v-if="item.listState==2"
+
+
+                             :class="[{  bggray  : item.listState==='0' },{  bgyellow  : item.listState==='1' },{  bggreen  : item.listState==='2' },{  bgred  : item.listState==='3' }, 'card']">
                             <span class="danhao">报修单号:{{item.listNumber}}</span>
                             <span
                                 :class="[{  gray  : item.listState==='0' },{  yellow  : item.listState==='1' },{  green  : item.listState==='2' },{  red  : item.listState==='3' }, 'state']">{{item.listState==0?"待处理":(item.listState==1?"维修中":(item.listState==2?"已完成":"已中止"))}}</span>
@@ -143,10 +154,44 @@
                              @scrolltoupper="refresh" @scrolltolower="loadmore4">
                     <view v-if="lists4.length>0">
 
-                        <div class="card" :data-cardid="item.listId"    @click="cardClick" v-for="(item,index) in  lists4" :key="item.listId" v-if="item.listState==3">
+                        <div :data-cardid="item.listId" @click="cardClick" v-for="(item,index) in  lists4"
+                             :key="item.listId" v-if="item.listState==3"
+
+
+                             :class="[{  bggray  : item.listState==='0' },{  bgyellow  : item.listState==='1' },{  bggreen  : item.listState==='2' },{  bgred  : item.listState==='3' }, 'card']">
                             <span class="danhao">报修单号:{{item.listNumber}}</span>
                             <span
                                 :class="[{  gray  : item.listState==='0' },{  yellow  : item.listState==='1' },{  green  : item.listState==='2' },{  red  : item.listState==='3' }, 'state']">{{item.listState==0?"待处理":(item.listState==1?"维修中":(item.listState==2?"已完成":"已中止"))}}</span>
+                            <div class="listtime">
+                                <i-icon type="time" size="29" color="#ACACAC" class="listicon"/>
+                                <span class="tdetail">{{item.listTime}}</span>
+                            </div>
+                            <div class="listtype">
+                                <i-icon type="setup_fill" size="29" color="#ACACAC" class="listicon"/>
+                                <span class="tdetail">{{item.listType}}</span>
+                            </div>
+                            <div class="listlocation">
+                                <i-icon type="coordinates_fill" size="29" color="#ACACAC" class="listicon"/>
+                                <view class="tdetail">{{item.listLoca}}</view>
+                            </div>
+                        </div>
+                    </view>
+                    <view v-else class="nodata">暂无数据</view>
+                </scroll-view>
+            </swiper-item>
+            <swiper-item class="swiperitem">
+                <!--                <span v-if="refreshicon" class="freshicon"> 刷新中...<i-icon size='14' type="refresh"/></span>-->
+                <scroll-view :scroll-y="scrolly" :style="computedClassObject"
+                             :upper-threshold="'350'"
+                             @scrolltoupper="refresh" @scrolltolower="loadmore5">
+                    <view v-if="lists5.length>0">
+
+                        <div :data-cardid="item.listId" @click="cardClick" v-for="(item,index) in  lists5"
+                             :key="item.listId"
+                             :class="[ 'bgblue', 'card']">
+                            <span class="danhao">报修单号:{{item.listNumber}}</span>
+                            <span
+                                :class="['blue', 'state']">反馈中</span>
                             <div class="listtime">
                                 <i-icon type="time" size="29" color="#ACACAC" class="listicon"/>
                                 <span class="tdetail">{{item.listTime}}</span>
@@ -168,11 +213,11 @@
         <i-button @click="goreport" class="goreport" type="primary">一键报修</i-button>
         <i-drawer mode="left" @click="toggleLeft" :visible="showleft" class="i-drawer-mask">
             <div class="demo-container" @click.stop>
-               <!-- <img v-if="usershow" :src="userIcon" class="usericon" @click="changeIcon" alt=""/>
-                <span v-if="usershow" class="username">{{usserName}}</span>-->
+                <!-- <img v-if="usershow" :src="userIcon" class="usericon" @click="changeIcon" alt=""/>
+                 <span v-if="usershow" class="username">{{usserName}}</span>-->
 
-                <img  :src="userIcon" class="usericon" @click="changeIcon" alt=""/>
-                <span  class="username">{{login?userName:'新用户'}}</span>
+                <img :src="userIcon" class="usericon" @click="changeIcon" alt=""/>
+                <span class="username">{{login?userName:'新用户'}}</span>
                 <view v-if="login" style="width: 80%">
                     <view class="cz chongzhiPsw" @click="pswreset">
                         <i-icon type="lock_fill" size="21" color="#ACACAC"/>
@@ -208,7 +253,7 @@
         data() {
             return {
                 refreshicon: false,
-                navtabs: ["全部", "待处理", "维修中", "已完成", "已中止"],
+                navtabs: ["全部", "待处理", "维修中", "已完成", "已中止", "反馈中"],
                 Role: 2,
                 showleft: false,
                 user: "",
@@ -226,16 +271,19 @@
                 lists2: [],
                 lists3: [],
                 lists4: [],
+                lists5: [],
                 page: '1',
                 page1: '1',
                 page2: '1',
                 page3: '1',
                 page4: '1',
+                page5: '1',
                 end: false,
                 end1: false,
                 end2: false,
                 end3: false,
                 end4: false,
+                end5: false,
                 login: ""
             }
         },
@@ -375,6 +423,8 @@
                                                 statuscode = "2"
                                             } else if (databack[j].OrderStatus == "已中止") {
                                                 statuscode = "3"
+                                            } else if (databack[j].OrderStatus == "反馈中") {
+                                                statuscode = "4"
                                             }
                                             var json = {
                                                 "listId": databack[j].OID,
@@ -392,207 +442,257 @@
                         })
                     } else {
 
-                            if (_this.current_scroll == 1) {
-                                console.log("111111111111111")
-                                wx.request({
-                                    url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=1' + '&page=1&pagesize=' + this.page1 * 5, //仅为示例，并非真实的接口地址
-                                    success(res) {
-                                        console.log('refreshing data');
-                                        // var Things =
-                                        //
-                                        console.log(res.data)
-                                        var databack = res.data
-                                        var statuscode = ''
-                                        if (databack.length < 5) {
-                                            _this.end1 = true
-                                        } else {
-                                            _this.end1 = false
-                                            _this.page1 = parseInt(_this.page1) + 1
-                                        }
-                                        _this.lists1 = []
-                                        if (timeout0)
-                                            clearTimeout(timeout0)
-                                        for (var i = 0; i < databack.length; i++) {
-                                            // for(let i = 0 ; i < 2; i++){
-                                            // console.log(databack[i]);
-                                            (function () {
-                                                var j = i;
-
-                                                timeout0 = setTimeout(function timer() {
-                                                    if (databack[j].OrderStatus == "待处理") {
-                                                        statuscode = "0"
-                                                    } else if (databack[j].OrderStatus == "维修中") {
-                                                        statuscode = "1"
-                                                    } else if (databack[j].OrderStatus == "已完成") {
-                                                        statuscode = "2"
-                                                    } else if (databack[j].OrderStatus == "已中止") {
-                                                        statuscode = "3"
-                                                    }
-                                                    var json = {
-                                                        "listId": databack[j].OID,
-                                                        "listNumber": databack[j].SerialNo,
-                                                        "listTime": databack[j].CreateTime,
-                                                        "listType": databack[j].MaintenanceType,
-                                                        "listState": statuscode,
-                                                        "listLoca": databack[j].DetailLocation
-                                                    }
-                                                    _this.lists1.push(json)
-                                                }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
-                                            })();
-                                        }
+                        if (_this.current_scroll == 1) {
+                            console.log("111111111111111")
+                            wx.request({
+                                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=1' + '&page=1&pagesize=' + this.page1 * 5, //仅为示例，并非真实的接口地址
+                                success(res) {
+                                    console.log('refreshing data');
+                                    // var Things =
+                                    //
+                                    console.log(res.data)
+                                    var databack = res.data
+                                    var statuscode = ''
+                                    if (databack.length < 5) {
+                                        _this.end1 = true
+                                    } else {
+                                        _this.end1 = false
+                                        _this.page1 = parseInt(_this.page1) + 1
                                     }
-                                })
-                            } else if (_this.current_scroll == 2) {
-                                console.log("222222222222222")
-                                wx.request({
-                                    url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=2' + '&page=1&pagesize=5', //仅为示例，并非真实的接口地址
-                                    success(res) {
-                                        console.log('refreshing data');
-                                        // var Things =
-                                        //
-                                        console.log(res.data)
-                                        var databack = res.data
-                                        var statuscode = ''
-                                        if (databack.length < 5) {
-                                            _this.end2 = true
-                                        } else {
-                                            _this.end2 = false
-                                            _this.page2 = parseInt(_this.page2) + 1
-                                        }
-                                        _this.lists2 = []
-                                        if (timeout0)
-                                            clearTimeout(timeout0)
-                                        for (var i = 0; i < databack.length; i++) {
-                                            // for(let i = 0 ; i < 2; i++){
-                                            // console.log(databack[i]);
-                                            (function () {
-                                                var j = i;
+                                    _this.lists1 = []
+                                    if (timeout0)
+                                        clearTimeout(timeout0)
+                                    for (var i = 0; i < databack.length; i++) {
+                                        // for(let i = 0 ; i < 2; i++){
+                                        // console.log(databack[i]);
+                                        (function () {
+                                            var j = i;
 
-                                                timeout0 = setTimeout(function timer() {
-                                                    if (databack[j].OrderStatus == "待处理") {
-                                                        statuscode = "0"
-                                                    } else if (databack[j].OrderStatus == "维修中") {
-                                                        statuscode = "1"
-                                                    } else if (databack[j].OrderStatus == "已完成") {
-                                                        statuscode = "2"
-                                                    } else if (databack[j].OrderStatus == "已中止") {
-                                                        statuscode = "3"
-                                                    }
-                                                    var json = {
-                                                        "listId": databack[j].OID,
-                                                        "listNumber": databack[j].SerialNo,
-                                                        "listTime": databack[j].CreateTime,
-                                                        "listType": databack[j].MaintenanceType,
-                                                        "listState": statuscode,
-                                                        "listLoca": databack[j].DetailLocation
-                                                    }
-                                                    _this.lists2.push(json)
-                                                }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
-                                            })();
-                                        }
+                                            timeout0 = setTimeout(function timer() {
+                                                if (databack[j].OrderStatus == "待处理") {
+                                                    statuscode = "0"
+                                                } else if (databack[j].OrderStatus == "维修中") {
+                                                    statuscode = "1"
+                                                } else if (databack[j].OrderStatus == "已完成") {
+                                                    statuscode = "2"
+                                                } else if (databack[j].OrderStatus == "已中止") {
+                                                    statuscode = "3"
+                                                }
+                                                var json = {
+                                                    "listId": databack[j].OID,
+                                                    "listNumber": databack[j].SerialNo,
+                                                    "listTime": databack[j].CreateTime,
+                                                    "listType": databack[j].MaintenanceType,
+                                                    "listState": statuscode,
+                                                    "listLoca": databack[j].DetailLocation
+                                                }
+                                                _this.lists1.push(json)
+                                            }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
+                                        })();
                                     }
-                                })
-                            } else if (_this.current_scroll == 3) {
-                                console.log("333333333333333333")
-                                wx.request({
-                                    url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=3' + '&page=1&pagesize=' + this.page3 * 5, //仅为示例，并非真实的接口地址
-                                    success(res) {
-                                        console.log('refreshing data');
-                                        // var Things =
-                                        //
-                                        console.log(res.data)
-                                        var databack = res.data
-                                        var statuscode = ''
-                                        if (databack.length < 5) {
-                                            _this.end = true
-                                        } else {
-                                            _this.end3 = false
-                                            _this.page3 = parseInt(_this.page2) + 1
-                                        }
-                                        _this.lists3 = []
-                                        if (timeout0)
-                                            clearTimeout(timeout0)
-                                        for (var i = 0; i < databack.length; i++) {
-                                            // for(let i = 0 ; i < 2; i++){
-                                            // console.log(databack[i]);
-                                            (function () {
-                                                var j = i;
+                                }
+                            })
+                        } else if (_this.current_scroll == 2) {
+                            console.log("222222222222222")
+                            wx.request({
+                                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=2' + '&page=1&pagesize=5', //仅为示例，并非真实的接口地址
+                                success(res) {
+                                    console.log('refreshing data');
+                                    // var Things =
+                                    //
+                                    console.log(res.data)
+                                    var databack = res.data
+                                    var statuscode = ''
+                                    if (databack.length < 5) {
+                                        _this.end2 = true
+                                    } else {
+                                        _this.end2 = false
+                                        _this.page2 = parseInt(_this.page2) + 1
+                                    }
+                                    _this.lists2 = []
+                                    if (timeout0)
+                                        clearTimeout(timeout0)
+                                    for (var i = 0; i < databack.length; i++) {
+                                        // for(let i = 0 ; i < 2; i++){
+                                        // console.log(databack[i]);
+                                        (function () {
+                                            var j = i;
 
-                                                timeout0 = setTimeout(function timer() {
-                                                    if (databack[j].OrderStatus == "待处理") {
-                                                        statuscode = "0"
-                                                    } else if (databack[j].OrderStatus == "维修中") {
-                                                        statuscode = "1"
-                                                    } else if (databack[j].OrderStatus == "已完成") {
-                                                        statuscode = "2"
-                                                    } else if (databack[j].OrderStatus == "已中止") {
-                                                        statuscode = "3"
-                                                    }
-                                                    var json = {
-                                                        "listId": databack[j].OID,
-                                                        "listNumber": databack[j].SerialNo,
-                                                        "listTime": databack[j].CreateTime,
-                                                        "listType": databack[j].MaintenanceType,
-                                                        "listState": statuscode,
-                                                        "listLoca": databack[j].DetailLocation
-                                                    }
-                                                    _this.lists3.push(json)
-                                                }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
-                                            })();
-                                        }
+                                            timeout0 = setTimeout(function timer() {
+                                                if (databack[j].OrderStatus == "待处理") {
+                                                    statuscode = "0"
+                                                } else if (databack[j].OrderStatus == "维修中") {
+                                                    statuscode = "1"
+                                                } else if (databack[j].OrderStatus == "已完成") {
+                                                    statuscode = "2"
+                                                } else if (databack[j].OrderStatus == "已中止") {
+                                                    statuscode = "3"
+                                                }
+                                                var json = {
+                                                    "listId": databack[j].OID,
+                                                    "listNumber": databack[j].SerialNo,
+                                                    "listTime": databack[j].CreateTime,
+                                                    "listType": databack[j].MaintenanceType,
+                                                    "listState": statuscode,
+                                                    "listLoca": databack[j].DetailLocation
+                                                }
+                                                _this.lists2.push(json)
+                                            }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
+                                        })();
                                     }
-                                })
-                            } else if (_this.current_scroll == 4) {
-                                console.log("444444444444444")
-                                wx.request({
-                                    url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=4' + '&page=1&pagesize=5', //仅为示例，并非真实的接口地址
-                                    success(res) {
-                                        console.log('refreshing data');
-                                        // var Things =
-                                        //
-                                        console.log(res.data)
-                                        var databack = res.data
-                                        var statuscode = ''
-                                        if (databack.length < 5) {
-                                            _this.end4 = true
-                                        } else {
-                                            _this.end4 = false
-                                            _this.page4 = parseInt(_this.page4) + 1
-                                        }
-                                        _this.lists4 = []
-                                        if (timeout0)
-                                            clearTimeout(timeout0)
-                                        for (var i = 0; i < databack.length; i++) {
-                                            // for(let i = 0 ; i < 2; i++){
-                                            // console.log(databack[i]);
-                                            (function () {
-                                                var j = i;
+                                }
+                            })
+                        } else if (_this.current_scroll == 3) {
+                            console.log("333333333333333333")
+                            wx.request({
+                                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=3' + '&page=1&pagesize=' + this.page3 * 5, //仅为示例，并非真实的接口地址
+                                success(res) {
+                                    console.log('refreshing data');
+                                    // var Things =
+                                    //
+                                    console.log(res.data)
+                                    var databack = res.data
+                                    var statuscode = ''
+                                    if (databack.length < 5) {
+                                        _this.end = true
+                                    } else {
+                                        _this.end3 = false
+                                        _this.page3 = parseInt(_this.page2) + 1
+                                    }
+                                    _this.lists3 = []
+                                    if (timeout0)
+                                        clearTimeout(timeout0)
+                                    for (var i = 0; i < databack.length; i++) {
+                                        // for(let i = 0 ; i < 2; i++){
+                                        // console.log(databack[i]);
+                                        (function () {
+                                            var j = i;
 
-                                                timeout0 = setTimeout(function timer() {
-                                                    if (databack[j].OrderStatus == "待处理") {
-                                                        statuscode = "0"
-                                                    } else if (databack[j].OrderStatus == "维修中") {
-                                                        statuscode = "1"
-                                                    } else if (databack[j].OrderStatus == "已完成") {
-                                                        statuscode = "2"
-                                                    } else if (databack[j].OrderStatus == "已中止") {
-                                                        statuscode = "3"
-                                                    }
-                                                    var json = {
-                                                        "listId": databack[j].OID,
-                                                        "listNumber": databack[j].SerialNo,
-                                                        "listTime": databack[j].CreateTime,
-                                                        "listType": databack[j].MaintenanceType,
-                                                        "listState": statuscode,
-                                                        "listLoca": databack[j].DetailLocation
-                                                    }
-                                                    _this.lists4.push(json)
-                                                }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
-                                            })();
-                                        }
+                                            timeout0 = setTimeout(function timer() {
+                                                if (databack[j].OrderStatus == "待处理") {
+                                                    statuscode = "0"
+                                                } else if (databack[j].OrderStatus == "维修中") {
+                                                    statuscode = "1"
+                                                } else if (databack[j].OrderStatus == "已完成") {
+                                                    statuscode = "2"
+                                                } else if (databack[j].OrderStatus == "已中止") {
+                                                    statuscode = "3"
+                                                }
+                                                var json = {
+                                                    "listId": databack[j].OID,
+                                                    "listNumber": databack[j].SerialNo,
+                                                    "listTime": databack[j].CreateTime,
+                                                    "listType": databack[j].MaintenanceType,
+                                                    "listState": statuscode,
+                                                    "listLoca": databack[j].DetailLocation
+                                                }
+                                                _this.lists3.push(json)
+                                            }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
+                                        })();
                                     }
-                                })
-                            }
+                                }
+                            })
+                        } else if (_this.current_scroll == 4) {
+                            console.log("444444444444444")
+                            wx.request({
+                                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=4' + '&page=1&pagesize=5', //仅为示例，并非真实的接口地址
+                                success(res) {
+                                    console.log('refreshing data');
+                                    // var Things =
+                                    //
+                                    console.log(res.data)
+                                    var databack = res.data
+                                    var statuscode = ''
+                                    if (databack.length < 5) {
+                                        _this.end4 = true
+                                    } else {
+                                        _this.end4 = false
+                                        _this.page4 = parseInt(_this.page4) + 1
+                                    }
+                                    _this.lists4 = []
+                                    if (timeout0)
+                                        clearTimeout(timeout0)
+                                    for (var i = 0; i < databack.length; i++) {
+                                        // for(let i = 0 ; i < 2; i++){
+                                        // console.log(databack[i]);
+                                        (function () {
+                                            var j = i;
+
+                                            timeout0 = setTimeout(function timer() {
+                                                if (databack[j].OrderStatus == "待处理") {
+                                                    statuscode = "0"
+                                                } else if (databack[j].OrderStatus == "维修中") {
+                                                    statuscode = "1"
+                                                } else if (databack[j].OrderStatus == "已完成") {
+                                                    statuscode = "2"
+                                                } else if (databack[j].OrderStatus == "已中止") {
+                                                    statuscode = "3"
+                                                }
+                                                var json = {
+                                                    "listId": databack[j].OID,
+                                                    "listNumber": databack[j].SerialNo,
+                                                    "listTime": databack[j].CreateTime,
+                                                    "listType": databack[j].MaintenanceType,
+                                                    "listState": statuscode,
+                                                    "listLoca": databack[j].DetailLocation
+                                                }
+                                                _this.lists4.push(json)
+                                            }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
+                                        })();
+                                    }
+                                }
+                            })
+                        } else if (_this.current_scroll == 5) {
+                            console.log("5555555555")
+                            wx.request({
+                                url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=5' + '&page=1&pagesize=5', //仅为示例，并非真实的接口地址
+                                success(res) {
+                                    console.log('refreshing data');
+                                    // var Things =
+                                    //
+                                    console.log(res.data)
+                                    var databack = res.data
+                                    var statuscode = ''
+                                    if (databack.length < 5) {
+                                        _this.end5 = true
+                                    } else {
+                                        _this.end5 = false
+                                        _this.page5 = parseInt(_this.page5) + 1
+                                    }
+                                    _this.lists5 = []
+                                    if (timeout0)
+                                        clearTimeout(timeout0)
+                                    for (var i = 0; i < databack.length; i++) {
+                                        // for(let i = 0 ; i < 2; i++){
+                                        // console.log(databack[i]);
+                                        (function () {
+                                            var j = i;
+
+                                            timeout0 = setTimeout(function timer() {
+                                                if (databack[j].OrderStatus == "待处理") {
+                                                    statuscode = "0"
+                                                } else if (databack[j].OrderStatus == "维修中") {
+                                                    statuscode = "1"
+                                                } else if (databack[j].OrderStatus == "已完成") {
+                                                    statuscode = "2"
+                                                } else if (databack[j].OrderStatus == "已中止") {
+                                                    statuscode = "3"
+                                                }
+                                                var json = {
+                                                    "listId": databack[j].OID,
+                                                    "listNumber": databack[j].SerialNo,
+                                                    "listTime": databack[j].CreateTime,
+                                                    "listType": databack[j].MaintenanceType,
+                                                    "listState": statuscode,
+                                                    "listLoca": databack[j].DetailLocation
+                                                }
+                                                _this.lists5.push(json)
+                                            }, i * 100); //这一行将i*1000改为j*1000也行，并不影响
+                                        })();
+                                    }
+                                }
+                            })
+                        }
 
                     }
 
@@ -823,12 +923,15 @@
                     case 3:
                         return "已完成";
                         break;
+                    case 6:
+                        return "反馈中";
+                        break;
                 }
             },
             cardClick(e) {
-                var wx=mpvue
+                var wx = mpvue
                 console.log(e);
-                var oid=e.mp.currentTarget.dataset.cardid
+                var oid = e.mp.currentTarget.dataset.cardid
                 wx.navigateTo({
                     // url: '../detailforworker/main',
                     url: '../detail/main?oid=' + oid,
@@ -915,24 +1018,34 @@
                     this.loaddata(this.page)
                 }
             },
-            loadmore1() {       console.log("loadmore1")
+            loadmore1() {
+                console.log("loadmore1")
                 if (!this.end1) {
                     this.loaddata1(this.page1)
                 }
             },
-            loadmore2() {       console.log("loadmore2")
+            loadmore2() {
+                console.log("loadmore2")
                 if (!this.end2) {
                     this.loaddata2(this.page2)
                 }
             },
-            loadmore3() {       console.log("loadmore3")
+            loadmore3() {
+                console.log("loadmore3")
                 if (!this.end3) {
                     this.loaddata3(this.page3)
                 }
             },
-            loadmore4() {       console.log("loadmore4")
+            loadmore4() {
+                console.log("loadmore4")
                 if (!this.end4) {
                     this.loaddata4(this.page4)
+                }
+            },
+            loadmore5() {
+                console.log("loadmore5")
+                if (!this.end5) {
+                    this.loaddata4(this.page5)
                 }
             },
             loaddata(page) {
@@ -971,6 +1084,8 @@
                                             statuscode = "2"
                                         } else if (databack[j].OrderStatus == "已中止") {
                                             statuscode = "3"
+                                        } else if (databack[j].OrderStatus == "反馈中") {
+                                            statuscode = "4"
                                         }
                                         var json = {
                                             "listId": databack[j].OID,
@@ -1024,6 +1139,8 @@
                                             statuscode = "2"
                                         } else if (databack[j].OrderStatus == "已中止") {
                                             statuscode = "3"
+                                        } else if (databack[j].OrderStatus == "反馈中") {
+                                            statuscode = "4"
                                         }
                                         var json = {
                                             "listId": databack[j].OID,
@@ -1077,6 +1194,8 @@
                                             statuscode = "2"
                                         } else if (databack[j].OrderStatus == "已中止") {
                                             statuscode = "3"
+                                        } else if (databack[j].OrderStatus == "反馈中") {
+                                            statuscode = "4"
                                         }
                                         var json = {
                                             "listId": databack[j].OID,
@@ -1130,6 +1249,8 @@
                                             statuscode = "2"
                                         } else if (databack[j].OrderStatus == "已中止") {
                                             statuscode = "3"
+                                        } else if (databack[j].OrderStatus == "反馈中") {
+                                            statuscode = "4"
                                         }
                                         var json = {
                                             "listId": databack[j].OID,
@@ -1184,6 +1305,8 @@
                                             statuscode = "2"
                                         } else if (databack[j].OrderStatus == "已中止") {
                                             statuscode = "3"
+                                        } else if (databack[j].OrderStatus == "反馈中") {
+                                            statuscode = "4"
                                         }
                                         var json = {
                                             "listId": databack[j].OID,
@@ -1201,6 +1324,62 @@
                     })
                 }
             },
+            loaddata5(page) {
+                var _this = this;
+                var uid = wx.getStorageSync("UID");
+                if (uid) {
+                    wx.request({
+                        url: 'https://hd.xmountguan.com/railway/order.aspx?func=get_user_orders&uid=' + uid + '&orderstatus=5' + '&page=' + this.page5 + '&pagesize=5', //仅为示例，并非真实的接口地址
+                        success(res) {
+
+                            // var Things =
+                            //
+                            console.log(res.data)
+                            var databack = res.data
+                            var statuscode = ''
+                            if (databack.length < 5) {
+                                _this.end5 = true
+                            } else {
+                                _this.end5 = false
+                                _this.page5 = parseInt(_this.page5) + 1
+                            }
+                            if (timeout0)
+                                clearTimeout(timeout0)
+
+                            for (var i = 0; i < databack.length; i++) {
+                                // for(let i = 0 ; i < 2; i++){
+                                // console.log(databack[i]);
+                                (function () {
+                                    var j = i;
+
+                                    timeout0 = setTimeout(function timer() {
+                                        if (databack[j].OrderStatus == "待处理") {
+                                            statuscode = "0"
+                                        } else if (databack[j].OrderStatus == "维修中") {
+                                            statuscode = "1"
+                                        } else if (databack[j].OrderStatus == "已完成") {
+                                            statuscode = "2"
+                                        } else if (databack[j].OrderStatus == "已中止") {
+                                            statuscode = "3"
+                                        } else if (databack[j].OrderStatus == "反馈中") {
+                                            statuscode = "4"
+                                        }
+                                        var json = {
+                                            "listId": databack[j].OID,
+                                            "listNumber": databack[j].SerialNo,
+                                            "listTime": databack[j].CreateTime,
+                                            "listType": databack[j].MaintenanceType,
+                                            "listState": statuscode,
+                                            "listLoca": databack[j].DetailLocation
+                                        }
+                                        _this.lists5.push(json)
+                                    }, i * 300); //这一行将i*1000改为j*1000也行，并不影响
+                                })();
+                            }
+                        }
+                    })
+                }
+            },
         },
         onload() {
             console.log('on load')
@@ -1208,15 +1387,14 @@
         mounted() {
 
 
-
             var from = this.$root.$mp.query.fromreport
-            if(from=='yes'){
-                this.current_scroll=1
+            if (from == 'yes') {
+                this.current_scroll = 1
             }
             console.log('mounted')
             let _this = this;
             let wx = mpvue;
-            this.userName=wx.getStorageSync("UserName")
+            this.userName = wx.getStorageSync("UserName")
             setTimeout(() => {
                 _this.user = wx.getStorageSync("user")
                 _this.login = wx.getStorageSync('UID')
@@ -1279,7 +1457,7 @@
             console.log('show')
             // this.loaddatas()
         },
-        onload(){
+        onload() {
             Object.assign(this.$data, this.$options.data())
         },
         onUnload() {
@@ -1293,13 +1471,15 @@
         border: none;
     }
 
-    .gray {
+    .graym, .gray {
         color: gray;
     }
+
 
     .yellow {
         color: #ff8c2e;
     }
+
 
     .green {
         color: green;
@@ -1307,6 +1487,35 @@
 
     .red {
         color: #ed283c;
+    }
+
+    .blue {
+        color: rgb(0, 184, 255);
+    }
+
+    .bggray {
+        background: rgba(128, 128, 128, 0.11);
+        border: 2rpx solid rgba(128, 128, 128, 0.53);
+    }
+
+    .bgyellow {
+        background: rgba(255, 140, 46, 0.16);
+        border: 2rpx solid rgba(255, 140, 46, 0.16);
+    }
+
+    .bggreen {
+        background: rgba(0, 128, 0, 0.16);
+        border: 2rpx solid rgba(0, 128, 0, 0.16);
+    }
+
+    .bgred {
+        background: rgba(255, 40, 60, 0.1);
+        border: 2rpx solid rgba(255, 40, 60, 0.1);
+    }
+
+    .bgblue {
+        background: rgba(0, 240, 255, 0.1);
+        border: 2rpx solid rgba(0, 240, 255, 0.1);
     }
 
     .miantitle {
@@ -1393,11 +1602,11 @@
         /*background: #595959;*/
         margin: 0 auto;
         margin-bottom: 10rpx;
-        border: 1rpx solid rgba(128, 128, 128, 0.53);
+        /*border: 1rpx solid rgba(128, 128, 128, 0.53);*/
         position: relative;
         border-radius: 10rpx;
         -webkit-border-radius: 10rpx;
-        background: white;
+        /*background: white;*/
         position: relative;
     }
 
