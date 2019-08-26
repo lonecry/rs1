@@ -186,21 +186,7 @@
         top        : 22rpx;
         left       : 0;
     }
-    .getcode {
-        width       : 185rpx;
-        height      : 54rpx;
-        display     : block;
-        float       : right;
-        position    : absolute;
-        top         : 4rpx;
-        right       : 10rpx;
-        background  : #2d8cf0;
-        line-height : 54rpx;
-        color       : white;
-        font-size   : 26rpx;
-        padding     : 0;
-        box-sizing  : border-box;
-    }
+
     .box {
         display         : flex;
         flex-direction  : column;
@@ -224,22 +210,31 @@
         padding-top : 20rpx;
     }
     .ipt {
-        width         : 100%;
-        height        : 60rpx;
-        line-height   : 60rpx;
-        font-size     : 22rpx;
-        background    : white;
-        border-radius : 18rpx;
-        text-align    : left;
-        border        : 2rpx solid #b1b1b1;
-        position      : relative;
-        margin-bottom : 50rpx;
+        width: 100%;
+        height: 75rpx;
+        line-height: 75rpx;
+        font-size: 22rpx;
+        background: white;
+        border-radius: 18rpx;
+        text-align: left;
+        border: 1rpx solid #b1b1b1;
+        position: relative;
+        margin-bottom: 50rpx;
+
+
     }
+
     .ipt input {
-        width       : 88%;
-        height      : 100%;
-        margin-left : 12%;
+        width: 88%;
+        height: 75rpx;
+        margin-left: 12%;
+        line-height: 75rpx;
+        display: block;
+        font-size: 25rpx;
+
+
     }
+
     .usericon {
         position  : absolute;
         left      : 5rpx;
@@ -275,5 +270,19 @@
     }
     .i-btn {
         margin : 0;
-    }
+    }   .getcode {
+            width       : 185rpx;
+            height      : 70rpx;
+            display     : block;
+            float       : right;
+            position    : absolute;
+            top         : 4rpx;
+            right       : 10rpx;
+            background  : #2d8cf0;
+            line-height : 70rpx;
+            color       : white;
+            font-size   : 26rpx;
+            padding     : 0;
+            box-sizing  : border-box;
+        }
 </style>

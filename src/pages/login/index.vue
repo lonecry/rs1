@@ -146,24 +146,30 @@
 
     .ipt {
         width: 100%;
-        height: 60rpx;
-        line-height: 60rpx;
+        height: 75rpx;
+        line-height: 75rpx;
         font-size: 22rpx;
         background: white;
         border-radius: 18rpx;
         text-align: left;
-        border:2rpx solid #b1b1b1;
+        border: 1rpx solid #b1b1b1;
         position: relative;
         margin-bottom: 50rpx;
+
 
     }
 
     .ipt input {
         width: 88%;
-        height: 100%;
+        height: 75rpx;
         margin-left: 12%;
+        line-height: 75rpx;
+        display: block;
+        font-size: 25rpx;
+
 
     }
+
 
     .usericon {
         position: absolute;
@@ -198,10 +204,15 @@
     .sp1 {
         float: left;
         color: #2d8cf0;
+        font-size: 26rpx;
+
     }
 
     .sp2 {
         float: right;
+        color: #2d8cf0;
+        font-size: 26rpx;
+
     }
 
 </style>
