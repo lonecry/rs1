@@ -3,7 +3,7 @@
         <div class="ipts">
             <span class="ititle">状态</span>
             <span
-                :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' },{  bgblue  : detail.state==='4' }, 'ript']"> {{detail.state == 0 ? "待处理" : (detail.state == 1 ? "维修中" : (detail.state == 2 ? "已完成" : (detail.state == 3 ? "已中止" : "反馈中")))}}</span>
+                :class="[{  gray  : detail.state=='0' },{  yellow  : detail.state=='1' },{  green  : detail.state=='2' },{  red  : detail.state=='3' },{  blue  : detail.state==='4' }, 'ript']"> {{detail.state == 0 ? "待处理" : (detail.state == 1 ? "维修中" : (detail.state == 2 ? "已完成" : (detail.state == 3 ? "已中止" : "反馈中")))}}</span>
         </div>
         <!-- <div class="ipts">
              <span class="ititle">维修班组</span>
@@ -72,7 +72,7 @@
                     class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
                 <span class="bxlist" style="text-align: left; word-break:break-all; ">   <span class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
 
-                <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao}} </span>
+                <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao?detail.origin.taidanhao:'空'}} </span>
 
                 <span style="width: 98%;border-top: 1px solid #a0a0a0;height: 14rpx;  display: block;"></span>
                 <span class="bxlist" v-if="detail.state==2"
@@ -92,6 +92,11 @@
                           style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
                 /></span>
             </div>
+        </div>
+
+        <div class="ipts" v-if="detail.state==3">
+            <span class="ititle">中止类型</span>
+            <span class="ript  "  >{{detail.origin.stoptype}}</span>
         </div>
         <div class="ipts" v-if="detail.state==3">
             <span class="ititle stoptitle">中止原因</span>
@@ -158,6 +163,7 @@
                         station: "",
                         address: "",
                         taidanhao: '',
+                        stoptype: '',
                         stopreason: '',
                         EndTime: ''
                     },
@@ -382,6 +388,7 @@
                     _this.detail.origin.station = Things.Station;
                     _this.detail.origin.address = Things.DetailLocation;
                     _this.detail.origin.taidanhao = Things.TaidanNo;
+                    _this.detail.origin.stoptype = Things.FeedbackReason;
                     _this.detail.origin.stopreason = Things.Process;
                     _this.detail.origin.EndTime = Things.EndTime;
                     _this.Repairs = Things.Repairs
@@ -463,6 +470,9 @@
     .red {
         color: #ed283c;
     }
+    .blue {
+           color: rgb(0, 184, 255);
+       }
 
     .ipts {
         min-height: 76rpx;
@@ -575,6 +585,8 @@
         margin: 0 20rpx 0 0;
         position: relative;
         overflow: hidden;
+        background: #c6c6c6;
+
     }
 
     .slt {
@@ -678,6 +690,10 @@
         /*border:1rpx solid gray;*/
         line-height: 34rpx;
         font-size: 27rpx;
+        height: auto;
+        word-break:break-all;
+        text-align: justify;
+
     }
 
     .reasoniptbox {

@@ -25,7 +25,8 @@
             <span class="iboxtitle">*报修内容</span>
             <span @click="selectErr" :class="{active:currnetIndex==index}" :data-errkey="index" :data-mid="item.mid"
                   class="rptypes" v-for="(item,index) in errors" :key="index">{{item.errcontent}} <span
-                class="gou"><i-icon type="flag_fill" size="21" color="red"/></span> </span>
+                class="gou"></span></span>
+<!--                <i-icon type="flag_fill" size="21" color="red"/> -->
         </div>
         <div class="ipts">
             <span class="ititle">*报修类型</span>
