@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="ipts">
-            <span class="ititle">*选则车站</span>
+            <span class="ititle">*选择车站</span>
             <div class="selocation" @click="searchstation">
                 <i-icon type="coordinates_fill" size="26" color="#2d8cf0" class="usericon"/>
                 <span class="zhantai">{{sname}}</span>
