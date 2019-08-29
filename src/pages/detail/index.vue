@@ -9,23 +9,26 @@
              <span class="ititle">维修班组</span>
              <span class="ript">{{detail.banzu}}</span>
          </div>-->
-        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3)&&(detail.gongzhang)">
+        <div class="ipts"
+             v-if="(detail.state==1||detail.state==2||detail.state==3||detail.state==4)&&(detail.gongzhang)">
             <span class="ititle">工长</span>
             <span class="ript">{{detail.gongzhang}}</span>
         </div>
-        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3)&&(detail.gzcell)">
+        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3||detail.state==4)&&(detail.gzcell)">
             <span class="ititle">工长监督电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.gzcell">{{detail.gzcell}}</span>
         </div>
-        <div class="ipts" v-if="(detail.state==1||detail.state==2||detail.state==3)&&(detail.weixiugong)">
+        <div class="ipts"
+             v-if="(detail.state==1||detail.state==2||detail.state==3||detail.state==4)&&(detail.weixiugong)">
             <span class="ititle">维修工</span>
             <span class="ript">{{detail.weixiugong}}</span>
         </div>
-        <!--   <div class="ipts">
-               <span class="ititle">维修工电话</span>
-               <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
-           </div>-->
-        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3">
+       <!-- <div class="ipts"
+             v-if="(detail.state==1||detail.state==2||detail.state==3||detail.state==4)&&(detail.wxgcell)">
+            <span class="ititle">维修工电话</span>
+            <span class="ript phone" @click='makeacall' :data-cell="detail.wxgcell">{{detail.wxgcell}}</span>
+        </div>-->
+        <div class="ipts" v-if="detail.state==1||detail.state==2||detail.state==3||detail.state==4">
             <span class="ititle">调度室举报电话</span>
             <span class="ript phone" @click='makeacall' :data-cell="detail.jubao">{{detail.jubao}}</span>
         </div>
@@ -96,7 +99,7 @@
 
         <div class="ipts" v-if="detail.state==3">
             <span class="ititle">中止类型</span>
-            <span class="ript  "  >{{detail.origin.stoptype}}</span>
+            <span class="ript  ">{{detail.origin.stoptype}}</span>
         </div>
         <div class="ipts" v-if="detail.state==3">
             <span class="ititle stoptitle">中止原因</span>
@@ -150,7 +153,7 @@
                     gzcell: '',
                     weixiugong: '',
                     wxgcell: '',
-                    jubao: '0571-88888888',
+                    jubao: '0571-56722441',
                     location: '',
                     origin: {
                         danhao: '',
@@ -470,9 +473,10 @@
     .red {
         color: #ed283c;
     }
+
     .blue {
-           color: rgb(0, 184, 255);
-       }
+        color: rgb(0, 184, 255);
+    }
 
     .ipts {
         min-height: 76rpx;
@@ -691,7 +695,7 @@
         line-height: 34rpx;
         font-size: 27rpx;
         height: auto;
-        word-break:break-all;
+        word-break: break-all;
         text-align: justify;
 
     }
