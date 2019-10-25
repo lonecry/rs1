@@ -68,11 +68,11 @@
         <div class="ipts iptbox">
             <span class="ititle">*详细位置描述</span>
             <textarea class="reportDesc" v-model="value5" type="textarea" title="详细位置描述" maxlength="150" autofocus
-                      placeholder="请输入详细位置描述"></textarea>
+                      placeholder="输入病害情况描述及详细情况描述"></textarea>
         </div>
         <div class="ipts">
-            <span class="ititle">台单号(选填)</span>
-            <input class="ript" type="number" v-model="value6" title="台单号" autofocus placeholder="台单号"
+            <span class="ititle">台帐号(选填)</span>
+            <input class="ript" type="number" v-model="value6" title="台帐号" autofocus placeholder="台帐号"
                    style="padding: 0"/>
         </div>
         <div class="submit">

@@ -75,7 +75,7 @@
                     class="usericon"/><span class="spans  ">{{detail.origin.station}}</span></span>
                 <span class="bxlist" style="text-align: left; word-break:break-all; ">   <span class="spans inspan">详细位置:</span>  {{detail.origin.address}}  </span>
 
-                <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台单号:</span> {{detail.origin.taidanhao?detail.origin.taidanhao:'空'}} </span>
+                <span class="bxlist" v-if="detail.origin.taidanhao"><span class="spans inspan">台帐号:</span> {{detail.origin.taidanhao?detail.origin.taidanhao:'空'}} </span>
 
                 <span style="width: 98%;border-top: 1px solid #a0a0a0;height: 14rpx;  display: block;"></span>
                 <span class="bxlist" v-if="detail.state==2"
