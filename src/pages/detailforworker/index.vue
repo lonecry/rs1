@@ -62,7 +62,7 @@
             <span class = "address addressworker">{{detail.origin.address }}</span>
         </div>
         <!--   <div class="ipts">
-               <span class="ititle">台单号：</span>
+               <span class="ititle">台帐号：</span>
                <span class="ript">{{detail.origin.taidanhao}}</span>
            </div>
           -->
