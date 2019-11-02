@@ -217,7 +217,7 @@
         background: white;
         border-radius: 18rpx;
         text-align: left;
-        border: 1rpx solid #b1b1b1;
+        border: 2rpx solid #b1b1b1;
         position: relative;
         margin-bottom: 50rpx;
 
@@ -231,7 +231,6 @@
         line-height: 75rpx;
         display: block;
         font-size: 25rpx;
-
 
     }
 
