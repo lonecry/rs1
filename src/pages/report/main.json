@@ -9,6 +9,7 @@
         "i-icon": "/static/iview/icon/index",
         "i-toast": "../../../static/iview/toast/index",
         "van-checkbox-group": "/static/vant/checkbox-group/index",
+        "van-field": "/static/vant/field/index",
         "van-checkbox": "/static/vant/checkbox/index",
         "van-popup": "/static/vant/popup/index",
         "i-checkbox-group": "/static/iview/checkbox-group/index",
