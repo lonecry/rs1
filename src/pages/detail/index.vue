@@ -180,7 +180,7 @@
                 oid: '',
                 rate: 3,//评分
                 ratetxt: '满意',
-                ratecode: 2,
+                ratecode: 3,
                 ratealready: false
             }
         },
@@ -221,8 +221,8 @@
                     var destination = {
                         latitude: _this.data.latitude,
                         longitude: _this.data.longitude,
-                        name: "中国浙江省杭州市西湖区莫干山路111号",
-                        address: "浙江省杭州市拱墅区米市巷街道半道红社区西南方向",
+                        name: "",
+                        address: "",
                         scale: 18
                     }
                     wx.setStorageSync('destination', destination)
@@ -343,6 +343,7 @@
             },
             submit() {
                 var _this = this
+                console.log(this.rate, this.ratetxt, this.ratecode)
                 wx.request({
                     url: 'https://hd.xmountguan.com/railway/order.aspx?func=rate_order&uid=' + wx.getStorageSync('UID') + '&oid=' + _this.oid + '&rate=' + _this.ratecode,
                     success(res) {
