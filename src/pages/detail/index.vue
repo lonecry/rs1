@@ -91,9 +91,10 @@
                     <!--                    <div v-else style="display: inline"> 请耐心等待维修工前去维修</div>-->
                 </span>
                 <span class="bxlist" v-if="ratealready&& detail.state!=='3'"><span class="spans inspan">满意度:</span> {{ratetxt}}
-                <van-rate count="3" size="20" :value="ratecode"
+                <van-rate count="3" size="20"   readonly :value="ratecode"
                           style="width: 50%;display: inline-block;position: relative;top: 14rpx;"
                 /></span>
+
             </div>
         </div>
 
@@ -327,13 +328,16 @@
                     this.reasonShow = true
                 }
             },
+            onrateChangeFalse(e){
+                return false
+            },
             onrateChange(e) {
                 this.rate = e.mp.detail
                 if (this.rate == 1) {
                     this.ratetxt = '不满意'
                     this.ratecode = 1
                 } else if (this.rate == 2) {
-                    this.ratetxt = '基本满意'
+                    this.ratetxt = '一般'
                     this.ratecode = 2
                 } else if (this.rate == 3) {
                     this.ratetxt = '满意'
@@ -409,7 +413,7 @@
                             _this.ratecode = 1
                         } else if (Things.Rate == 2) {
                             console.log("222");
-                            _this.ratetxt = '基本满意'
+                            _this.ratetxt = '一般'
                             _this.ratecode = 2
                         } else if (Things.Rate == 3) {
                             console.log("333");
